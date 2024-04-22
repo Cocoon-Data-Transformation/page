@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Cocoon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-between;
+        }
+
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer {
+            background-color: #f8f9fa;
+            padding: 10px;
+            text-align: center;
+        }
+        .main-content {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 900px; /* Set maximum width to 600px */
+            margin: 0 auto; /* Center the div horizontally */
+        }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 200px; /* Set a specific width for the button */
+            margin: auto; /* Center the button horizontally */
+        }
+        .about-section {
+            margin-top: 20px;
+            text-align: left;
+            padding: 0 15%;
+        }
+        .waitlist-section {
+            margin-top: 20px;
+            padding: 0 15%;
+        }
+        h2 {
+            color: #237a3e;
+        }
+        .icons a {
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .icons i {
+            margin-right: 8px;
+        }
+        ol {
+            text-align: left;
+        }
+        ol li {
+            margin-bottom: 10px;
+        }
+        .details {
+            font-size: 10px; /* Smaller text for detailed tasks */
+        }
+
+    </style>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<body>
+    <!-- <header>
+        <img src="logo.png" alt="Cocoon Logo" width="120">
+        <a href="https://github.com/yourrepository" target="_blank">Repository</a>
+    </header> -->
+    <div class="main-content">
+        <div style="text-align: center;">
+                <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/cocoon_logo.png" alt="Cocoon Logo" width="400"/>
+        </div>
+
+
+
+
+
+        <div class="about-section">
+            <h2>About Cocoon</h2>
+            <p>Cocoon boosts data engineering productivity in transformation (T in ELT) by >10x with better outcomes.</p>
+
+            <div style="text-align: center;">
+                <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/page/main/position.png"
+                     alt="Cocoon Logo"
+                     width="500"
+                     style="border: 1px solid black;"/>
+            </div>
+
+            <h2>Our Process</h2>
+            Cocoon automates the following transformation tasks:
+            <ol>
+                <li><strong>Data Cleaning:</strong> <span class="details">Deduplication, missing values handling, typos fixing, etc.</span></li>
+                <li><strong>Data Integration:</strong> <span class="details">Join key identification, entity matching, schema matching, etc.</span></li>
+                <li><strong>Data Modeling:</strong> <span class="details">Entity identification, normalization, surrogate key identification/creation, etc.</span></li>
+            </ol>
+            <div style="text-align: center;">
+                <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/page/main/process.png"
+                     alt="Cocoon Logo"
+                     width="300"
+                     style="border: 1px solid black;"/>
+            </div>
+
+        </div>
+
+        <!-- <div class="waitlist-section">
+            <p>Join our waitlist to get early access and stay informed.</p>
+            <a href="https://docs.google.com/forms/your_form_link" target="_blank" class="button">Join Waitlist</a>
+        </div> -->
+
+    </div>
+    <footer>
+        <!-- Contact us at <a href="mailto:info@cocoon.com">zh2408@columbia.edu</a> -->
+        <div class="icons">
+             <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank">
+                 <i class="fab fa-github"></i> Cocoon is Open Sourced
+             </a>
+         </div>
+    </footer>
+</body>
+</html>

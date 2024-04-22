@@ -81,7 +81,53 @@ footer {
     text-align: center; /* Center the text within the content area */
     overflow: hidden; /* Prevents content from spilling out */
 }
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 20px auto;
+}
 
+.form-group {
+    display: flex;
+     justify-content: flex-start; /* Aligns items to the start of the container */
+     align-items: center;
+     margin-bottom: 10px;
+}
+
+/* Label styling */
+label {
+    flex: 1 0 250px; /* Adjust width as needed */
+    margin-right: 10px; /* Space between label and input */
+}
+
+
+
+/* Input fields styling */
+input[type="email"], input[type="file"] {
+    flex-grow: 1; /* Allows input to grow and fill available space */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+}
+
+/* Button styling */
+button {
+    width: 100%; /* Make the button full width */
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
 /* input[type="file"] {
     opacity: 0;
     position: absolute;
@@ -104,14 +150,20 @@ footer {
         </a>
     </div>
 
-
-<b> Drop your csv here. The profile will be ready in 10 min. (Only CSV < 1MB and < 40 cols)</b>
     <form action="http://104.198.15.194:5000/upload" method="post" enctype="multipart/form-data">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <input type="file" id="file" name="file" accept=".csv" required onchange="validateFileSize(event)"><br><br>
+        <div class="form-group">
+            <label><b>Drop your csv. The profile will be ready in ~10 min </b><br>(Only CSV < 1MB and < 40 cols)</label>
+        </div>
+        <div class="form-group">
+            <p style="margin-right: 10px;"> Email:  </p>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <input type="file" id="file" name="file" accept=".csv" required onchange="validateFileSize(event)">
+        </div>
         <button type="submit">Submit</button>
     </form>
+
 
     <!-- <div style="display: flex; justify-content: center; margin: 20px;">
         <div class="upload-box">

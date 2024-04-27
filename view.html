@@ -4,11 +4,16 @@
     <title>Redirecting...</title>
     <script type="text/javascript">
         window.onload = function() {
-            // Get the full URL path, e.g., /page/me.html/parameter
-            var path = window.location.pathname;
+            // Function to get query parameters by name
+            function getQueryParam(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
 
-            // Extract the parameter from the path
-            var parameter = path.split('/').pop();
+            // Get the 'path' query parameter
+            var parameter = getQueryParam('path');
 
             // Build the new URL using the extracted parameter
             var newUrl = 'http://104.198.15.194:5000/upload/view/' + parameter;

@@ -1,0 +1,42 @@
+models:
+- columns:
+  - description: Full name of the school
+    name: SCHOOL_NAME
+    tests:
+    - not_null
+  - cocoon_meta:
+      patterns:
+      - regex: \d{2}[A-Z]\d{3}
+        summary: Two digits, followed by one uppercase letter, followed by three digits
+      - regex: \d+K\d+/\d+K\d+
+        summary: School IDs in the format of 21K412/21K411, where each part consists
+          of a combination of digits and an uppercase letter 'K'.
+      uniqueness: The school_id appears to be a unique identifier assigned to each
+        school, likely by the district or governing body. These IDs are typically
+        assigned to be unique for each school and are used for administrative purposes.
+    description: School identifier code
+    name: school_id
+    tests:
+    - not_null
+    - unique
+  - cocoon_meta:
+      missing_acceptable: No students took SAT at that school.
+    description: Number of students who took the SAT
+    name: num_sat_takers
+  - description: Average SAT score in critical reading section
+    name: sat_critical_reading_avg
+    tests:
+    - not_null
+  - description: Average SAT score in math section
+    name: sat_math_avg
+    tests:
+    - not_null
+  - description: Average SAT score in writing section
+    name: sat_writing_avg
+    tests:
+    - not_null
+  description: The table is about SAT exam results from schools in 2012. It lists
+    the school DBN, name, number of test takers, and average scores in critical reading,
+    math, and writing.
+  name: stg__2012_sat_results
+version: 2

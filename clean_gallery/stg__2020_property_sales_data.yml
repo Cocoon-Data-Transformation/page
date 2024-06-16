@@ -4,24 +4,17 @@ models:
     name: LotSizeSqFt
     tests:
     - not_null
-  - description: Neighborhood code where the property is located
-    name: NeighborhoodCode
+  - cocoon_meta:
+      uniqueness: PropertyID is a unique identifier assigned to each property. For
+        this table, each row represents a sale transaction of a property. PropertyID
+        is unique across all rows, as each property has its own distinct ID.
+    description: Unique identifier for the property
+    name: PropertyID
     tests:
     - not_null
-  - description: Number of bedrooms in the property
-    name: Bedrooms
-    tests:
-    - not_null
-  - description: Number of half bathrooms in the property
-    name: HalfBathrooms
-    tests:
-    - not_null
-  - description: Number of stories the property has
-    name: NumStories
-    tests:
-    - not_null
-  - description: Finished square footage of the property
-    name: FinishedSqFt
+    - unique
+  - description: District number where the property is located
+    name: District
     tests:
     - not_null
   - description: Total number of rooms in the property
@@ -29,23 +22,36 @@ models:
     tests:
     - not_null
   - cocoon_meta:
-      uniqueness: This column likely represents a unique identifier assigned to each
-        property, similar to a serial number. It is common practice to use such IDs
-        to uniquely identify records in a database.
-    description: Unique identifier for the property
-    name: PropertyID
+      patterns:
+      - regex: \d+
+        summary: Numeric values without comma separators
+      - regex: \d{1,2},\d{3}
+        summary: Numeric values with comma as thousand separator, ranging from 1,002
+          to 2,040
+      - regex: \d{1,3},\d{3}
+        summary: Numbers with commas as thousand separators
+    description: Finished square footage of the property
+    name: FinishedSqFt
+    tests:
+    - not_null
+  - cocoon_meta:
+      uniqueness: TaxKey is a unique identifier assigned by the tax authority for
+        each property. For this table, TaxKey is unique across all rows, as each property
+        has its own distinct tax key.
+    description: Property tax key identifier
+    name: TaxKey
     tests:
     - not_null
     - unique
-  - description: Architectural style of the property
-    name: Style
+  - description: Number of units the property has
+    name: NumUnits
     tests:
     - not_null
-  - description: Number of full bathrooms in the property
-    name: FullBathrooms
-    tests:
-    - not_null
-  - description: Price the property was sold for
+  - cocoon_meta:
+      patterns:
+      - regex: \$\d{1,3}(,\d{3})*
+        summary: Dollar amount values in the format of '$150,000
+    description: Price the property was sold for
     name: SalePrice
     tests:
     - not_null
@@ -57,36 +63,10 @@ models:
     name: SaleDate
     tests:
     - not_null
-  - description: Type of property (Residential, Commercial, etc.)
-    name: PropertyType
+  - description: Number of stories the property has
+    name: NumStories
     tests:
     - not_null
-    - accepted_values:
-        values:
-        - Residential
-        - Condominium
-        - Lg Apartment
-        - Commercial
-        - Exempt
-        - Manufacturing
-  - cocoon_meta:
-      missing_acceptable: Not applicable for non-condo properties
-    description: Name of the condo project if applicable
-    name: CondoProject
-  - description: Number of units the property has
-    name: NumUnits
-    tests:
-    - not_null
-  - cocoon_meta:
-      uniqueness: The tax key appears to be another identifier related to the property,
-        possibly assigned by the local tax authority for taxation and assessment purposes.
-        As each property would have its own tax record, this value is likely unique
-        per property.
-    description: Property tax key identifier
-    name: TaxKey
-    tests:
-    - not_null
-    - unique
   - description: Exterior wall material of the property
     name: ExteriorWall
     tests:
@@ -110,24 +90,48 @@ models:
         - Precast Masonary
         - Other
         - Brick on Block
-        - Brick Veneer
-        - Concrete
-        - Glass
-        - Log
-        - Marble
-        - Slate
-        - Steel
-        - Tile
+  - description: Neighborhood code where the property is located
+    name: NeighborhoodCode
+    tests:
+    - not_null
+  - cocoon_meta:
+      missing_acceptable: Not applicable for non-condo properties
+    description: Name of the condo project if applicable
+    name: CondoProject
+  - description: Number of full bathrooms in the property
+    name: FullBathrooms
+    tests:
+    - not_null
+  - description: Architectural style of the property
+    name: Style
+    tests:
+    - not_null
+  - description: Type of property (Residential, Commercial, etc.)
+    name: PropertyType
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - Residential
+        - Condominium
+        - Lg Apartment
+        - Commercial
+        - Exempt
+        - Manufacturing
+  - description: Year the property was originally built
+    name: YearBuilt
+    tests:
+    - not_null
+  - description: Number of half bathrooms in the property
+    name: HalfBathrooms
+    tests:
+    - not_null
   - description: Street address of the property
     name: Address
     tests:
     - not_null
-  - description: District number where the property is located
-    name: District
-    tests:
-    - not_null
-  - description: Year the property was originally built
-    name: YearBuilt
+  - description: Number of bedrooms in the property
+    name: Bedrooms
     tests:
     - not_null
   description: The table contains 2020 property sales data. It lists details for each

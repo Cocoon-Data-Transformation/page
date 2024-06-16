@@ -8,62 +8,90 @@ models:
         values:
         - R
         - L
-  - description: IOC country code for the loser's nationality
-    name: loser_ioc
-    tests:
-    - not_null
-  - description: Break points faced by winner
-    name: winner_break_points_faced
+  - cocoon_meta:
+      patterns:
+      - regex: 'Davis Cup G\d{1} (F|PO|R\d{1}): [A-Z]{3} vs [A-Z]{3}'
+        summary: Davis Cup matches with group, round, and teams
+      - regex: '[A-Za-z\s]+Masters'
+        summary: Tournament names with "Masters" suffix
+      - regex: '[A-Za-z\s]+\s(Open|Olympics)'
+        summary: Tournament names with a city or country prefix
+    description: Name of the tournament
+    name: tourney_name
     tests:
     - not_null
   - description: 2nd serve points won by winner
     name: winner_second_serve_points_won
     tests:
     - not_null
-  - description: Number of service games played by the loser
-    name: loser_service_games_played
+  - description: IOC country code for the loser's nationality
+    name: loser_ioc
     tests:
     - not_null
-  - description: Number of sets to win the match
-    name: best_of
+  - description: Match number in the tournament
+    name: match_num
+    tests:
+    - not_null
+  - description: Service points played by winner
+    name: winner_service_points_played
     tests:
     - not_null
   - description: ATP ranking of the loser at the time
     name: loser_rank
     tests:
     - not_null
-  - description: Duration of the match in minutes
-    name: match_duration_minutes
-    tests:
-    - not_null
-  - description: Service games played by winner
-    name: winner_service_games_played
-    tests:
-    - not_null
-  - description: ATP ranking points of the loser at the time
-    name: loser_rank_points
-    tests:
-    - not_null
-  - cocoon_meta:
-      patterns:
-      - regex: W/O
-        summary: Walkover (W/O) score
-      - regex: \d-\d \d-\d
-        summary: Tennis match scores with 2 sets
-      - regex: (\d-\d \d-\d\(\d\))|(\d-\d\(\d\) \d-\d)
-        summary: Tennis match scores with 2 sets, one set has a tiebreak
-      - regex: \d-\d \d-\d \d-\d
-        summary: Tennis match scores with 3 sets
-    description: Final match score
-    name: score
+  - description: IOC code for winner's country
+    name: winner_ioc
     tests:
     - not_null
   - description: Double faults by winner
     name: winner_double_faults
     tests:
     - not_null
+  - description: Break points saved by winner
+    name: winner_break_points_saved
+    tests:
+    - not_null
+  - description: Height of the winner (in cm)
+    name: winner_height_cm
+    tests:
+    - not_null
+  - description: Name of the winner
+    name: winner_name
+    tests:
+    - not_null
+  - description: Court surface (Hard, Clay, Grass, Carpet)
+    name: surface
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - Hard
+        - Clay
+        - Grass
+        - Carpet
+  - description: Number of 1st serves in by the loser
+    name: loser_1st_serves_in
+    tests:
+    - not_null
   - description: Name of the loser
     name: loser_name
+    tests:
+    - not_null
+  - description: ATP singles ranking points of the winner
+    name: winner_rank_points
+    tests:
+    - not_null
+  - description: 1st serve points won by winner
+    name: winner_first_serve_points_won
+    tests:
+    - not_null
+  - description: Unique identifier for the loser
+    name: loser_id
+    tests:
+    - not_null
+  - description: Duration of the match in minutes
+    name: match_duration_minutes
     tests:
     - not_null
   - description: Level/Tier of the tournament (G=Grand Slam, M=Masters, A=Other)
@@ -98,16 +126,87 @@ models:
         - X
         - Y
         - Z
-  - description: Height of the winner (in cm)
-    name: winner_height_cm
+  - description: Number of 1st serve points won by the loser
+    name: loser_1st_serve_points_won
     tests:
     - not_null
-  - description: Unique identifier for the loser
-    name: loser_id
+  - cocoon_meta:
+      patterns:
+      - regex: W/O
+        summary: Walkover (W/O) score
+      - regex: \d-\d \d-\d
+        summary: Tennis match scores with 2 sets
+      - regex: (\d-\d \d-\d\(\d\))|(\d-\d\(\d\) \d-\d)
+        summary: Tennis match scores with 2 sets, one set has a tiebreak
+      - regex: \d-\d \d-\d \d-\d
+        summary: Tennis match scores with 3 sets
+    description: Final match score
+    name: score
+    tests:
+    - not_null
+  - description: Number of break points faced by the loser
+    name: loser_break_points_faced
+    tests:
+    - not_null
+  - description: Number of 2nd serve points won by the loser
+    name: loser_2nd_serve_points_won
+    tests:
+    - not_null
+  - description: Number of service games played by the loser
+    name: loser_service_games_played
+    tests:
+    - not_null
+  - description: Dominant hand of the loser (R=Right, L=Left)
+    name: loser_hand
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - R
+        - L
+        - U
+  - description: ATP ranking points of the loser at the time
+    name: loser_rank_points
     tests:
     - not_null
   - description: Number of players in the tournament draw
     name: draw_size
+    tests:
+    - not_null
+  - description: Round of the tournament
+    name: round
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - R32
+        - R16
+        - R64
+        - RR
+        - R128
+        - QF
+        - SF
+        - F
+        - BR
+  - description: Service games played by winner
+    name: winner_service_games_played
+    tests:
+    - not_null
+  - cocoon_meta:
+      missing_acceptable: Player did not require entry method
+    description: How the loser entered the tournament (Q=Qualifier, WC=Wild Card)
+    name: loser_entry
+    tests:
+    - accepted_values:
+        values:
+        - Q
+        - WC
+        - LL
+        - PR
+        - SE
+        - ALT
+  - description: Number of double faults served by the loser
+    name: loser_double_faults
     tests:
     - not_null
   - cocoon_meta:
@@ -118,6 +217,38 @@ models:
         summary: Tourney ID with a letter 'D' and 3 digits after the year
     description: Unique identifier for the tournament
     name: tourney_id
+    tests:
+    - not_null
+  - description: Unique id of the winner
+    name: winner_id
+    tests:
+    - not_null
+  - description: Age of the winner
+    name: winner_age
+    tests:
+    - not_null
+  - description: Number of sets to win the match
+    name: best_of
+    tests:
+    - not_null
+  - description: Number of aces served by the loser
+    name: loser_aces
+    tests:
+    - not_null
+  - description: ATP singles rank of the winner
+    name: winner_rank
+    tests:
+    - not_null
+  - description: Number of service points played by the loser
+    name: loser_service_points_played
+    tests:
+    - not_null
+  - description: Aces served by winner
+    name: winner_aces
+    tests:
+    - not_null
+  - description: Height of the loser in centimeters
+    name: loser_height_cm
     tests:
     - not_null
   - cocoon_meta:
@@ -137,147 +268,16 @@ models:
     name: winner_first_serve_in
     tests:
     - not_null
-  - description: Match number in the tournament
-    name: match_num
-    tests:
-    - not_null
-  - description: 1st serve points won by winner
-    name: winner_first_serve_points_won
-    tests:
-    - not_null
-  - description: Unique id of the winner
-    name: winner_id
-    tests:
-    - not_null
-  - description: Break points saved by winner
-    name: winner_break_points_saved
-    tests:
-    - not_null
-  - description: Court surface (Hard, Clay, Grass, Carpet)
-    name: surface
-    tests:
-    - not_null
-    - accepted_values:
-        values:
-        - Hard
-        - Clay
-        - Grass
-        - Carpet
-  - description: Dominant hand of the loser (R=Right, L=Left)
-    name: loser_hand
-    tests:
-    - not_null
-    - accepted_values:
-        values:
-        - R
-        - L
-        - U
-  - description: ATP singles rank of the winner
-    name: winner_rank
-    tests:
-    - not_null
-  - description: Number of 2nd serve points won by the loser
-    name: loser_2nd_serve_points_won
-    tests:
-    - not_null
-  - description: Number of break points faced by the loser
-    name: loser_break_points_faced
-    tests:
-    - not_null
-  - description: Name of the winner
-    name: winner_name
-    tests:
-    - not_null
-  - description: Number of 1st serve points won by the loser
-    name: loser_1st_serve_points_won
-    tests:
-    - not_null
-  - cocoon_meta:
-      patterns:
-      - regex: 'Davis Cup G\d{1} (F|PO|R\d{1}): [A-Z]{3} vs [A-Z]{3}'
-        summary: Davis Cup matches with group, round, and teams
-      - regex: '[A-Za-z\s]+Masters'
-        summary: Tournament names with "Masters" suffix
-      - regex: '[A-Za-z\s]+\s(Open|Olympics)'
-        summary: Tournament names with a city or country prefix
-    description: Name of the tournament
-    name: tourney_name
-    tests:
-    - not_null
-  - description: Age of the winner
-    name: winner_age
-    tests:
-    - not_null
-  - description: Height of the loser in centimeters
-    name: loser_height_cm
-    tests:
-    - not_null
-  - description: Number of aces served by the loser
-    name: loser_aces
-    tests:
-    - not_null
-  - description: Number of double faults served by the loser
-    name: loser_double_faults
-    tests:
-    - not_null
-  - description: Number of 1st serves in by the loser
-    name: loser_1st_serves_in
-    tests:
-    - not_null
   - description: Number of break points saved by the loser
     name: loser_break_points_saved
     tests:
     - not_null
-  - description: Round of the tournament
-    name: round
+  - description: Break points faced by winner
+    name: winner_break_points_faced
     tests:
     - not_null
-    - accepted_values:
-        values:
-        - R32
-        - R16
-        - R64
-        - RR
-        - R128
-        - QF
-        - SF
-        - F
-        - BR
-  - cocoon_meta:
-      missing_acceptable: Player did not require entry method
-    description: How the loser entered the tournament (Q=Qualifier, WC=Wild Card)
-    name: loser_entry
-    tests:
-    - accepted_values:
-        values:
-        - Q
-        - WC
-        - LL
-        - PR
-        - SE
-        - ALT
   - description: Age of the loser
     name: loser_age
-    tests:
-    - not_null
-  - description: Service points played by winner
-    name: winner_service_points_played
-    tests:
-    - not_null
-  - description: Aces served by winner
-    name: winner_aces
-    tests:
-    - not_null
-  - description: Number of service points played by the loser
-    name: loser_service_points_played
-    tests:
-    - not_null
-  - description: IOC code for winner's country
-    name: winner_ioc
-    tests:
-    - not_null
-  - description: ATP singles ranking points of the winner
-    name: winner_rank_points
     tests:
     - not_null
   - cocoon_meta:

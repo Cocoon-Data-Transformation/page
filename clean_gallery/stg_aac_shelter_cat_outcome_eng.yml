@@ -73,63 +73,51 @@ models:
         - black tiger
         - fawn
         - orange tiger
-  - description: Age at outcome in years
-    name: outcome_age_years
+  - description: Breed of animal
+    name: breed
     tests:
     - not_null
-  - description: Type of animal (cat)
-    name: animal_type
-    tests:
-    - not_null
-    - accepted_values:
-        values:
-        - Cat
-        - Dog
-        - Bird
-        - Fish
-        - Rabbit
-        - Hamster
-        - Guinea Pig
-        - Ferret
-        - Turtle
-        - Snake
-        - Lizard
-        - Horse
-        - Pig
-        - Goat
-        - Chicken
-        - Duck
-        - Goose
-        - Cow
-        - Sheep
-        - Llama
-        - Alpaca
-  - description: Year of the outcome
-    name: outcome_year
-    tests:
-    - not_null
-  - description: Sex of the cat
-    name: cat_sex
+  - description: Spay/neuter status of animal
+    name: spay_neuter_status
     tests:
     - not_null
     - accepted_values:
         values:
-        - Female
-        - Male
+        - 'Yes'
+        - 'No'
   - description: Color description
     name: color_description
     tests:
     - not_null
-  - description: Hour of outcome
-    name: outcome_hour
+  - description: Subtype of the outcome (e.g. Partner)
+    name: outcome_subtype
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - Partner
+        - Foster
+        - SCRP
+        - Suffering
+        - Snr
+        - In Kennel
+        - In Foster
+        - Offsite
+        - Rabies Risk
+        - Medical
+        - At Vet
+        - Enroute
+        - In Surgery
+        - Aggressive
+        - Barn
+        - Possible Theft
+        - Underage
+  - description: Age at outcome in years
+    name: outcome_age_years
     tests:
     - not_null
   - description: Year of birth
     name: birth_year
-    tests:
-    - not_null
-  - description: Month of outcome
-    name: outcome_month
     tests:
     - not_null
   - description: Day of week of the outcome
@@ -145,32 +133,10 @@ models:
         - Friday
         - Wednesday
         - Thursday
-  - cocoon_meta:
-      missing_acceptable: Animal does not have a secondary color
-    description: Secondary color
-    name: secondary_color
+  - description: Month of birth
+    name: birth_month
     tests:
-    - accepted_values:
-        values:
-        - white
-        - black
-        - brown
-        - blue
-        - orange
-        - gray
-        - cream
-        - blue cream
-        - tan
-        - seal
-        - silver
-        - chocolate
-        - lynx
-        - buff
-        - red
-        - apricot
-        - flame
-        - lilac
-        - yellow
+    - not_null
   - cocoon_meta:
       missing_acceptable: Animal is not a mixed breed
     description: Secondary breed of animal
@@ -198,33 +164,56 @@ models:
         - bombay
         - burmese
         - chartreux
-        - chinese li hua
         - colorpoint shorthair
         - cornish rex
         - devon rex
         - egyptian mau
-        - european burmese
-        - exotic
+        - exotic shorthair
         - havana brown
         - himalayan
         - korat
-        - laperm
-        - munchkin
         - nebelung
         - norwegian forest cat
         - ocicat
         - oriental
+        - savannah
         - scottish fold
         - selkirk rex
-        - siamese
         - siberian
         - singapura
-        - snowshoe
         - somali
         - sphynx
         - tonkinese
         - turkish angora
         - turkish van
+  - cocoon_meta:
+      patterns:
+      - regex: A\d{6}
+        summary: Alphanumeric ID with format 'A' followed by 6 digits
+      uniqueness: This column represents a unique identifier for each animal. For
+        this table, each row corresponds to an animal record. animal_id is unique
+        across all rows, as it is a unique identifier assigned to each animal.
+    description: Unique animal ID
+    name: animal_id
+    tests:
+    - not_null
+    - unique
+  - description: Count of records
+    name: record_count
+    tests:
+    - not_null
+  - description: Age at outcome in days
+    name: outcome_age_days
+    tests:
+    - not_null
+  - description: Number of time periods
+    name: outcome_periods
+    tests:
+    - not_null
+  - description: Hour of outcome
+    name: outcome_hour
+    tests:
+    - not_null
   - description: Coat color
     name: coat_color
     tests:
@@ -262,59 +251,6 @@ models:
         - black tiger
         - fawn
         - orange tiger
-  - description: Age at outcome in days
-    name: outcome_age_days
-    tests:
-    - not_null
-  - cocoon_meta:
-      patterns:
-      - regex: A\d{6}
-        summary: Animal ID values in the format of 'A' followed by 6 digits
-      uniqueness: This column represents a unique identifier assigned to each animal.
-        It is used to distinguish individual animals from one another in the database.
-    description: Unique animal ID
-    name: animal_id
-    tests:
-    - not_null
-    - unique
-  - description: Month of birth
-    name: birth_month
-    tests:
-    - not_null
-  - description: Breed of animal
-    name: breed
-    tests:
-    - not_null
-  - description: Cat or kitten at outcome
-    name: outcome_animal_category
-    tests:
-    - not_null
-    - accepted_values:
-        values:
-        - Neonate
-        - Kitten
-        - Juvenile
-        - Young Adult
-        - Adult
-        - Senior
-        - Geriatric
-        - Cat
-  - description: Spay/neuter status of animal
-    name: spay_neuter_status
-    tests:
-    - not_null
-    - accepted_values:
-        values:
-        - 'Yes'
-        - 'No'
-  - description: Number of time periods
-    name: outcome_periods
-    tests:
-    - not_null
-  - description: CFA (Cat Fanciers' Assoc.) breed status
-    name: cfa_breed_status
-    tests:
-    - not_null
   - description: Coat pattern
     name: coat_pattern
     tests:
@@ -330,96 +266,59 @@ models:
         - agouti
         - brindle
         - tricolor
-  - description: Subtype of the outcome (e.g. Partner)
-    name: outcome_subtype
+  - cocoon_meta:
+      missing_acceptable: Animal does not have a secondary color
+    description: Secondary color
+    name: secondary_color
     tests:
-    - not_null
     - accepted_values:
         values:
-        - Partner
-        - Foster
-        - SCRP
-        - Suffering
-        - Snr
-        - In Kennel
-        - In Foster
-        - Offsite
-        - Rabies Risk
-        - Medical
-        - At Vet
-        - Enroute
-        - In Surgery
-        - Aggressive
-        - Barn
-        - Possible Theft
-        - Underage
+        - white
+        - black
+        - brown
+        - blue
+        - orange
+        - gray
+        - cream
+        - blue cream
+        - tan
+        - seal
+        - silver
+        - chocolate
+        - lynx
+        - buff
+        - red
+        - apricot
+        - flame
+        - lilac
+        - yellow
   - description: Age at outcome
     name: age_upon_outcome
     tests:
     - not_null
+  - description: Type of animal (cat)
+    name: animal_type
+    tests:
+    - not_null
     - accepted_values:
         values:
-        - 0 years
-        - 1 years
-        - 2 years
-        - 3 years
-        - 4 years
-        - 5 years
-        - 6 years
-        - 7 years
-        - 8 years
-        - 9 years
-        - 10 years
-        - 11 years
-        - 12 years
-        - 13 years
-        - 14 years
-        - 15 years
-        - 16 years
-        - 17 years
-        - 18 years
-        - 19 years
-        - 20 years
-        - 21 years
-        - 22 years
-        - 23 years
-        - 24 years
-        - 25 years
-        - 26 years
-        - 27 years
-        - 28 years
-        - 29 years
-        - 0 months
-        - 1 months
-        - 2 months
-        - 3 months
-        - 4 months
-        - 5 months
-        - 6 months
-        - 7 months
-        - 8 months
-        - 9 months
-        - 10 months
-        - 11 months
-        - 0 weeks
-        - 1 weeks
-        - 2 weeks
-        - 3 weeks
-        - 4 weeks
-        - 5 weeks
-        - 0 days
-        - 1 days
-        - 2 days
-        - 3 days
-        - 4 days
-        - 5 days
-        - 6 days
-        - 1 month
-        - 1 week
-        - 1 year
-        - 1 day
-  - description: Count of records
-    name: record_count
+        - Cat
+        - Dog
+        - Bird
+        - Fish
+        - Rabbit
+        - Hamster
+        - Turtle
+        - Snake
+        - Lizard
+        - Horse
+        - Pig
+        - Goat
+        - Chicken
+        - Duck
+        - Ferret
+  - description: Year of the outcome
+    name: outcome_year
     tests:
     - not_null
   - description: Age group bucket
@@ -438,10 +337,15 @@ models:
         - (15.4, 17.6]
         - (17.6, 19.8]
         - (19.8, 22.0]
-  - description: Domestic breed status
-    name: is_domestic_breed
+  - description: Cat or kitten at outcome
+    name: outcome_animal_category
     tests:
     - not_null
+    - accepted_values:
+        values:
+        - Kitten
+        - Cat
+        - Senior Cat
   - description: Primary breed of animal
     name: primary_breed
     tests:
@@ -489,6 +393,26 @@ models:
         - american wirehair
         - havana brown
         - ocicat
+  - description: Sex of the cat
+    name: cat_sex
+    tests:
+    - not_null
+    - accepted_values:
+        values:
+        - Female
+        - Male
+  - description: Domestic breed status
+    name: is_domestic_breed
+    tests:
+    - not_null
+  - description: Month of outcome
+    name: outcome_month
+    tests:
+    - not_null
+  - description: CFA (Cat Fanciers' Assoc.) breed status
+    name: cfa_breed_status
+    tests:
+    - not_null
   - description: Month and year of birth
     name: birth_month_year
     tests:
@@ -509,6 +433,15 @@ models:
     name: outcome_period_range
     tests:
     - not_null
+    - accepted_values:
+        values:
+        - '1'
+        - '7'
+        - '30'
+        - '60'
+        - '90'
+        - '180'
+        - '365'
   description: The table contains data about cats in an animal shelter. It includes
     details on each cat's age, breed, color, sex, name, and outcome (adoption, transfer,
     return to owner). The table also derives additional fields like time period, age

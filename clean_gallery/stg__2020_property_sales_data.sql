@@ -76,25 +76,25 @@ WITH
             WHEN "LotSizeSqFt" = '1' THEN NULL
             ELSE "LotSizeSqFt"
         END AS "LotSizeSqFt",
-        "CondoProject",
-        "HalfBathrooms",
-        "FinishedSqFt",
-        "ExteriorWall",
-        "FullBathrooms",
-        "NeighborhoodCode",
-        "Bedrooms",
-        "NumStories",
-        "Address",
-        "District",
-        "TaxKey",
-        "Style",
-        "NumUnits",
         "PropertyID",
-        "SalePrice",
+        "District",
         "TotalRooms",
-        "YearBuilt",
+        "FinishedSqFt",
+        "TaxKey",
+        "NumUnits",
+        "SalePrice",
         "SaleDate",
-        "PropertyType"
+        "NumStories",
+        "ExteriorWall",
+        "NeighborhoodCode",
+        "CondoProject",
+        "FullBathrooms",
+        "Style",
+        "PropertyType",
+        "YearBuilt",
+        "HalfBathrooms",
+        "Address",
+        "Bedrooms"
     FROM "_2020_property_sales_data_renamed_trimmed"
 )
 

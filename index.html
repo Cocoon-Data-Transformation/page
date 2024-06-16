@@ -1,331 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cocoon Profile</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-body, html {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-th {
-    background-color: #f2f2f2;
-}
-.disabled {
-    color: #ccc;
-}
-input[type="checkbox"] {
-    margin-right: 5px;
-}
-.icons {
-  /* Making the icon larger */
-  font-size: 15px; /* You can adjust this value as needed */
-  color: white; /* Icon color */
-  background-color: black; /* Background color */
-  padding: 6px 6px; /* Top/bottom padding and left/right padding */
-  border-radius: 3px; /* Making the corners sharp for a rectangular look */
-}
-.content {
-  padding: 20px;
-  min-height: 100%;
-  /* equal to footer height */
-  margin-bottom: -50px;
-  text-align: center;
-}
-.content:after {
-  content: "";
-  display: block;
-}
-footer, .content:after {
-  height: 50px;
-}
-footer {
-    font-size: 12px;
-    background-color: #f0f0f0;
-    color: #333;
-    text-align: center;
-    line-height: 50px;
-    width: 100%;
-    position: fixed; /* Changed from absolute to fixed */
-    bottom: 0;
-    left: 0; /* Ensures the footer extends fully horizontally */
-}
-
-.upload-box {
-    width: 400px; /* Adapted to your width requirement */
-    height: 200px; /* Height as per your design */
-    border: 2px dashed darkgreen;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #edfef3;
-    color: black;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 30px;
-    position: relative; /* Positioning context for the file input */
-}
-.upload-content {
-    margin: 30px; /* Controls text spacing within the box */
-    text-align: center; /* Center the text within the content area */
-    overflow: hidden; /* Prevents content from spilling out */
-}
-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-width: 500px;
-    margin: 20px auto;
-}
-
-.form-group {
-    display: flex;
-     justify-content: flex-start; /* Aligns items to the start of the container */
-     align-items: center;
-     margin-bottom: 10px;
-}
-
-/* Label styling */
-label {
-    flex: 1 0 250px; /* Adjust width as needed */
-    margin-right: 10px; /* Space between label and input */
-}
-
-
-
-/* Input fields styling */
-input[type="email"], input[type="file"] {
-    flex-grow: 1; /* Allows input to grow and fill available space */
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-}
-
-/* Button styling */
-button {
-    width: 100%; /* Make the button full width */
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-/* input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-} */
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocoon</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 
-<div class="content">
-    <div style="">
-        <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank" >
-            <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/profile_icon.png" alt="Cocoon Logo" width="300"/>
-        </a>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="https://cocoon-data-transformation.github.io/page/">
+            Cocoon: Organize Data Warehouses with LLMs
+         </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/clean">Clean</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/standardize">Standardize</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/model">Model</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    <form action="http://104.198.15.194:5000/upload" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label><b>Drop your csv. The profile will be ready in ~10 min </b><br>(Only CSV < 1MB and < 40 cols)</label>
-        </div>
-        <div class="form-group">
-            <p style="margin-right: 10px;"> Email:  </p>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <input type="file" id="file" name="file" accept=".csv" required onchange="validateFileSize(event)">
-        </div>
-        <button type="submit">Submit</button>
-    </form>
 
-    This is the Profile feature of Cocoon. More features will come soon.<br>
-    Check out the <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank" >open source project</a>.
-
-    <!-- <div style="display: flex; justify-content: center; margin: 20px;">
-        <div class="upload-box">
-            <div class="upload-content"> <b> Drop your csv here. The profile will be ready in 10 min. (Only CSV < 1MB and < 40 cols)</b> </div>
-            <input type="file" id="csvFileInput" accept=".csv" onchange="handleFileUpload(event)">
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-8 col-md-12 mx-auto pb-4">
+                <h1>Cocoon</h1>
+                <p class="lead text-body-secondary">
+                    Cocoon organizes your data warehouse using LLM agents, preparing it for analysis. It connects to your data warehouses, enabling you to explore and understand your data. Cocoon also assists in interactively building, testing, and maintaining pipelines.</p>
+            </div>
+            <div class="col-lg-8 col-md-12 mx-auto">
+                <img src="https://github.com/Cocoon-Data-Transformation/cocoon/blob/main/images/background.png?raw=true" alt="Table Profiling GIF" class="img-fluid border rounded">
+                <div class="mt-4">
+                    <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-dark btn-lg" target="_blank">
+                        <i class="fab fa-github mr-2"></i> Visit GitHub
+                    </a>
+                </div>
+            </div>
         </div>
-    </div> -->
-    <!-- <div id="csvDisplay" style="text-align: center;"></div> -->
-</div>
-<footer >
-    <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank">View the gallery of profiles</a>
-  | 😊 Share Cocoon with the World
-        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon&text=Can%27t+believe+how+amazing+the+table+profiles+are+created+by+Cocoon+using+AI.+It%27s+Open+sourced%21&related=ZacharyHuang12" target="_blank"  style="text-decoration: none;">
-            <i class="fa-brands fa-twitter icons"></i>
-        </a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon" target="_blank"  style="text-decoration: none;">
-            <i class="fa-brands fa-facebook icons"></i>
-        </a>
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon" target="_blank" style="text-decoration: none;">
-            <i class="fa-brands fa-linkedin icons"></i>
-        </a>
-        <a href="https://api.whatsapp.com/send?text=Can%27t%20believe%20how%20amazing%20the%20table%20profiles%20are%20created%20by%20Cocoon%20using%20AI.%20It%27s%20Open%20sourced%21%20https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon" target="_blank" style="text-decoration: none;">
-            <i class="fa-brands fa-whatsapp icons"></i>
-        </a>
-        <a href="https://www.reddit.com/submit?url=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon&title=Can%27t%20believe%20how%20amazing%20the%20table%20profiles%20are%20created%20by%20Cocoon%20using%20AI.%20It%27s%20Open%20sourced%21" target="_blank" style="text-decoration: none;">
-            <i class="fa-brands fa-reddit icons"></i>
-        </a>
-        <a href="https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon&media=&description=Can%27t%20believe%20how%20amazing%20the%20table%20profiles%20are%20created%20by%20Cocoon%20using%20AI.%20It%27s%20Open%20sourced%21" target="_blank" style="text-decoration: none;">
-            <i class="fa-brands fa-pinterest icons"></i>
-        </a>
-        <a href="https://www.tumblr.com/widgets/share/tool?posttype=link&title=Can%27t%20believe%20how%20amazing%20the%20table%20profiles%20are%20created%20by%20Cocoon%20using%20AI.%20It%27s%20Open%20sourced%21&caption=&content=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon&canonicalUrl=https%3A%2F%2Fgithub.com%2FCocoon-Data-Transformation%2Fcocoon&shareSource=tumblr_share_button" target="_blank" style="text-decoration: none;">
-            <i class="fa-brands fa-tumblr icons"></i>
-        </a>
-</footer>
+    </section>
+    
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center" style="font-size: 2.5rem;">Current Features</h2>
+            <p class="text-center  lead text-body-secondary  mb-5">Need support? Contact me at <a href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Profile</h5>
+                            <p class="card-text flex-grow-1">Understand your table and identify anomalies.</p>
+                            <a href="https://cocoon-data-transformation.github.io/page/profile" class="btn btn-secondary mt-auto">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Clean</h5>
+                            <p class="card-text flex-grow-1">Clean and document your tables.</p>
+                            <a href="https://cocoon-data-transformation.github.io/page/clean" class="btn btn-secondary mt-auto">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Tranform</h5>
+                            <p class="card-text flex-grow-1">Coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Standardize</h5>
+                            <p class="card-text flex-grow-1">Standardize column values to given vocabularies</p>
+                            <a href="https://cocoon-data-transformation.github.io/page/standardize" class="btn btn-secondary mt-auto">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Integrate</h5>
+                            <p class="card-text flex-grow-1">Coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Model</h5>
+                            <p class="card-text flex-grow-1">Coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 </body>
-<script>
-let globalHeaders = [];
-let displayColumns = [];
-
-
-function validateFileSize(event) {
-    const MAX_SIZE = 1 * 1024 * 1024; // 1MB
-    var file = event.target.files[0];
-    if (file.size > MAX_SIZE) {
-        alert('File must be less than 1MB');
-        document.getElementById("file").value = ""; // Reset the file input
-    }
-}
-
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return; // No file chosen
-
-    if (!file.name.endsWith('.csv')) {
-        alert('Please upload a CSV file.');
-        return;
-    }
-
-    if (file.size > 1048576) {
-        alert('File size must be less than 1MB');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const contents = e.target.result;
-        const rows = parseCSV(contents);
-        if (rows.length === 0) {
-            alert('The CSV file has no rows.');
-            return;
-        }
-
-        globalHeaders = rows[0];
-        displayColumns = new Array(globalHeaders.length).fill(true);
-
-        updateColumnControls();
-        displayCSV(rows);
-    };
-    reader.readAsText(file);
-}
-
-function parseCSV(text) {
-    let rows = [], row = [], quote = false, cell = '';
-    for (let i = 0; i < text.length; i++) {
-        const c = text[i], nextChar = text[i + 1];
-        if (quote) {
-            if (c === '"' && nextChar === '"') {
-                cell += c;
-                i++; // skip next quote
-            } else if (c === '"') {
-                quote = false;
-            } else {
-                cell += c;
-            }
-        } else {
-            switch (c) {
-                case '"':
-                    quote = true;
-                    break;
-                case ',':
-                    row.push(cell);
-                    cell = '';
-                    break;
-                case '\n':
-                case '\r':
-                    if (c === '\r' && nextChar === '\n') {
-                        i++; // skip \n
-                    }
-                    row.push(cell);
-                    rows.push(row);
-                    row = [];
-                    cell = '';
-                    break;
-                default:
-                    cell += c;
-                    break;
-            }
-        }
-    }
-    if (cell || row.length > 0) {
-        row.push(cell);
-        rows.push(row);
-    }
-    return rows.slice(0, 10); // Adjust to sample the first 10 rows only
-}
-
-
-function updateColumnControls() {
-    let html = '<tr>';
-    globalHeaders.forEach((header, index) => {
-        html += `<th><input type="checkbox" ${displayColumns[index] ? 'checked' : ''} onchange="toggleColumn(${index})"> ${header.trim()}</th>`;
-    });
-    html += '</tr>';
-    document.getElementById('csvDisplay').innerHTML = '<table>' + html + '</table>';
-}
-
-function toggleColumn(index) {
-    displayColumns[index] = !displayColumns[index];
-    const rows = parseCSV(document.getElementById('csvFileInput').files[0].result);
-    displayCSV(rows);
-}
-
-function displayCSV(rows) {
-    let tableHtml = '<table>';
-    tableHtml += document.getElementById('csvDisplay').getElementsByTagName('table')[0].innerHTML; // Re-use header row
-
-    rows.slice(1).forEach(row => {
-        tableHtml += '<tr>';
-        row.forEach((column, index) => {
-            if (displayColumns[index]) {
-                tableHtml += `<td>${column.trim()}</td>`;
-            } else {
-                tableHtml += `<td class="disabled">${column.trim()}</td>`;
-            }
-        });
-        tableHtml += '</tr>';
-    });
-    tableHtml += '</table>';
-    document.getElementById('csvDisplay').innerHTML = tableHtml;
-}
-
-</script>
 </html>

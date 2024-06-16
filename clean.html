@@ -35,7 +35,9 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="https://github.com/Cocoon-Data-Transformation/cocoon">Cocoon</a>
+        <a class="navbar-brand" href="https://cocoon-data-transformation.github.io/page/">
+           Cocoon: Organize Data Warehouses with LLMs
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -46,6 +48,9 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="">Clean</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/standardize">Standardize</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/model">Model</a>
@@ -403,6 +408,44 @@
         </div>
     </section>
     
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12 mx-auto">
+                <h2 class="text-center">Research</h2>
+                <p class="lead text-body-secondary  text-center">Data Cleaning is based on the following research paper:</p>
+                <a href="https://openreview.net/forum?id=FflKTuIRTD" target="_blank" class="text-decoration-none">
+                    <div class="card px-4 card-hover  mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Data Ambiguity Strikes Back: How Documentation Improves GPT's Text-to-SQL</h5>
+                            <pre class="text-start"><code>@inproceedings{huang2023data,
+    title={Data Ambiguity Strikes Back: How Documentation Improves GPT's Text-to-SQL},
+    author={Huang, Zezhou and Damalapati, Pavan Kalyan and Wu, Eugene},
+    booktitle={NeurIPS 2023 Second Table Representation Learning Workshop},
+    year={2023}
+}</code></pre>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.wis.ewi.tudelft.nl/assets/files/dbml2024/DBML24_paper_2.pdf" target="_blank" class="text-decoration-none">
+                    <div class="card px-4 card-hover mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Relationalizing Tables with Large Language Models: The Promise and Challenges</h5>
+                            <pre class="text-start"><code>@inproceedings{huang2024relationalizing,
+    title={Relationalizing Tables with Large Language Models: The Promise and Challenges},
+    author={Huang, Zezhou and Wu, Eugene},
+    booktitle={2024 IEEE 40th International Conference on Data Engineering Workshops (ICDEW). IEEE},
+    year={2024}
+}</code></pre>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script>
         function validateFileSize(event) {
             const MAX_SIZE = 1 * 1024 * 1024; // 1MB

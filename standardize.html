@@ -39,10 +39,13 @@
 
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-12 mx-auto">
+            <div class="col-lg-8 col-md-12 mx-auto">
                 <h1>Table Standardization</h1>
-                <p class="lead text-body-secondary">When standardizing column values to given vocabularies, it's rare to find perfect matches. Cocoon uses LLMs to interpret nuanced differences.</p>
-                <img src="https://github.com/Cocoon-Data-Transformation/cocoon/raw/main/images/em.gif" class="img-fluid">
+                <p class="lead text-body-secondary">When standardizing column values to given vocabularies (e.g., for fuzzy join during enrichment), it's rare to find perfect matches. Cocoon uses LLMs to interpret nuanced differences and recommend the matches.</p>
+                
+            </div>
+            <div class="col-lg-6 col-md-9 mx-auto">
+                <img src="https://github.com/Cocoon-Data-Transformation/cocoon/raw/main/images/em.gif" class="img-fluid border border-3 rounded shadow">
             </div>
         </div>
     </section>
@@ -51,22 +54,24 @@
         <div class="container">
             <h2 class="text-center mb-5" style="font-size: 2.5rem;">Get Started</h2>
             <div class="row justify-content-center">
-                <div class="col-lg-6 mb-4">
-                    <div class="jumbotron p-5 h-100">
-                        <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                            <h2 class="mb-4">Open Source</h2>
-                            <div small class="text-muted">Full Features</div>
-                        </div>
-                        <p>Cocoon is open-source. Try out Cocoon in Google Colab.</p>
-                        <small class="form-text text-muted">This requires an LLM API (e.g., GPT-4, Claude-3, Gemini-Ultra...) but offers an interactive experience with no size or column limitations. It also supports databases (e.g., Snowflake, Duckdb...).</small>
-                
-                        <div class="mt-4 text-center">
-                            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-secondary" target="_blank">
-                                <i class="fab fa-github mr-2"></i> Visit GitHub
-                            </a>
-                            <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/fuzzy_join.ipynb" class="btn btn-secondary ml-3" target="_blank">
-                                <i class="fab fa-google mr-2"></i> Google Colab
-                            </a>
+                <div class="col-lg-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-baseline mb-3">
+                                <h2 class="mb-0">Open Source</h2>
+                                <small class="text-muted">Full Features</small>
+                            </div>
+                            <p>Cocoon is open-source. Try out Cocoon in Google Colab.</p>
+                            <small class="form-text text-muted mb-4">Cocoon connects to your data warehouses (e.g., Snowflake, Duckdb...) and uses LLMs (e.g., GPT-4, Claude-3, Gemini-Ultra, or your local LLMs) to standardize tables.</small>
+                            
+                            <div class="mt-auto text-center">
+                                <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-secondary mr-5 mb-2" target="_blank">
+                                    <i class="fab fa-github"></i> Visit GitHub
+                                </a>
+                                <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/fuzzy_join.ipynb" class="btn btn-secondary mb-2" target="_blank">
+                                    <i class="fab fa-google"></i> Google Colab
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,7 +81,6 @@
             </p>
         </div>
     </section>
-
     
     <section class="py-5 container">
         <div class="row">

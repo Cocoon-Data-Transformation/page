@@ -98,7 +98,7 @@ models:
     description: ''
     tests:
     - not_null
-  - name: converted_account_id
+  - name: converted_salesforce_account_id
     description: ID of the account after lead conversion
     tests:
     - not_null

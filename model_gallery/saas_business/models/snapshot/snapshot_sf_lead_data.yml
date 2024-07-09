@@ -1,12 +1,12 @@
 version: 2
 models:
-- name: stg_sf_lead_data
-  description: The table is about sales leads. It contains detailed information on
-    each lead, including personal data, contact information, lead source, conversion
-    status, and various tracking and scoring metrics. The table also includes custom
-    fields for specific business processes, marketing campaign data, and integration
-    with third-party tools and services. It represents a comprehensive view of a lead's
-    journey through the sales pipeline.
+- name: snapshot_sf_lead_data
+  description: The table is about current sales leads data. It tracks the most recent
+    version of each lead's information, including personal details, contact info,
+    conversion status, and various sales metrics. It captures lead sources, marketing
+    campaign data, and custom fields for specific business processes. This table provides
+    a snapshot of each lead's latest state in the sales pipeline, without historical
+    versions.
   columns:
   - name: owner_id
     description: ID of the lead owner
@@ -26,9 +26,7 @@ models:
     - not_null
     - unique
     cocoon_meta:
-      uniqueness: This column likely represents a unique identifier for each lead.
-        For this table, each row is for a unique lead. The id should be unique across
-        rows as it's typically used as a primary key in database systems.
+      uniqueness: Unique dimension key, derived from the slowly changing dimension
   - name: photo_url
     description: URL of the lead's photo
     tests:
@@ -98,7 +96,7 @@ models:
     description: ''
     tests:
     - not_null
-  - name: converted_account_id
+  - name: converted_salesforce_account_id
     description: ID of the account after lead conversion
     tests:
     - not_null
@@ -557,14 +555,6 @@ models:
     description: Date of last interesting moment in Sales Insight
     tests:
     - not_null
-  - name: last_modified_date
-    description: Date when the lead was last modified
-    tests:
-    - not_null
-  - name: last_modified_timestamp
-    description: Last modification timestamp
-    tests:
-    - not_null
   - name: lead_bi_tools
     description: Business intelligence tools used by lead
     cocoon_meta:
@@ -679,3 +669,5 @@ models:
     description: Technologies used, from ZoomInfo
     tests:
     - not_null
+cocoon_meta:
+  scd_base_table: stg_sf_lead_data

@@ -1,0 +1,1196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocoon GenAI Demo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .chat-side {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            position: relative;
+        }
+        .left-side {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        .right-side {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .chat-container {
+            border: 1px solid #e2e2e2;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: calc(100% - 90px);
+            overflow-y: auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            margin-top: 100px;
+        }
+        .message {
+            margin-bottom: 16px;
+            padding: 15px;
+            border-radius: 15px;
+            word-wrap: break-word;
+        }
+        /* .left-side .message {
+            max-width: 75%;
+        } */
+        .left-side .user-message {
+            background-color: #000;
+            color: #fff;
+            margin-left: 15%;
+        }
+        .left-side .bot-message {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            /* margin-right: 15%; */
+        }
+        .right-side .message {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            /* max-width: 75%; */
+        }
+        .right-side .user-message {
+            background-color: #007AFF;
+            color: #ffffff;
+            margin-left: 15%;
+        }
+        .right-side .bot-message {
+            background-color: white;
+            color: #000000;
+            /* margin-right: 15%; */
+        }
+        .sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+        }
+        .left-side .user-sender {
+            text-align: right;
+            color: #fff;
+        }
+        .left-side .bot-sender {
+            color: #000;
+        }
+        .right-side .user-sender {
+            text-align: right;
+            color: #ffffff;
+        }
+        .right-side .bot-sender {
+            color: #8E8E93;
+        }
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            z-index: 10;
+            text-align: center;
+            font-size: 18px;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.3s ease;
+        }
+
+        .title:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .subtitle {
+            font-size: 12px;
+            font-weight: normal;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 3px 4px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+        }
+
+        thead tr {
+            background-color: #464646;
+            /* Changed color for header */
+            color: #ffffff;
+            /* Changed text color for better contrast */
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        th {
+            top: 0;
+            background-color: #464646;
+            color: #ffffff;
+        }
+
+        tbody tr {
+            background-color: #f9f9f9;
+            /* Lighter color for content rows */
+            font-size: 10px
+        }
+
+
+        pre { line-height: 125%; }
+
+        .highlight {
+            background: #272822;
+            color: #f8f8f2;
+            border-radius: 4px;
+            padding: 1em;
+            margin: 1em 0;
+            overflow-x: auto;
+            font-size: 10px;
+        }
+
+        td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #404040 }
+.highlight { background: #202020; color: #d0d0d0 }
+.highlight .c { color: #ababab; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .esc { color: #d0d0d0 } /* Escape */
+.highlight .g { color: #d0d0d0 } /* Generic */
+.highlight .k { color: #6ebf26; font-weight: bold } /* Keyword */
+.highlight .l { color: #d0d0d0 } /* Literal */
+.highlight .n { color: #d0d0d0 } /* Name */
+.highlight .o { color: #d0d0d0 } /* Operator */
+.highlight .x { color: #d0d0d0 } /* Other */
+.highlight .p { color: #d0d0d0 } /* Punctuation */
+.highlight .ch { color: #ababab; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #ababab; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #ff3a3a; font-weight: bold } /* Comment.Preproc */
+.highlight .cpf { color: #ababab; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #ababab; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #e50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.highlight .gd { color: #ff3a3a } /* Generic.Deleted */
+.highlight .ge { color: #d0d0d0; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #d0d0d0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #ff3a3a } /* Generic.Error */
+.highlight .gh { color: #ffffff; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #589819 } /* Generic.Inserted */
+.highlight .go { color: #cccccc } /* Generic.Output */
+.highlight .gp { color: #aaaaaa } /* Generic.Prompt */
+.highlight .gs { color: #d0d0d0; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #ffffff; text-decoration: underline } /* Generic.Subheading */
+.highlight .gt { color: #ff3a3a } /* Generic.Traceback */
+.highlight .kc { color: #6ebf26; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #6ebf26; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #6ebf26; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #6ebf26 } /* Keyword.Pseudo */
+.highlight .kr { color: #6ebf26; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #6ebf26; font-weight: bold } /* Keyword.Type */
+.highlight .ld { color: #d0d0d0 } /* Literal.Date */
+.highlight .m { color: #51b2fd } /* Literal.Number */
+.highlight .s { color: #ed9d13 } /* Literal.String */
+.highlight .na { color: #bbbbbb } /* Name.Attribute */
+.highlight .nb { color: #2fbccd } /* Name.Builtin */
+.highlight .nc { color: #71adff; text-decoration: underline } /* Name.Class */
+.highlight .no { color: #40ffff } /* Name.Constant */
+.highlight .nd { color: #ffa500 } /* Name.Decorator */
+.highlight .ni { color: #d0d0d0 } /* Name.Entity */
+.highlight .ne { color: #bbbbbb } /* Name.Exception */
+.highlight .nf { color: #71adff } /* Name.Function */
+.highlight .nl { color: #d0d0d0 } /* Name.Label */
+.highlight .nn { color: #71adff; text-decoration: underline } /* Name.Namespace */
+.highlight .nx { color: #d0d0d0 } /* Name.Other */
+.highlight .py { color: #d0d0d0 } /* Name.Property */
+.highlight .nt { color: #6ebf26; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #40ffff } /* Name.Variable */
+.highlight .ow { color: #6ebf26; font-weight: bold } /* Operator.Word */
+.highlight .pm { color: #d0d0d0 } /* Punctuation.Marker */
+.highlight .w { color: #666666 } /* Text.Whitespace */
+.highlight .mb { color: #51b2fd } /* Literal.Number.Bin */
+.highlight .mf { color: #51b2fd } /* Literal.Number.Float */
+.highlight .mh { color: #51b2fd } /* Literal.Number.Hex */
+.highlight .mi { color: #51b2fd } /* Literal.Number.Integer */
+.highlight .mo { color: #51b2fd } /* Literal.Number.Oct */
+.highlight .sa { color: #ed9d13 } /* Literal.String.Affix */
+.highlight .sb { color: #ed9d13 } /* Literal.String.Backtick */
+.highlight .sc { color: #ed9d13 } /* Literal.String.Char */
+.highlight .dl { color: #ed9d13 } /* Literal.String.Delimiter */
+.highlight .sd { color: #ed9d13 } /* Literal.String.Doc */
+.highlight .s2 { color: #ed9d13 } /* Literal.String.Double */
+.highlight .se { color: #ed9d13 } /* Literal.String.Escape */
+.highlight .sh { color: #ed9d13 } /* Literal.String.Heredoc */
+.highlight .si { color: #ed9d13 } /* Literal.String.Interpol */
+.highlight .sx { color: #ffa500 } /* Literal.String.Other */
+.highlight .sr { color: #ed9d13 } /* Literal.String.Regex */
+.highlight .s1 { color: #ed9d13 } /* Literal.String.Single */
+.highlight .ss { color: #ed9d13 } /* Literal.String.Symbol */
+.highlight .bp { color: #2fbccd } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #71adff } /* Name.Function.Magic */
+.highlight .vc { color: #40ffff } /* Name.Variable.Class */
+.highlight .vg { color: #40ffff } /* Name.Variable.Global */
+.highlight .vi { color: #40ffff } /* Name.Variable.Instance */
+.highlight .vm { color: #40ffff } /* Name.Variable.Magic */
+.highlight .il { color: #51b2fd } /* Literal.Number.Integer.Long */
+
+.floating-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.floating-notification:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.notification-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.rotate {
+    animation: rotate 4s linear infinite;
+    display: inline-block;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-side left-side">
+            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="title" target="_blank" rel="noopener noreferrer">
+                Before Cocoon
+                <div class="subtitle">GenAI is overwhelmed by the messy source data 🤯<br>It gets confused and starts making stuff up 🤪</div>
+            </a>
+            <div class="chat-container">
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    🙂 Which ad groups have the highest number of targeted keywords?
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😵 <b>Current RAG</b>: Reading all the source data schema from databases... phew, it's a lot!<div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;advertised_product_report_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ad_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_amount</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">clicks</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cost</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">impressions</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">__advertised_asin</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">__advertised_sku</span><span class="w"> </span><span class="n">DOUBLE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;ad_group_history_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_updated_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creation_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">default_bid</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">serving_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;ad_group_level_report_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_bidding_strategy</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">clicks</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cost</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">impressions</span><span class="w"> </span><span class="nb">BIGINT</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;campaign_history_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_updated_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bidding_strategy</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creation_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">end_date</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">portfolio_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">profile_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">serving_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">start_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">targeting_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">effective_budget</span><span class="w"> </span><span class="n">DOUBLE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;campaign_level_report_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_applicable_budget_rule_id</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_applicable_budget_rule_name</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_bidding_strategy</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_amount</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">clicks</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cost</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">impressions</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_rule_based_budget_amount</span><span class="w"> </span><span class="n">DOUBLE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;keyword_history_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_updated_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bid</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creation_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_text</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">match_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">native_language_keyword</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">serving_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">native_language_locale</span><span class="w"> </span><span class="n">DOUBLE</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;portfolio_history_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_updated_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_amount</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_end_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_policy</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">budget_start_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creation_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">in_budget</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">profile_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">serving_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;product_ad_history_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_updated_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">asin</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">creation_date</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">serving_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">sku</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;profile_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_deleted</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_marketplace_string_id</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_sub_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">account_valid_payment_method</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="p">,</span>
+<span class="w">    </span><span class="n">country_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">daily_budget</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">timezone</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;search_term_ad_keyword_report_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_amount</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">clicks</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cost</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">impressions</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_bid</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">search_term</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">targeting</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="s1">&#39;targeting_keyword_report_data&#39;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ad_group_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_id</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">_fivetran_synced</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ad_keyword_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_amount</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_currency_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">campaign_budget_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">clicks</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cost</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">impressions</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_bid</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">keyword_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">match_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">,</span>
+<span class="w">    </span><span class="n">targeting</span><span class="w"> </span><span class="nb">VARCHAR</span>
+<span class="p">);</span>
+</pre></div>
+
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    🤨 <b>I've done my best with the SQL... fingers crossed it's right!</b><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">ag</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ad_group_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ag</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ad_group_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">campaign_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">k</span><span class="p">.</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">targeted_keyword_count</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">ad_group_history_data</span><span class="w"> </span><span class="n">ag</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">campaign_history_data</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">ag</span><span class="p">.</span><span class="n">campaign_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">id</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">keyword_history_data</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">ag</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">.</span><span class="n">ad_group_id</span>
+<span class="k">WHERE</span><span class="w"> </span>
+<span class="w">    </span><span class="n">ag</span><span class="p">.</span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;enabled&#39;</span><span class="w"> </span><span class="k">AND</span>
+<span class="w">    </span><span class="n">k</span><span class="p">.</span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;enabled&#39;</span><span class="w"> </span><span class="k">AND</span>
+<span class="w">    </span><span class="n">k</span><span class="p">.</span><span class="n">serving_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ELIGIBLE&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span>
+<span class="w">    </span><span class="n">ag</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ag</span><span class="p">.</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">name</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span>
+<span class="w">    </span><span class="n">targeted_keyword_count</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span>
+</pre></div>
+
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    🤨 <b>SQL runs successful!</b> The result is ... empty??<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    😥 Oops, looks like you're making up those joins and predicates!
+                </div>
+            </div>
+        </div>
+        <div class="chat-side right-side">
+            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="title" target="_blank" rel="noopener noreferrer">
+                After Cocoon
+                <div class="subtitle">Cocoon prepares your data, making it RAG-ready ✨<br>
+                    GenAI finds just what it needs, no more wild guesses! 🎯</div>
+            </a>
+            <div class="chat-container">
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    🙂 Which ad groups have the highest number of targeted keywords?
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Putting the question in context using Cocoon's ER story... nice! <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Marketers create Account Profiles and organize Portfolios within</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">them.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ProfilePortfolioManagement</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Marketers assign Campaigns to Portfolios within Account Profiles.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CampaignPortfolioProfileHierarchy</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Advertisers create Ad Groups within each Campaign.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CampaignAdGroups</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Advertisers add Keywords to Ad Groups in Campaigns.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CampaignAdGroupKeywordHierarchy</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Advertisers create Product Ads within Ad Groups and Campaigns.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AdCampaignHierarchy</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">System tracks daily performance of targeted Keywords.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TargetedKeywordDailyPerformance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">System records daily performance data for search terms.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchTermAdKeywordPerformance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">relation_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">System measures daily performance of Ads, Groups, and Campaigns.</span>
+<span class="w">  </span><span class="nt">relation_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CampaignAdPerformanceMetrics</span>
+</pre></div>
+🤓 <b>We've found the related relations:</b> CampaignAdGroups, CampaignAdGroupKeywordHierarchy, TargetedKeywordDailyPerformance, CampaignAdPerformanceMetrics
+    <p>Story behind the relationships <small class="text-muted">(only for those connecting >= 2 entities)</small></p><ol class="small"><li>[ProfilePortfolioManagement]: Marketers create Account Profiles and organize Portfolios within them.</li><li>[CampaignPortfolioProfileHierarchy]: Marketers assign Campaigns to Portfolios within Account Profiles.</li><li><b>[CampaignAdGroups]: Advertisers create Ad Groups within each Campaign.</b></li><li><b>[CampaignAdGroupKeywordHierarchy]: Advertisers add Keywords to Ad Groups in Campaigns.</b></li><li>[AdCampaignHierarchy]: Advertisers create Product Ads within Ad Groups and Campaigns.</li><li><b>[TargetedKeywordDailyPerformance]: System tracks daily performance of targeted Keywords.</b></li><li>[SearchTermAdKeywordPerformance]: System records daily performance data for search terms.</li><li><b>[CampaignAdPerformanceMetrics]: System measures daily performance of Ads, Groups, and Campaigns.</b></li></ol>
+    
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="1135pt" height="88pt"
+ viewBox="0.00 0.00 1134.50 88.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 84)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-84 1130.5,-84 1130.5,4 -4,4"/>
+<!-- CampaignAdGroups -->
+<g id="node1" class="node">
+<title>CampaignAdGroups</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="575.5,-80 493.5,-80 493.5,-58 575.5,-58 575.5,-80"/>
+<text text-anchor="middle" x="534.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">CampaignAdGroups</text>
+</g>
+<!-- Ad Groups -->
+<g id="node2" class="node">
+<title>Ad Groups</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="435.5" cy="-11" rx="23.62" ry="11"/>
+<text text-anchor="middle" x="435.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Ad Groups</text>
+</g>
+<!-- CampaignAdGroups&#45;&#45;Ad Groups -->
+<g id="edge1" class="edge">
+<title>CampaignAdGroups&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#4fc3f7" d="M516.8,-57.99C497.56,-47.1 467.19,-29.93 449.53,-19.94"/>
+</g>
+<!-- Campaigns -->
+<g id="node3" class="node">
+<title>Campaigns</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="534.5" cy="-11" rx="25.41" ry="11"/>
+<text text-anchor="middle" x="534.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Campaigns</text>
+</g>
+<!-- CampaignAdGroups&#45;&#45;Campaigns -->
+<g id="edge2" class="edge">
+<title>CampaignAdGroups&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#4fc3f7" d="M534.5,-57.99C534.5,-47.92 534.5,-32.47 534.5,-22.3"/>
+</g>
+<!-- AdCampaignHierarchy -->
+<g id="node4" class="node">
+<title>AdCampaignHierarchy</title>
+<polygon fill="#ffffff" stroke="#000000" points="685,-80 594,-80 594,-58 685,-58 685,-80"/>
+<text text-anchor="middle" x="639.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">AdCampaignHierarchy</text>
+</g>
+<!-- AdCampaignHierarchy&#45;&#45;Ad Groups -->
+<g id="edge4" class="edge">
+<title>AdCampaignHierarchy&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M603.03,-57.99C559.71,-46.1 489.04,-26.7 455.02,-17.36"/>
+</g>
+<!-- AdCampaignHierarchy&#45;&#45;Campaigns -->
+<g id="edge5" class="edge">
+<title>AdCampaignHierarchy&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M620.73,-57.99C600.32,-47.1 568.11,-29.93 549.38,-19.94"/>
+</g>
+<!-- Product Ads -->
+<g id="node5" class="node">
+<title>Product Ads</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="704.5" cy="-11" rx="26.7" ry="11"/>
+<text text-anchor="middle" x="704.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Product Ads</text>
+</g>
+<!-- AdCampaignHierarchy&#45;&#45;Product Ads -->
+<g id="edge3" class="edge">
+<title>AdCampaignHierarchy&#45;&#45;Product Ads</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M651.12,-57.99C663.24,-47.54 682.09,-31.31 693.84,-21.18"/>
+</g>
+<!-- CampaignPortfolioProfileHierarchy -->
+<g id="node6" class="node">
+<title>CampaignPortfolioProfileHierarchy</title>
+<polygon fill="#ffffff" stroke="#000000" points="994.5,-80 854.5,-80 854.5,-58 994.5,-58 994.5,-80"/>
+<text text-anchor="middle" x="924.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">CampaignPortfolioProfileHierarchy</text>
+</g>
+<!-- CampaignPortfolioProfileHierarchy&#45;&#45;Campaigns -->
+<g id="edge6" class="edge">
+<title>CampaignPortfolioProfileHierarchy&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M854.78,-57.99C765.38,-45.15 615.08,-23.57 557.71,-15.33"/>
+</g>
+<!-- Portfolios -->
+<g id="node7" class="node">
+<title>Portfolios</title>
+<ellipse fill="#ffffff" stroke="#000000" cx="941.5" cy="-11" rx="21.24" ry="11"/>
+<text text-anchor="middle" x="941.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Portfolios</text>
+</g>
+<!-- CampaignPortfolioProfileHierarchy&#45;&#45;Portfolios -->
+<g id="edge7" class="edge">
+<title>CampaignPortfolioProfileHierarchy&#45;&#45;Portfolios</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M927.54,-57.99C930.63,-47.8 935.4,-32.09 938.49,-21.93"/>
+</g>
+<!-- Account Profiles -->
+<g id="node8" class="node">
+<title>Account Profiles</title>
+<ellipse fill="#ffffff" stroke="#000000" cx="1051.5" cy="-11" rx="36.33" ry="11"/>
+<text text-anchor="middle" x="1051.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Account Profiles</text>
+</g>
+<!-- CampaignPortfolioProfileHierarchy&#45;&#45;Account Profiles -->
+<g id="edge8" class="edge">
+<title>CampaignPortfolioProfileHierarchy&#45;&#45;Account Profiles</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M947.21,-57.99C971.46,-47.29 1009.5,-30.52 1032.31,-20.46"/>
+</g>
+<!-- CampaignAdGroupKeywordHierarchy -->
+<g id="node9" class="node">
+<title>CampaignAdGroupKeywordHierarchy</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="151,-80 0,-80 0,-58 151,-58 151,-80"/>
+<text text-anchor="middle" x="75.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">CampaignAdGroupKeywordHierarchy</text>
+</g>
+<!-- CampaignAdGroupKeywordHierarchy&#45;&#45;Ad Groups -->
+<g id="edge10" class="edge">
+<title>CampaignAdGroupKeywordHierarchy&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#4fc3f7" d="M139.86,-57.99C222.17,-45.18 360.44,-23.68 413.68,-15.39"/>
+</g>
+<!-- CampaignAdGroupKeywordHierarchy&#45;&#45;Campaigns -->
+<g id="edge11" class="edge">
+<title>CampaignAdGroupKeywordHierarchy&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#4fc3f7" d="M151.06,-59C153.91,-58.66 156.73,-58.33 159.5,-58 296.81,-41.83 331.46,-40.36 468.5,-22 482.86,-20.08 498.93,-17.65 511.62,-15.66"/>
+</g>
+<!-- Keywords -->
+<g id="node10" class="node">
+<title>Keywords</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="241.5" cy="-11" rx="21.84" ry="11"/>
+<text text-anchor="middle" x="241.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Keywords</text>
+</g>
+<!-- CampaignAdGroupKeywordHierarchy&#45;&#45;Keywords -->
+<g id="edge9" class="edge">
+<title>CampaignAdGroupKeywordHierarchy&#45;&#45;Keywords</title>
+<path fill="none" stroke="#4fc3f7" d="M105.18,-57.99C139.87,-46.29 196.11,-27.31 224.28,-17.81"/>
+</g>
+<!-- ProfilePortfolioManagement -->
+<g id="node11" class="node">
+<title>ProfilePortfolioManagement</title>
+<polygon fill="#ffffff" stroke="#000000" points="1126.5,-80 1012.5,-80 1012.5,-58 1126.5,-58 1126.5,-80"/>
+<text text-anchor="middle" x="1069.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">ProfilePortfolioManagement</text>
+</g>
+<!-- ProfilePortfolioManagement&#45;&#45;Portfolios -->
+<g id="edge12" class="edge">
+<title>ProfilePortfolioManagement&#45;&#45;Portfolios</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M1046.62,-57.99C1020.73,-46.66 979.28,-28.53 956.95,-18.76"/>
+</g>
+<!-- ProfilePortfolioManagement&#45;&#45;Account Profiles -->
+<g id="edge13" class="edge">
+<title>ProfilePortfolioManagement&#45;&#45;Account Profiles</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M1066.28,-57.99C1063.05,-47.92 1058.08,-32.47 1054.81,-22.3"/>
+</g>
+<!-- CampaignAdPerformanceMetrics -->
+<g id="node12" class="node">
+<title>CampaignAdPerformanceMetrics</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="836,-80 703,-80 703,-58 836,-58 836,-80"/>
+<text text-anchor="middle" x="769.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">CampaignAdPerformanceMetrics</text>
+</g>
+<!-- CampaignAdPerformanceMetrics&#45;&#45;Ad Groups -->
+<g id="edge14" class="edge">
+<title>CampaignAdPerformanceMetrics&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#4fc3f7" d="M709.79,-57.99C634.17,-45.31 507.66,-24.1 457.22,-15.64"/>
+</g>
+<!-- CampaignAdPerformanceMetrics&#45;&#45;Campaigns -->
+<g id="edge16" class="edge">
+<title>CampaignAdPerformanceMetrics&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#4fc3f7" d="M727.49,-57.99C677.06,-45.97 594.45,-26.29 555.75,-17.06"/>
+</g>
+<!-- CampaignAdPerformanceMetrics&#45;&#45;Product Ads -->
+<g id="edge15" class="edge">
+<title>CampaignAdPerformanceMetrics&#45;&#45;Product Ads</title>
+<path fill="none" stroke="#4fc3f7" d="M757.88,-57.99C745.76,-47.54 726.91,-31.31 715.16,-21.18"/>
+</g>
+<!-- SearchTermAdKeywordPerformance -->
+<g id="node13" class="node">
+<title>SearchTermAdKeywordPerformance</title>
+<polygon fill="#ffffff" stroke="#000000" points="314,-80 169,-80 169,-58 314,-58 314,-80"/>
+<text text-anchor="middle" x="241.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">SearchTermAdKeywordPerformance</text>
+</g>
+<!-- SearchTermAdKeywordPerformance&#45;&#45;Ad Groups -->
+<g id="edge17" class="edge">
+<title>SearchTermAdKeywordPerformance&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M276.18,-57.99C317.16,-46.16 383.87,-26.9 416.42,-17.51"/>
+</g>
+<!-- SearchTermAdKeywordPerformance&#45;&#45;Campaigns -->
+<g id="edge18" class="edge">
+<title>SearchTermAdKeywordPerformance&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M293.88,-57.99C358.57,-45.62 465.72,-25.15 512.03,-16.29"/>
+</g>
+<!-- SearchTermAdKeywordPerformance&#45;&#45;Keywords -->
+<g id="edge19" class="edge">
+<title>SearchTermAdKeywordPerformance&#45;&#45;Keywords</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M241.5,-57.99C241.5,-47.92 241.5,-32.47 241.5,-22.3"/>
+</g>
+<!-- TargetedKeywordDailyPerformance -->
+<g id="node14" class="node">
+<title>TargetedKeywordDailyPerformance</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="475,-80 332,-80 332,-58 475,-58 475,-80"/>
+<text text-anchor="middle" x="403.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">TargetedKeywordDailyPerformance</text>
+</g>
+<!-- TargetedKeywordDailyPerformance&#45;&#45;Ad Groups -->
+<g id="edge20" class="edge">
+<title>TargetedKeywordDailyPerformance&#45;&#45;Ad Groups</title>
+<path fill="none" stroke="#4fc3f7" d="M409.22,-57.99C415.05,-47.8 424.02,-32.09 429.83,-21.93"/>
+</g>
+<!-- TargetedKeywordDailyPerformance&#45;&#45;Campaigns -->
+<g id="edge21" class="edge">
+<title>TargetedKeywordDailyPerformance&#45;&#45;Campaigns</title>
+<path fill="none" stroke="#4fc3f7" d="M426.92,-57.99C452.97,-46.85 494.43,-29.13 517.53,-19.25"/>
+</g>
+<!-- TargetedKeywordDailyPerformance&#45;&#45;Keywords -->
+<g id="edge22" class="edge">
+<title>TargetedKeywordDailyPerformance&#45;&#45;Keywords</title>
+<path fill="none" stroke="#4fc3f7" d="M374.54,-57.99C340.86,-46.35 286.38,-27.52 258.75,-17.96"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        
+    <b>Reasoning</b>: The question "Which ad groups have the highest number of targeted keywords?" is asking about the relationship between ad groups and keywords. In the story, it is asking for information about how many targeted keywords are associated with each ad group, and specifically which ad groups have the most keywords. This relates to how advertisers structure their campaigns and organize their keywords within ad groups.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the related tables Cocoon set up... cool stuff! <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_targeting_keyword_report_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about targeting keyword report data for a specific ad campaign.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">It includes daily performance metrics for a single keyword &quot;x wing parts&quot; in an</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">ad group. The data shows clicks, cost, impressions, and other campaign settings</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">across different dates. The campaign has a daily budget of $2000 USD and uses</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">exact match targeting for the keyword with a $6 bid.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_status</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">daily_budget_amount</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_currency</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">clicks</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">cost</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">impressions</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_bid</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_match_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_match_specificity</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">targeted_keyword</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">date_</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_campaign_level_report_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about advertising campaign performance. It contains daily</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">data for each campaign, including campaign ID, date, budget details, bidding strategy,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and performance metrics. Key fields are campaign_id, date_, campaign_budget_amount,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">campaign_budget_type, clicks, cost, and impressions. The data appears to be for</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">a single campaign (ID 2187) over multiple dates, with consistent budget settings</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">but no recorded performance (zero clicks, cost, and impressions).</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">bidding_strategy</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">daily_budget_amount</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_currency</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">budget_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">clicks</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">cost</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_rule_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_rule_name</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">date_</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">impressions</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_ad_group_level_report_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about ad group level performance data. It includes details</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">such as ad group ID, date, campaign bidding strategy, clicks, cost, and impressions.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each row represents daily performance metrics for a specific ad group. The data</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">spans multiple dates and shows various performance indicators for advertising</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">campaigns.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">bidding_strategy</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">clicks</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">cost</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">impressions</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">date_</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_advertised_product_report_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about advertised product report data. It contains details</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">of ad campaigns including ad group ID, ad ID, campaign ID, date, budget amount,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">budget currency, budget type, clicks, cost, impressions, and advertised ASIN/SKU.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">The data shows daily performance metrics for different ads across various campaigns,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">tracking their budget, spend, and engagement.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">daily_budget_amount</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">budget_currency</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">clicks</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_spend</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">impressions</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">report_date</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_ad_group_history_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about current ad group data. It tracks the most recent</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">version of each ad group. The table includes details such as the ad group&#39;s ID,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">campaign ID, name, default bid, serving status, and state. Each row represents</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">the latest state of an ad group. The creation_date shows when the ad group was</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">initially created. This table provides a current snapshot of ad groups without</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">historical changes.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">default_bid</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_name</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_date</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="nt">history_table</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">default_bid</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_name</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_date</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">last_updated_date</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">    </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_ad_group_history_data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_product_ad_history_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about current product ad status. It tracks the most recent</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">version of each ad&#39;s information. Each row represents the latest state of a unique</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">ad, identified by its ad_id. The table includes details like ad group ID, ASIN,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">campaign ID, current serving status, and state. It provides a snapshot of the</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">current ad configurations without historical changes.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">product_asin</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">ad_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">product_sku</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="nt">history_table</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">ad_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">product_asin</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">ad_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">last_updated_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">product_sku</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">    </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_product_ad_history_data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_campaign_history_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about current campaign data. It tracks the most recent</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">version of each campaign, including its bidding strategy, name, portfolio, profile,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">status, state, targeting type, budget details, and relevant dates. Each row represents</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">the latest snapshot of a unique campaign, providing an up-to-date view of campaign</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">configurations without historical versions.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">bidding_strategy</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_name</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">portfolio_id</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">profile_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">targeting_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">budget_type</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">creation_datetime</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">daily_budget</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">end_date</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">start_date</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="nt">history_table</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">bidding_strategy</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_name</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">portfolio_id</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">profile_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">targeting_type</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">budget_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_datetime</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">daily_budget</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">end_date</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">last_updated_datetime</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">start_date</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">    </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_campaign_history_data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_keyword_history_data</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about current keyword data for advertising campaigns. It</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">tracks the most recent version of each keyword, including its ID, ad group ID,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">campaign ID, bid amount, text, match type, and serving status. Each row represents</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">the latest state of a unique keyword. The table provides up-to-date information</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">on keyword settings and performance without historical data.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">keyword_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_bid</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">keyword_text</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">match_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">    </span><span class="se">&#39;&#39;</span><span class="s">native_language_keyword</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">native_language_locale</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">  </span><span class="nt">history_table</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">keyword_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">ad_group_id</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_bid</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">campaign_id</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">keyword_text</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">match_type</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">serving_status</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">keyword_state</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">creation_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span>
+<span class="w">      </span><span class="se">&#39;&#39;</span><span class="s">last_updated_timestamp</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">native_language_keyword</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">native_language_locale</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="w">    </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_keyword_history_data</span>
+</pre></div>
+🤓 <b>We've identified the related tables</b>: stg_targeting_keyword_report_data, snapshot_ad_group_history_data
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="690pt" height="320pt"
+ viewBox="0.00 0.00 689.67 320.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 316)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-316 685.67,-316 685.67,4 -4,4"/>
+<!-- stg_search_term_ad_keyword_report_data -->
+<g id="node1" class="node">
+<title>stg_search_term_ad_keyword_report_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="171,-312 0,-312 0,-290 171,-290 171,-312"/>
+<text text-anchor="middle" x="85.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_search_term_ad_keyword_report_data</text>
+</g>
+<!-- snapshot_keyword_history_data -->
+<g id="node6" class="node">
+<title>snapshot_keyword_history_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="245,-254 114,-254 114,-232 245,-232 245,-254"/>
+<text text-anchor="middle" x="179.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">snapshot_keyword_history_data</text>
+</g>
+<!-- stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_keyword_history_data -->
+<g id="edge15" class="edge">
+<title>stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_keyword_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102.31,-289.99C117.58,-280.89 140.24,-267.39 157.06,-257.37"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="158.44,-258.99 162.52,-254.11 156.29,-255.38 158.44,-258.99"/>
+</g>
+<!-- snapshot_ad_group_history_data -->
+<g id="node8" class="node">
+<title>snapshot_ad_group_history_data</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="431,-196 296,-196 296,-174 431,-174 431,-196"/>
+<text text-anchor="middle" x="363.5" y="-183.1" font-family="Segoe UI" font-size="8.00" fill="#000000">snapshot_ad_group_history_data</text>
+</g>
+<!-- stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge3" class="edge">
+<title>stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M85.2,-290C85.35,-275.04 87.98,-246.99 104.5,-232 131.08,-207.88 222.65,-196.04 289.4,-190.49"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="289.96,-192.55 295.77,-189.97 289.62,-188.36 289.96,-192.55"/>
+</g>
+<!-- snapshot_campaign_history_data -->
+<g id="node10" class="node">
+<title>snapshot_campaign_history_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="528,-138 391,-138 391,-116 528,-116 528,-138"/>
+<text text-anchor="middle" x="459.5" y="-125.1" font-family="Segoe UI" font-size="8.00" fill="#000000">snapshot_campaign_history_data</text>
+</g>
+<!-- stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge9" class="edge">
+<title>stg_search_term_ad_keyword_report_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M82.54,-289.67C79.08,-275.29 75.27,-249.1 87.5,-232 122,-183.79 286.27,-152.57 384.62,-137.86"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="385.08,-139.92 390.71,-136.96 384.46,-135.76 385.08,-139.92"/>
+</g>
+<!-- stg_advertised_product_report_data -->
+<g id="node2" class="node">
+<title>stg_advertised_product_report_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="670,-312 523,-312 523,-290 670,-290 670,-312"/>
+<text text-anchor="middle" x="596.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_advertised_product_report_data</text>
+</g>
+<!-- snapshot_product_ad_history_data -->
+<g id="node7" class="node">
+<title>snapshot_product_ad_history_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="667.5,-254 525.5,-254 525.5,-232 667.5,-232 667.5,-254"/>
+<text text-anchor="middle" x="596.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">snapshot_product_ad_history_data</text>
+</g>
+<!-- stg_advertised_product_report_data&#45;&gt;snapshot_product_ad_history_data -->
+<g id="edge14" class="edge">
+<title>stg_advertised_product_report_data&#45;&gt;snapshot_product_ad_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M596.5,-289.99C596.5,-281.81 596.5,-270.08 596.5,-260.51"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="598.6,-260.3 596.5,-254.3 594.4,-260.3 598.6,-260.3"/>
+</g>
+<!-- stg_advertised_product_report_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge1" class="edge">
+<title>stg_advertised_product_report_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M575.82,-289.88C533.33,-269.09 436.29,-221.61 389.57,-198.76"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="390.44,-196.84 384.13,-196.09 388.6,-200.62 390.44,-196.84"/>
+</g>
+<!-- stg_advertised_product_report_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge8" class="edge">
+<title>stg_advertised_product_report_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M629.62,-289.98C646.85,-282.89 666.39,-271.47 676.5,-254 686.89,-236.04 679.3,-187.43 666.5,-174 648.35,-154.95 585.93,-142.84 534.34,-135.85"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="534.33,-133.73 528.11,-135.02 533.78,-137.89 534.33,-133.73"/>
+</g>
+<!-- stg_campaign_level_report_data -->
+<g id="node3" class="node">
+<title>stg_campaign_level_report_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="657.5,-196 525.5,-196 525.5,-174 657.5,-174 657.5,-196"/>
+<text text-anchor="middle" x="591.5" y="-183.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_campaign_level_report_data</text>
+</g>
+<!-- stg_campaign_level_report_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge13" class="edge">
+<title>stg_campaign_level_report_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M567.9,-173.99C545.8,-164.61 512.68,-150.56 488.88,-140.46"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="489.68,-138.52 483.34,-138.11 488.04,-142.39 489.68,-138.52"/>
+</g>
+<!-- stg_targeting_keyword_report_data -->
+<g id="node4" class="node">
+<title>stg_targeting_keyword_report_data</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="493.5,-312 349.5,-312 349.5,-290 493.5,-290 493.5,-312"/>
+<text text-anchor="middle" x="421.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_targeting_keyword_report_data</text>
+</g>
+<!-- stg_targeting_keyword_report_data&#45;&gt;snapshot_keyword_history_data -->
+<g id="edge16" class="edge">
+<title>stg_targeting_keyword_report_data&#45;&gt;snapshot_keyword_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M378.24,-289.99C336.3,-280.28 272.75,-265.58 228.86,-255.42"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="229.12,-253.33 222.8,-254.02 228.17,-257.42 229.12,-253.33"/>
+</g>
+<!-- stg_targeting_keyword_report_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge4" class="edge">
+<title>stg_targeting_keyword_report_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M420.06,-289.81C417.8,-276.05 412.61,-251.06 402.5,-232 396.37,-220.45 386.94,-209.22 378.89,-200.75"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="380.28,-199.17 374.59,-196.34 377.28,-202.11 380.28,-199.17"/>
+</g>
+<!-- stg_targeting_keyword_report_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge10" class="edge">
+<title>stg_targeting_keyword_report_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M423.76,-289.76C430.11,-261.02 448.12,-179.49 455.88,-144.4"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="457.96,-144.72 457.2,-138.41 453.86,-143.81 457.96,-144.72"/>
+</g>
+<!-- stg_profile_data -->
+<g id="node5" class="node">
+<title>stg_profile_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="492.5,-22 426.5,-22 426.5,0 492.5,0 492.5,-22"/>
+<text text-anchor="middle" x="459.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_profile_data</text>
+</g>
+<!-- snapshot_keyword_history_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge5" class="edge">
+<title>snapshot_keyword_history_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M212.4,-231.99C243.83,-222.42 291.22,-208 324.53,-197.86"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="325.45,-199.78 330.58,-196.02 324.23,-195.76 325.45,-199.78"/>
+</g>
+<!-- snapshot_keyword_history_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge11" class="edge">
+<title>snapshot_keyword_history_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M192.74,-231.8C212.4,-217.09 250.95,-189.96 287.5,-174 323.37,-158.34 365.83,-146.92 399.59,-139.37"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="400.38,-141.35 405.79,-138.01 399.48,-137.25 400.38,-141.35"/>
+</g>
+<!-- snapshot_product_ad_history_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge6" class="edge">
+<title>snapshot_product_ad_history_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M554.84,-231.99C514.55,-222.3 453.53,-207.64 411.28,-197.48"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="411.51,-195.38 405.19,-196.02 410.53,-199.46 411.51,-195.38"/>
+</g>
+<!-- snapshot_product_ad_history_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge12" class="edge">
+<title>snapshot_product_ad_history_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M574.46,-231.97C557.61,-223.7 534.31,-210.92 516.5,-196 497.78,-180.31 480.39,-157.98 469.86,-143.24"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="471.47,-141.88 466.3,-138.19 468.03,-144.3 471.47,-141.88"/>
+</g>
+<!-- snapshot_ad_group_history_data&#45;&gt;snapshot_campaign_history_data -->
+<g id="edge7" class="edge">
+<title>snapshot_ad_group_history_data&#45;&gt;snapshot_campaign_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M380.66,-173.99C396.27,-164.89 419.41,-151.39 436.58,-141.37"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="438.04,-142.95 442.16,-138.11 435.92,-139.32 438.04,-142.95"/>
+</g>
+<!-- snapshot_portfolio_history_data -->
+<g id="node9" class="node">
+<title>snapshot_portfolio_history_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="572,-80 441,-80 441,-58 572,-58 572,-80"/>
+<text text-anchor="middle" x="506.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">snapshot_portfolio_history_data</text>
+</g>
+<!-- snapshot_portfolio_history_data&#45;&gt;stg_profile_data -->
+<g id="edge19" class="edge">
+<title>snapshot_portfolio_history_data&#45;&gt;stg_profile_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M498.1,-57.99C490.9,-49.42 480.43,-36.94 472.21,-27.15"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="473.61,-25.55 468.15,-22.3 470.4,-28.25 473.61,-25.55"/>
+</g>
+<!-- snapshot_campaign_history_data&#45;&gt;stg_profile_data -->
+<g id="edge18" class="edge">
+<title>snapshot_campaign_history_data&#45;&gt;stg_profile_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M451.32,-115.77C444.79,-106.89 436.14,-93.4 432.5,-80 429.94,-70.56 429.94,-67.44 432.5,-58 435.52,-46.9 441.96,-35.74 447.8,-27.19"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="449.56,-28.34 451.32,-22.23 446.14,-25.91 449.56,-28.34"/>
+</g>
+<!-- snapshot_campaign_history_data&#45;&gt;snapshot_portfolio_history_data -->
+<g id="edge17" class="edge">
+<title>snapshot_campaign_history_data&#45;&gt;snapshot_portfolio_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M467.9,-115.99C475.1,-107.42 485.57,-94.94 493.79,-85.15"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="495.6,-86.25 497.85,-80.3 492.39,-83.55 495.6,-86.25"/>
+</g>
+<!-- stg_ad_group_level_report_data -->
+<g id="node11" class="node">
+<title>stg_ad_group_level_report_data</title>
+<polygon fill="#ffffff" stroke="#000000" points="393.5,-254 263.5,-254 263.5,-232 393.5,-232 393.5,-254"/>
+<text text-anchor="middle" x="328.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_ad_group_level_report_data</text>
+</g>
+<!-- stg_ad_group_level_report_data&#45;&gt;snapshot_ad_group_history_data -->
+<g id="edge2" class="edge">
+<title>stg_ad_group_level_report_data&#45;&gt;snapshot_ad_group_history_data</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M334.76,-231.99C340.07,-223.49 347.77,-211.17 353.86,-201.42"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="355.66,-202.5 357.06,-196.3 352.1,-200.28 355.66,-202.5"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        🧠 <b>Explanation</b>: The available data is sufficient to answer the business question "Which ad groups have the highest number of targeted keywords?". We can use the 'stg_targeting_keyword_report_data' table, which contains information about keywords and their associated ad groups. To answer this question, we need to count the number of unique keywords for each ad group and then rank the ad groups based on this count.<br>💡 <b>Instruction to write SQL</b>: 1. Start with the 'stg_targeting_keyword_report_data' table. 2. Group the data by 'ad_group_id'. 3. Count the distinct 'keyword_id' for each ad group. 4. Order the results by the keyword count in descending order. 5. Optionally, limit the results to show only the top N ad groups. 6. Join with 'snapshot_ad_group_history_data' to get the ad group names for better readability.
+The SQL query might look like this:
+SELECT 
+    agd.ad_group_name,
+    tkrd.ad_group_id,
+    COUNT(DISTINCT tkrd.keyword_id) as keyword_count
+FROM 
+    stg_targeting_keyword_report_data tkrd
+JOIN 
+    snapshot_ad_group_history_data agd ON tkrd.ad_group_id = agd.ad_group_id
+GROUP BY 
+    tkrd.ad_group_id, agd.ad_group_name
+ORDER BY 
+    keyword_count DESC
+LIMIT 10;  -- Adjust the limit as needed
+This query will return the top 10 ad groups with the highest number of targeted keywords, along with their names and the count of unique keywords.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Looking at how tables connect, thanks to Cocoon's key info... clever! <div class="highlight"><pre><span></span><span class="nt">snapshot_ad_group_history_data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">campaign_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">campaign_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_campaign_history_data</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_id</span>
+<span class="nt">stg_targeting_keyword_report_data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_ad_group_history_data</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">campaign_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">campaign_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_campaign_history_data</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyword_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyword_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot_keyword_history_data</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+</pre></div>
+🤓 <b>We've planned the join:</b> To execute the SQL, one join is needed.  The join is between 'stg_targeting_keyword_report_data' and 'snapshot_ad_group_history_data' on the 'ad_group_id' column. It is an inner join.
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Diving into column details Cocoon prepared... getting a bit technical here! <div class="highlight"><pre><span></span><span class="nt">snapshot_ad_group_history_data</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_id</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier for the ad group</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_name</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Name of the ad group</span>
+<span class="nt">stg_targeting_keyword_report_data</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ad_group_id</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier for the ad group</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyword_id</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier for the keyword</span>
+</pre></div>
+🤔 <b>Reasoning for column selection</b>: Based on the SQL approach and join description, we need to select specific columns from each table to fulfill the requirements. Here's why these columns are necessary:
+1. From 'stg_targeting_keyword_report_data':
+   - 'ad_group_id' is needed for grouping and joining with the ad group history table.
+   - 'keyword_id' is required to count distinct keywords per ad group.
+
+2. From 'snapshot_ad_group_history_data':
+   - 'ad_group_id' is necessary for joining with the keyword report table.
+   - 'ad_group_name' is needed for better readability in the final output.
+
+These columns allow us to perform the required grouping, joining, and counting operations, as well as provide the necessary information for the final output as specified in the SQL approach.
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😊 <b>We have written the SQL:</b><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">agd</span><span class="p">.</span><span class="n">ad_group_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">tkrd</span><span class="p">.</span><span class="n">ad_group_id</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">tkrd</span><span class="p">.</span><span class="n">keyword_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">keyword_count</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_targeting_keyword_report_data</span><span class="w"> </span><span class="n">tkrd</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">snapshot_ad_group_history_data</span><span class="w"> </span><span class="n">agd</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tkrd</span><span class="p">.</span><span class="n">ad_group_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">agd</span><span class="p">.</span><span class="n">ad_group_id</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span>
+<span class="w">    </span><span class="n">tkrd</span><span class="p">.</span><span class="n">ad_group_id</span><span class="p">,</span><span class="w"> </span><span class="n">agd</span><span class="p">.</span><span class="n">ad_group_name</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span>
+<span class="w">    </span><span class="n">keyword_count</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</pre></div>
+
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    ✅ <b>SQL runs successful!</b> Here are the samples (first 5 rows):<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ad_group_name</th>
+      <th>ad_group_id</th>
+      <th>keyword_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Red 7</td>
+      <td>421</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    🫡 Nailed it! Thanks a bunch!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-notification">
+        <span class="notification-icon rotate">⟳</span>
+        New chat results may be available. Refresh to check.
+    </div>
+
+</body>
+</html>

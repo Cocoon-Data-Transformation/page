@@ -1,0 +1,1166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocoon GenAI Demo</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .chat-side {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            position: relative;
+        }
+        .left-side {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        .right-side {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .chat-container {
+            border: 1px solid #e2e2e2;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: calc(100% - 90px);
+            overflow-y: auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            margin-top: 100px;
+        }
+        .message {
+            margin-bottom: 16px;
+            padding: 15px;
+            border-radius: 15px;
+            word-wrap: break-word;
+        }
+        /* .left-side .message {
+            max-width: 75%;
+        } */
+        .left-side .user-message {
+            background-color: #000;
+            color: #fff;
+            margin-left: 15%;
+        }
+        .left-side .bot-message {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #000;
+            /* margin-right: 15%; */
+        }
+        .right-side .message {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            /* max-width: 75%; */
+        }
+        .right-side .user-message {
+            background-color: #007AFF;
+            color: #ffffff;
+            margin-left: 15%;
+        }
+        .right-side .bot-message {
+            background-color: white;
+            color: #000000;
+            /* margin-right: 15%; */
+        }
+        .sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+        }
+        .left-side .user-sender {
+            text-align: right;
+            color: #fff;
+        }
+        .left-side .bot-sender {
+            color: #000;
+        }
+        .right-side .user-sender {
+            text-align: right;
+            color: #ffffff;
+        }
+        .right-side .bot-sender {
+            color: #8E8E93;
+        }
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            z-index: 10;
+            text-align: center;
+            font-size: 18px;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.3s ease;
+        }
+
+        .title:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        .subtitle {
+            font-size: 12px;
+            font-weight: normal;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 3px 4px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+        }
+
+        thead tr {
+            background-color: #464646;
+            /* Changed color for header */
+            color: #ffffff;
+            /* Changed text color for better contrast */
+            text-align: left;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        th {
+            top: 0;
+            background-color: #464646;
+            color: #ffffff;
+        }
+
+        tbody tr {
+            background-color: #f9f9f9;
+            /* Lighter color for content rows */
+            font-size: 10px
+        }
+
+
+        pre { line-height: 125%; }
+
+        .highlight {
+            background: #272822;
+            color: #f8f8f2;
+            border-radius: 4px;
+            padding: 1em;
+            margin: 1em 0;
+            overflow-x: auto;
+            font-size: 10px;
+        }
+
+        td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #404040 }
+.highlight { background: #202020; color: #d0d0d0 }
+.highlight .c { color: #ababab; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .esc { color: #d0d0d0 } /* Escape */
+.highlight .g { color: #d0d0d0 } /* Generic */
+.highlight .k { color: #6ebf26; font-weight: bold } /* Keyword */
+.highlight .l { color: #d0d0d0 } /* Literal */
+.highlight .n { color: #d0d0d0 } /* Name */
+.highlight .o { color: #d0d0d0 } /* Operator */
+.highlight .x { color: #d0d0d0 } /* Other */
+.highlight .p { color: #d0d0d0 } /* Punctuation */
+.highlight .ch { color: #ababab; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #ababab; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #ff3a3a; font-weight: bold } /* Comment.Preproc */
+.highlight .cpf { color: #ababab; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #ababab; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #e50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.highlight .gd { color: #ff3a3a } /* Generic.Deleted */
+.highlight .ge { color: #d0d0d0; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #d0d0d0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #ff3a3a } /* Generic.Error */
+.highlight .gh { color: #ffffff; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #589819 } /* Generic.Inserted */
+.highlight .go { color: #cccccc } /* Generic.Output */
+.highlight .gp { color: #aaaaaa } /* Generic.Prompt */
+.highlight .gs { color: #d0d0d0; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #ffffff; text-decoration: underline } /* Generic.Subheading */
+.highlight .gt { color: #ff3a3a } /* Generic.Traceback */
+.highlight .kc { color: #6ebf26; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #6ebf26; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #6ebf26; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #6ebf26 } /* Keyword.Pseudo */
+.highlight .kr { color: #6ebf26; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #6ebf26; font-weight: bold } /* Keyword.Type */
+.highlight .ld { color: #d0d0d0 } /* Literal.Date */
+.highlight .m { color: #51b2fd } /* Literal.Number */
+.highlight .s { color: #ed9d13 } /* Literal.String */
+.highlight .na { color: #bbbbbb } /* Name.Attribute */
+.highlight .nb { color: #2fbccd } /* Name.Builtin */
+.highlight .nc { color: #71adff; text-decoration: underline } /* Name.Class */
+.highlight .no { color: #40ffff } /* Name.Constant */
+.highlight .nd { color: #ffa500 } /* Name.Decorator */
+.highlight .ni { color: #d0d0d0 } /* Name.Entity */
+.highlight .ne { color: #bbbbbb } /* Name.Exception */
+.highlight .nf { color: #71adff } /* Name.Function */
+.highlight .nl { color: #d0d0d0 } /* Name.Label */
+.highlight .nn { color: #71adff; text-decoration: underline } /* Name.Namespace */
+.highlight .nx { color: #d0d0d0 } /* Name.Other */
+.highlight .py { color: #d0d0d0 } /* Name.Property */
+.highlight .nt { color: #6ebf26; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #40ffff } /* Name.Variable */
+.highlight .ow { color: #6ebf26; font-weight: bold } /* Operator.Word */
+.highlight .pm { color: #d0d0d0 } /* Punctuation.Marker */
+.highlight .w { color: #666666 } /* Text.Whitespace */
+.highlight .mb { color: #51b2fd } /* Literal.Number.Bin */
+.highlight .mf { color: #51b2fd } /* Literal.Number.Float */
+.highlight .mh { color: #51b2fd } /* Literal.Number.Hex */
+.highlight .mi { color: #51b2fd } /* Literal.Number.Integer */
+.highlight .mo { color: #51b2fd } /* Literal.Number.Oct */
+.highlight .sa { color: #ed9d13 } /* Literal.String.Affix */
+.highlight .sb { color: #ed9d13 } /* Literal.String.Backtick */
+.highlight .sc { color: #ed9d13 } /* Literal.String.Char */
+.highlight .dl { color: #ed9d13 } /* Literal.String.Delimiter */
+.highlight .sd { color: #ed9d13 } /* Literal.String.Doc */
+.highlight .s2 { color: #ed9d13 } /* Literal.String.Double */
+.highlight .se { color: #ed9d13 } /* Literal.String.Escape */
+.highlight .sh { color: #ed9d13 } /* Literal.String.Heredoc */
+.highlight .si { color: #ed9d13 } /* Literal.String.Interpol */
+.highlight .sx { color: #ffa500 } /* Literal.String.Other */
+.highlight .sr { color: #ed9d13 } /* Literal.String.Regex */
+.highlight .s1 { color: #ed9d13 } /* Literal.String.Single */
+.highlight .ss { color: #ed9d13 } /* Literal.String.Symbol */
+.highlight .bp { color: #2fbccd } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #71adff } /* Name.Function.Magic */
+.highlight .vc { color: #40ffff } /* Name.Variable.Class */
+.highlight .vg { color: #40ffff } /* Name.Variable.Global */
+.highlight .vi { color: #40ffff } /* Name.Variable.Instance */
+.highlight .vm { color: #40ffff } /* Name.Variable.Magic */
+.highlight .il { color: #51b2fd } /* Literal.Number.Integer.Long */
+
+.floating-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.floating-notification:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.notification-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.rotate {
+    animation: rotate 4s linear infinite;
+    display: inline-block;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-side right-side">
+            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="title" target="_blank" rel="noopener noreferrer">
+                Cocoon GenAI 
+                <div class="subtitle">Prepare your data, ready for GenAI ✨🎯</div>
+            </a>
+            <div class="chat-container">
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    🙂 What are the price indices for housing in NYC boroughs?
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Putting the question in context using Cocoon's ER story... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">City-wide indices reveal overall NYC real estate trends.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NYCOverallRealEstateIndices</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Group</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Borough-specific indices show varying real estate performance.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NYCBoroughRealEstateIndices</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Group</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Neighborhood indices highlight local real estate value shifts.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NYCHousingPriceIndices</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Group</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Detailed metrics expose nuanced market behavior (2010-2018).</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NYCRealEstateMarketMetrics</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Group</span>
+</pre></div>
+🤓 <b>We've found the related relations:</b> NYCOverallRealEstateIndices, NYCBoroughRealEstateIndices, NYCHousingPriceIndices, NYCRealEstateMarketMetrics
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="607pt" height="30pt"
+ viewBox="0.00 0.00 606.97 30.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 26)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-26 602.97,-26 602.97,4 -4,4"/>
+<!-- NYCOverallRealEstateIndices -->
+<g id="node1" class="node">
+<title>NYCOverallRealEstateIndices</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="139.96,-6.44 139.96,-15.56 98.97,-22 41,-22 0.01,-15.56 0.01,-6.44 41,0 98.97,0 139.96,-6.44"/>
+<text text-anchor="middle" x="69.99" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCOverallRealEstateIndices</text>
+</g>
+<!-- NYCBoroughRealEstateIndices -->
+<g id="node2" class="node">
+<title>NYCBoroughRealEstateIndices</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="305.57,-6.44 305.57,-15.56 262.47,-22 201.5,-22 158.4,-15.56 158.4,-6.44 201.5,0 262.47,0 305.57,-6.44"/>
+<text text-anchor="middle" x="231.99" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCBoroughRealEstateIndices</text>
+</g>
+<!-- NYCHousingPriceIndices -->
+<g id="node3" class="node">
+<title>NYCHousingPriceIndices</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="440.92,-6.44 440.92,-15.56 406.4,-22 357.57,-22 323.05,-15.56 323.05,-6.44 357.57,0 406.4,0 440.92,-6.44"/>
+<text text-anchor="middle" x="381.99" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCHousingPriceIndices</text>
+</g>
+<!-- NYCRealEstateMarketMetrics -->
+<g id="node4" class="node">
+<title>NYCRealEstateMarketMetrics</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="598.96,-6.44 598.96,-15.56 557.97,-22 500,-22 459.01,-15.56 459.01,-6.44 500,0 557.97,0 598.96,-6.44"/>
+<text text-anchor="middle" x="528.99" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCRealEstateMarketMetrics</text>
+</g>
+</g>
+</svg>
+
+        </div>
+        <b>Reasoning</b>: The question is asking about price indices for housing specifically in NYC boroughs. In the story, it is asking for information that would be most directly related to borough-level real estate data, as opposed to city-wide or neighborhood-specific information. The focus is on housing prices, which are a key component of real estate indices.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the related tables Cocoon set up... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for NYCRealEstateIndices_2018_09 is partitioned into 2 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_NYC_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_NYC_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows price and rent indices for NYC condos, co-ops, and homes.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each index uses a repeat-sales method of comparing the sales prices of the same</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">properties. It includes monthly data starting from 1995. The price index partition</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">has columns for date, overall NYC index, month-over-month change, and year-over-year</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">change. The rent index likely has a similar structure. Both partitions focus on</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">September 2018 data.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nyc_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">price_index_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">price_index_yoy_change</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for NYCHousingPriceIndices is partitioned into 15 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows price indices for housing in NYC boroughs. Each index</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">uses a repeat-sales method of comparing the sales prices of the same properties.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">It includes data for Downtown, Midtown, Upper East Side, and other neighborhoods.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each partition has columns for date, sales price, month-over-month change, and</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">year-over-year change. The data spans from 1995 to at least 2018. It tracks housing</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">market trends across various NYC areas.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for NYCRealEstateMarketMetrics is partitioned into 43 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A1_totalInventory_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A3_medianAskingPrice_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A5_recordedSalesVolume_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A6_medianSalePrice_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A7_saleListRatio_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A8_priceCutShare_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_A9_daysOnMarket_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B1_totalInventory_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B3_medianAskingPrice_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B5_recordedSalesVolume_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B6_medianSalePrice_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B7_saleListRatio_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B8_priceCutShare_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_B9_daysOnMarket_Condo</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C1_totalInventory_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C3_medianAskingPrice_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C5_recordedSalesVolume_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C6_medianSalePrice_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C7_saleListRatio_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C8_priceCutShare_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_C9_daysOnMarket_Coop</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D1_totalInventory_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D3_medianAskingPrice_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D5_recordedSalesVolume_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D6_medianSalePrice_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D7_saleListRatio_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D8_priceCutShare_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_D9_daysOnMarket_Sfr</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_E1_rentalInventory_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_E2_medianAskingRent_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_E3_discountShare_All</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_F1_rentalInventory_Studio</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_F2_medianAskingRent_Studio</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_F3_discountShare_Studio</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_G1_rentalInventory_OneBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_G2_medianAskingRent_OneBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_G3_discountShare_OneBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_H1_rentalInventory_TwoBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_H2_medianAskingRent_TwoBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_H3_discountShare_TwoBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_I1_rentalInventory_ThreePlusBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_I2_medianAskingRent_ThreePlusBd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_I3_discountShare_ThreePlusBd</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows real estate data for New York City. It includes metrics</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">like inventory (the number of rental listings), prices cut (the exact middle price</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">cut as a percentage of total asking price), Sale-to-List Price Ratio (the final</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">recorded sales price of a home divided by its initial asking price), etc. Data</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">is split by property type (all, condo, coop, SFR). It covers rental data too.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Metrics are tracked monthly from 2010 to 2018. Areas are divided into Manhattan</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">submarkets.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Area</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Borough</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AreaType</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2010_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2011_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2012_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2013_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2014_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2015_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2016_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_11</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2017_12</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_01</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_02</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_03</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_04</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_05</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_06</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_07</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_08</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_2018_09</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for QueensRealEstateIndices is partitioned into 2 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Queens_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows price indices for Queens real estate. It includes data</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">for all properties and five quintiles. The table has monthly and yearly changes.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">It covers condos, co-ops, and homes. The data starts from 1995. The rent index</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">partition likely has a similar structure.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_all_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q1_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q2_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q3_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q4_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q5_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_all_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q1_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q2_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q3_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q4_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q5_mom_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_all_yoy_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q1_yoy_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q2_yoy_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q3_yoy_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q4_yoy_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">queens_q5_yoy_change</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for NYC_RentalIndex_ByNeighborhood_2018_09 is partitioned into</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">13 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_All_Downtown_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_All_Midtown_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Central_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_East_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Northeast_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Northwest_Queens_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_North_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Prospect_Park_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_South_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table contains rental index data for various NYC neighborhoods.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each index uses a repeat-sales method of comparing the sales prices of the same</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">properties since January 1995 in Manhattan and January 2005 in Brooklyn and Queens.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">The data shows rental prices, month-over-month changes, and year-over-year changes.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each partition represents a specific area like Downtown, Midtown, or Brooklyn</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">neighborhoods.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rental_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for BrooklynRealEstateIndices is partitioned into 2 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Brooklyn_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows price indices and rent indices for Brooklyn. Each index</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">uses a repeat-sales method of comparing the sales prices of the same properties</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">since January 1995 in Manhattan and January 2005 in Brooklyn and Queens. It covers</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">condos, co-ops, and homes. Data is split into quintiles. Monthly and yearly changes</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">are included. The table starts from 1995 but has missing early data. It likely</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">continues to 2018.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q1_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q2_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q3_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q4_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q5_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q1_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q2_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q3_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q4_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q5_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q1_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q2_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q3_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q4_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">brooklyn_q5_price_index_yoy</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">partitons</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The data for ManhattanRealEstateIndices2018 is partitioned into 2 tables</span>
+<span class="w">  </span><span class="nt">table_names</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_priceIndex_condos_co_ops_homes_Manhattan_2018_09</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_rentIndex_condos_co_ops_homes_Manhattan_2018_09</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table shows price indices for Manhattan properties. Each index uses</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">a repeat-sales method of comparing the sales prices of the same properties since</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">January 1995 in Manhattan and January 2005. Values are given for different dates.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Monthly and yearly changes are calculated. The rent index partition likely has</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">a similar structure for rental prices.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q1_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q2_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q3_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q4_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q5_price_index</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q1_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q2_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q3_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q4_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q5_price_index_mom</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q1_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q2_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q3_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q4_price_index_yoy</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan_q5_price_index_yoy</span>
+</pre></div>
+🤓 <b>We've identified the related tables</b>: stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09, stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09, stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09, stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09, stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09, stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09, stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09, stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09, stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09, stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09, stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09, stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09, stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09, stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09, stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="4273pt" height="97pt"
+ viewBox="0.00 0.00 4272.50 97.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 93)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-93 4268.5,-93 4268.5,4 -4,4"/>
+<!-- NYCRealEstateIndices_2018_09 -->
+<g id="node1" class="node">
+<title>NYCRealEstateIndices_2018_09</title>
+<polygon fill="#ffffff" stroke="#000000" points="2071.5,-89 1942.5,-89 1942.5,-67 2071.5,-67 2071.5,-89"/>
+<text text-anchor="middle" x="2007" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCRealEstateIndices_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices -->
+<g id="node2" class="node">
+<title>NYCHousingPriceIndices</title>
+<polygon fill="#ffffff" stroke="#000000" points="2188.5,-89 2089.5,-89 2089.5,-67 2188.5,-67 2188.5,-89"/>
+<text text-anchor="middle" x="2139" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCHousingPriceIndices</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09 -->
+<g id="node8" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="256,-22 0,-22 0,0 256,0 256,-22"/>
+<text text-anchor="middle" x="128" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09 -->
+<g id="edge1" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.5,-68.04C2086.29,-67.64 2083.1,-67.28 2080,-67 1809.33,-42.22 1128.68,-57.19 857,-49 593.74,-41.06 527.92,-37.59 265,-22 264.2,-21.95 263.39,-21.9 262.58,-21.86"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="262.46,-19.74 256.34,-21.47 262.2,-23.94 262.46,-19.74"/>
+<text text-anchor="middle" x="874.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09 -->
+<g id="node9" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="521.5,-22 274.5,-22 274.5,0 521.5,0 521.5,-22"/>
+<text text-anchor="middle" x="398" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09 -->
+<g id="edge2" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.5,-68.06C2086.29,-67.65 2083.1,-67.29 2080,-67 1879.51,-48.12 1375.28,-55.22 1174,-49 887.66,-40.15 815.98,-38.82 530,-22 529.23,-21.95 528.45,-21.91 527.67,-21.86"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="527.77,-19.76 521.65,-21.49 527.51,-23.96 527.77,-19.76"/>
+<text text-anchor="middle" x="1191.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09 -->
+<g id="node10" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="820.5,-22 539.5,-22 539.5,0 820.5,0 820.5,-22"/>
+<text text-anchor="middle" x="680" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09 -->
+<g id="edge3" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.49,-68.09C2086.29,-67.68 2083.1,-67.31 2080,-67 1800.79,-39.49 1729.38,-59.11 1449,-49 1173.81,-39.07 1104.96,-37.16 830,-22 828.93,-21.94 827.85,-21.88 826.76,-21.82"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="826.63,-19.71 820.52,-21.47 826.39,-23.9 826.63,-19.71"/>
+<text text-anchor="middle" x="1466.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09 -->
+<g id="node11" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="1125,-22 839,-22 839,0 1125,0 1125,-22"/>
+<text text-anchor="middle" x="982" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09 -->
+<g id="edge4" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.49,-68.15C2086.28,-67.72 2083.1,-67.33 2080,-67 1900.39,-47.87 1854.42,-57.51 1674,-49 1433.97,-37.68 1373.9,-35.89 1134,-22 1133.09,-21.95 1132.18,-21.89 1131.27,-21.84"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="1131.32,-19.74 1125.2,-21.48 1131.07,-23.93 1131.32,-19.74"/>
+<text text-anchor="middle" x="1691.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09 -->
+<g id="node12" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="1426.5,-22 1143.5,-22 1143.5,0 1426.5,0 1426.5,-22"/>
+<text text-anchor="middle" x="1285" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09 -->
+<g id="edge5" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.48,-68.24C2086.27,-67.79 2083.09,-67.37 2080,-67 2048.5,-63.25 1654.08,-36.64 1432.92,-21.85"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="1432.88,-19.75 1426.76,-21.44 1432.6,-23.94 1432.88,-19.75"/>
+<text text-anchor="middle" x="1843.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09 -->
+<g id="node13" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="1709,-22 1445,-22 1445,0 1709,0 1709,-22"/>
+<text text-anchor="middle" x="1577" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09 -->
+<g id="edge6" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2089.46,-68.39C2086.26,-67.9 2083.09,-67.43 2080,-67 1947.13,-48.49 1793.8,-32.49 1691.69,-22.6"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="1691.83,-20.5 1685.65,-22.01 1691.42,-24.68 1691.83,-20.5"/>
+<text text-anchor="middle" x="1946.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09 -->
+<g id="node14" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="1983,-22 1727,-22 1727,0 1983,0 1983,-22"/>
+<text text-anchor="middle" x="1855" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09 -->
+<g id="edge7" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2095.25,-66.99C2043.86,-55.22 1958.8,-35.76 1904.89,-23.42"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="1905.12,-21.32 1898.8,-22.03 1904.18,-25.41 1905.12,-21.32"/>
+<text text-anchor="middle" x="2032.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09 -->
+<g id="node15" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="2276.5,-22 2001.5,-22 2001.5,0 2276.5,0 2276.5,-22"/>
+<text text-anchor="middle" x="2139" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09 -->
+<g id="edge8" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2139,-66.84C2139,-56.6 2139,-40.62 2139,-28.54"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="2141.1,-28.3 2139,-22.3 2136.9,-28.3 2141.1,-28.3"/>
+<text text-anchor="middle" x="2156.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09 -->
+<g id="node16" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="2575,-22 2295,-22 2295,0 2575,0 2575,-22"/>
+<text text-anchor="middle" x="2435" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09 -->
+<g id="edge9" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2184.6,-66.99C2238.27,-55.2 2327.17,-35.68 2383.34,-23.34"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="2383.94,-25.36 2389.35,-22.03 2383.04,-21.26 2383.94,-25.36"/>
+<text text-anchor="middle" x="2322.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09 -->
+<g id="node17" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="2870.5,-22 2593.5,-22 2593.5,0 2870.5,0 2870.5,-22"/>
+<text text-anchor="middle" x="2732" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09 -->
+<g id="edge10" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.54,-68.36C2191.74,-67.88 2194.91,-67.42 2198,-67 2276.97,-56.25 2488.78,-35.32 2620.68,-22.6"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="2621.13,-24.67 2626.9,-22 2620.72,-20.49 2621.13,-24.67"/>
+<text text-anchor="middle" x="2455.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09 -->
+<g id="node18" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="3149.5,-22 2888.5,-22 2888.5,0 3149.5,0 3149.5,-22"/>
+<text text-anchor="middle" x="3019" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09 -->
+<g id="edge11" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.52,-68.22C2191.72,-67.78 2194.9,-67.36 2198,-67 2321.42,-52.6 2353.01,-57.16 2477,-49 2655.68,-37.24 2700.36,-34.38 2879,-22 2880.04,-21.93 2881.09,-21.85 2882.15,-21.78"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="2882.38,-23.87 2888.22,-21.36 2882.08,-19.68 2882.38,-23.87"/>
+<text text-anchor="middle" x="2626.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09 -->
+<g id="node19" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="3424,-22 3168,-22 3168,0 3424,0 3424,-22"/>
+<text text-anchor="middle" x="3296" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09 -->
+<g id="edge12" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.51,-68.14C2191.72,-67.71 2194.9,-67.32 2198,-67 2397.08,-46.23 2448.06,-58.29 2648,-49 2874.74,-38.46 2931.46,-36.2 3158,-22 3159.21,-21.92 3160.43,-21.85 3161.66,-21.77"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="3161.97,-23.85 3167.82,-21.37 3161.7,-19.66 3161.97,-23.85"/>
+<text text-anchor="middle" x="2851.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09 -->
+<g id="node20" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="3704,-22 3442,-22 3442,0 3704,0 3704,-22"/>
+<text text-anchor="middle" x="3573" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09 -->
+<g id="edge13" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.51,-68.09C2191.71,-67.67 2194.9,-67.3 2198,-67 2496.69,-37.85 2573.1,-60.23 2873,-49 3122,-39.68 3184.27,-36.88 3433,-22 3433.91,-21.95 3434.83,-21.89 3435.75,-21.83"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="3435.99,-23.92 3441.85,-21.46 3435.73,-19.73 3435.99,-23.92"/>
+<text text-anchor="middle" x="3114.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09 -->
+<g id="node21" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="3981.5,-22 3722.5,-22 3722.5,0 3981.5,0 3981.5,-22"/>
+<text text-anchor="middle" x="3852" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09 -->
+<g id="edge14" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.5,-68.06C2191.71,-67.65 2194.9,-67.29 2198,-67 2405.57,-47.53 2927.63,-55.87 3136,-49 3392.59,-40.54 3456.73,-37.21 3713,-22 3714.04,-21.94 3715.08,-21.88 3716.13,-21.81"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="3716.3,-23.91 3722.16,-21.44 3716.04,-19.71 3716.3,-23.91"/>
+<text text-anchor="middle" x="3394.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09 -->
+<g id="node22" class="node">
+<title>stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="4264.5,-22 3999.5,-22 3999.5,0 4264.5,0 4264.5,-22"/>
+<text text-anchor="middle" x="4132" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</text>
+</g>
+<!-- NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09 -->
+<g id="edge15" class="edge">
+<title>NYCHousingPriceIndices&#45;&gt;stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</title>
+<path fill="none" stroke="#4fc3f7" d="M2188.5,-68.04C2191.71,-67.64 2194.9,-67.28 2198,-67 2467.57,-42.31 3145.43,-57.36 3416,-49 3671.27,-41.11 3735.05,-36.97 3990,-22 3991.06,-21.94 3992.12,-21.87 3993.19,-21.81"/>
+<polygon fill="#4fc3f7" stroke="#4fc3f7" points="3993.49,-23.9 3999.35,-21.44 3993.24,-19.7 3993.49,-23.9"/>
+<text text-anchor="middle" x="3672.5" y="-42.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">partition</text>
+</g>
+<!-- NYCRealEstateMarketMetrics -->
+<g id="node3" class="node">
+<title>NYCRealEstateMarketMetrics</title>
+<polygon fill="#ffffff" stroke="#000000" points="2325,-89 2207,-89 2207,-67 2325,-67 2325,-89"/>
+<text text-anchor="middle" x="2266" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYCRealEstateMarketMetrics</text>
+</g>
+<!-- QueensRealEstateIndices -->
+<g id="node4" class="node">
+<title>QueensRealEstateIndices</title>
+<polygon fill="#ffffff" stroke="#000000" points="2449,-89 2343,-89 2343,-67 2449,-67 2449,-89"/>
+<text text-anchor="middle" x="2396" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">QueensRealEstateIndices</text>
+</g>
+<!-- NYC_RentalIndex_ByNeighborhood_2018_09 -->
+<g id="node5" class="node">
+<title>NYC_RentalIndex_ByNeighborhood_2018_09</title>
+<polygon fill="#ffffff" stroke="#000000" points="2646.5,-89 2467.5,-89 2467.5,-67 2646.5,-67 2646.5,-89"/>
+<text text-anchor="middle" x="2557" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">NYC_RentalIndex_ByNeighborhood_2018_09</text>
+</g>
+<!-- BrooklynRealEstateIndices -->
+<g id="node6" class="node">
+<title>BrooklynRealEstateIndices</title>
+<polygon fill="#ffffff" stroke="#000000" points="2773.5,-89 2664.5,-89 2664.5,-67 2773.5,-67 2773.5,-89"/>
+<text text-anchor="middle" x="2719" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">BrooklynRealEstateIndices</text>
+</g>
+<!-- ManhattanRealEstateIndices2018 -->
+<g id="node7" class="node">
+<title>ManhattanRealEstateIndices2018</title>
+<polygon fill="#ffffff" stroke="#000000" points="2930.5,-89 2791.5,-89 2791.5,-67 2930.5,-67 2930.5,-89"/>
+<text text-anchor="middle" x="2861" y="-76.1" font-family="Segoe UI" font-size="8.00" fill="#000000">ManhattanRealEstateIndices2018</text>
+</g>
+</g>
+</svg>
+
+        </div>
+        🧠 <b>Explanation</b>: The available data is sufficient to answer the business question "What are the price indices for housing in NYC boroughs?". The NYCHousingPriceIndices dataset contains price indices for various NYC neighborhoods and boroughs, which directly addresses the question. This dataset includes 15 partitions, each representing a different area of NYC, including parts of Manhattan, Brooklyn, and Queens. The data includes average sales prices, month-over-month changes, and year-over-year changes, which can provide a comprehensive view of housing price indices across NYC boroughs.<br>💡 <b>Instruction to write SQL</b>: 1. Select relevant tables from the NYCHousingPriceIndices dataset. Each table represents a different area of NYC. 2. For each table, select the date_, average_sales_price, month_over_month_change, and year_over_year_change columns. 3. Use UNION ALL to combine the results from all tables into a single result set. 4. Group the results by borough. This may require adding a CASE statement to map each area to its corresponding borough. 5. Calculate average price indices for each borough using AVG() function. 6. Order the results by borough for easy reading. 7. Optionally, filter for a specific time period if needed.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Looking at how tables connect, thanks to Cocoon's key info... <div class="highlight"><pre><span></span><span class="p p-Indicator">?</span><span class="w"> </span><span class="s">&#39;[stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09,</span><span class="nv"> </span><span class="s">stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09,</span>
+<span class="w">  </span><span class="s">stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09]&#39;</span>
+<span class="p p-Indicator">:</span><span class="w"> </span><span class="nt">foreign_keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">time_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+</pre></div>
+🤓 <b>We've planned the join:</b> To execute the SQL, no joins are needed between the tables.  Instead, the approach uses UNION ALL to combine results from all tables vertically. A CASE statement may be needed to map each area to its corresponding borough for grouping. The 'date_' column can be used for any time-based filtering if needed.
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Diving into column details Cocoon prepared... getting a bit technical here! <div class="highlight"><pre><span></span><span class="nt">stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+<span class="nt">stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">date_</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of the housing price data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average_sales_price</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sales price of housing in the area</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_over_month_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month-over-month change in housing prices</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_over_year_change</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year-over-year change in housing prices</span>
+</pre></div>
+🤔 <b>Reasoning for column selection</b>: Based on the SQL approach and join description provided, we need to select the same columns from all tables to create a unified result set using UNION ALL. The necessary columns are: 1. date_: Required for potential time-based filtering and grouping. 2. average_sales_price: Needed for calculating average price indices for each borough. 3. month_over_month_change: Part of the required output. 4. year_over_year_change: Part of the required output.
+We don't need any columns specifically for joins as the approach uses UNION ALL instead. However, we'll need to add a borough column in the query using a CASE statement based on the table name, which isn't an existing column in the tables.
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😊 <b>We have written the SQL:</b><div class="highlight"><pre><span></span><span class="k">WITH</span><span class="w"> </span><span class="n">combined_data</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Manhattan&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">borough</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09</span>
+<span class="w">    </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;Queens&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">date_</span><span class="p">,</span><span class="w"> </span><span class="n">average_sales_price</span><span class="p">,</span><span class="w"> </span><span class="n">month_over_month_change</span><span class="p">,</span><span class="w"> </span><span class="n">year_over_year_change</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09</span>
+<span class="p">)</span>
+<span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">borough</span><span class="p">,</span>
+<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">date_</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">latest_date</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">average_sales_price</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_sales_price</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">month_over_month_change</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_month_over_month_change</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">year_over_year_change</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_year_over_year_change</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">combined_data</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">borough</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">borough</span><span class="p">;</span>
+</pre></div>
+
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    🤓 <b>RAG from Cocoon:</b> Beware! The following are unaddressed data quality issues that may compromise the results:<ul><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09[month_over_month_change] has Missing Value</b>: First month in dataset has no previous month for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Downtown_2018_09[year_over_year_change] has Missing Value</b>: First year in dataset has no previous year for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09[month_over_month_change] has Missing Value</b>: First month has no previous month for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Midtown_2018_09[year_over_year_change] has Missing Value</b>: First year has no previous year for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09[month_over_month_change] has Missing Value</b>: First month in dataset has no previous month for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_East_Side_2018_09[year_over_year_change] has Missing Value</b>: First year in dataset has no previous year for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09[month_over_month_change] has Missing Value</b>: First month in dataset has no previous month for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_Manhattan_2018_09[year_over_year_change] has Missing Value</b>: First year in dataset has no previous year for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09[month_over_month_change] has Missing Value</b>: First month has no previous month for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_All_Upper_West_Side_2018_09[year_over_year_change] has Missing Value</b>: First year has no previous year for comparison.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Central_Queens_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_East_Brooklyn_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northeast_Queens_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Brooklyn_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Northwest_Queens_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_North_Brooklyn_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_Prospect_Park_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Brooklyn_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_South_Queens_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09[average_sales_price] has Missing Value</b>: Unknown</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09[month_over_month_change] has Missing Value</b>: No previous month data for first month's entry.</li><li><b>❓ stg_priceIndex_condos_co_ops_homes_The_Rockaways_2018_09[year_over_year_change] has Missing Value</b>: No previous year data for first year's entries.</li></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-notification">
+        <span class="notification-icon rotate">⟳</span>
+        New chat results may be available. Refresh to check.
+    </div>
+
+</body>
+</html>

@@ -27,13 +27,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/clean">Clean</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/standardize">Standardize</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/model">Model</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/transform">Transform</a>
                 </li>
                 <li class="nav-item">
@@ -46,12 +46,12 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-8 col-md-12 mx-auto">
-                <h1>Table Standardization</h1>
-                <p class="lead text-body-secondary">When standardizing column values to given vocabularies (e.g., for fuzzy join during enrichment), it's rare to find perfect matches. Cocoon uses LLMs to interpret nuanced differences and recommend the matches.</p>
+                <h1>Table Transform</h1>
+                <p class="lead text-body-secondary">Given your source databases and target schema specifications, Cocoon automatically writes SQL to perform the transformation</p>
                 
             </div>
             <div class="col-lg-6 col-md-9 mx-auto">
-                <img src="https://github.com/Cocoon-Data-Transformation/cocoon/raw/main/images/em.gif" class="img-fluid border border-3 rounded shadow">
+                <img src="https://github.com/Cocoon-Data-Transformation/page/blob/main/table_transformation.png?raw=true" class="img-fluid border border-3 rounded shadow">
             </div>
         </div>
     </section>
@@ -68,15 +68,15 @@
                                 <small class="text-muted">Full Features</small>
                             </div>
                             <p>Cocoon is open-source. Try out Cocoon in Google Colab.</p>
-                            <small class="form-text text-muted mb-4">Cocoon connects to your data warehouses (e.g., Snowflake, Duckdb...) and uses LLMs (e.g., GPT-4, Claude-3, Gemini-Ultra, or your local LLMs) to standardize tables.</small>
+                            <small class="form-text text-muted mb-4">Cocoon connects to your data warehouses (e.g., Snowflake, Duckdb...) and uses LLMs (e.g., GPT-4, Claude-3, Gemini-Ultra, or your local LLMs) to transform tables.</small>
                             
                             <div class="mt-auto text-center">
                                 <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-secondary mr-5 mb-2" target="_blank">
                                     <i class="fab fa-github"></i> Visit GitHub
                                 </a>
-                                <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/fuzzy_join.ipynb" class="btn btn-secondary mb-2" target="_blank">
+                                <!-- <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/fuzzy_join.ipynb" class="btn btn-secondary mb-2" target="_blank">
                                     <i class="fab fa-google"></i> Google Colab
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>
@@ -92,18 +92,19 @@
         <div class="row">
             <div class="col-lg-8 col-md-12 mx-auto">
                 <h2 class="text-center">Research</h2>
-                <p class="lead text-body-secondary  text-center">Table Standardization is based on the following research paper:</p>
-                <a href="https://dl.acm.org/doi/abs/10.1145/3665601.3669844" target="_blank" class="text-decoration-none">
+                <p class="lead text-body-secondary  text-center">Table Transformation is based on the following research paper:</p>
+                <a href="#" target="_blank" class="text-decoration-none">
                     <div class="card px-4 card-hover">
                         <div class="card-body">
-                            <h5 class="card-title">Disambiguate Entity Matching using Large Language Models through Relation Discovery</h5>
-                            <pre class="text-start"><code>@inproceedings{huang2024disambiguate,
+                            <h5 class="card-title">Transform Table to Database Using Large Language Models</h5>
+                            <!-- <pre class="text-start"><code>@inproceedings{huang2024disambiguate,
     title={Disambiguate Entity Matching using Large Language Models through Relation Discovery},
     author={Huang, Zezhou},
     booktitle={Proceedings of the Conference on Governance, Understanding and Integration of Data for Effective and Responsible AI},
     pages={36--39},
     year={2024}
-}</code></pre>
+}</code></pre> -->
+<pre class="text-start"><code>To appear at TaDA@ VLDB 2024</code></pre>
                         </div>
                     </div>
                 </a>
@@ -111,16 +112,5 @@
         </div>
     </section>
 
-
-    <script>
-        function validateFileSize(event) {
-            const MAX_SIZE = 1 * 1024 * 1024; // 1MB
-            var file = event.target.files[0];
-            if (file.size > MAX_SIZE) {
-                alert('File must be less than 1MB');
-                document.getElementById("file").value = ""; // Reset the file input
-            }
-        }
-    </script>
 </body>
 </html>

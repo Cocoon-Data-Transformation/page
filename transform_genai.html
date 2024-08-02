@@ -1,0 +1,2289 @@
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+    }
+    .container {
+        display: flex;
+        height: 100%;
+    }
+        
+    .chat-container {
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        padding: 20px;
+        overflow-y: auto;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    }
+    
+    .chat-side {
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        position: relative;
+    }
+    
+    .message {
+        margin-bottom: 16px;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        word-wrap: break-word;
+    }
+    .user-message {
+        background-color: #449dfc;
+        color: #ffffff;
+        margin-left: 15%;
+    }
+    .bot-message {
+        background-color: white;
+        color: #000000;
+    }
+    .sender {
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 0.85em;
+    }
+    .user-sender {
+        text-align: right;
+        color: #ffffff;
+    }
+    .bot-sender {
+        color: #8E8E93;
+    }
+    
+table {
+    width: 100%;
+    color: #000000;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 3px 4px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+}
+
+thead tr {
+    background-color: #464646;
+    /* Changed color for header */
+    color: #ffffff;
+    /* Changed text color for better contrast */
+    text-align: left;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+th {
+    top: 0;
+    background-color: #464646;
+    color: #ffffff;
+}
+
+tbody tr {
+    background-color: #f9f9f9;
+    /* Lighter color for content rows */
+    font-size: 10px
+}
+
+
+pre { line-height: 125%; }
+.highlight {
+    background: #272822;
+    color: #f8f8f2;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em 0;
+    overflow-x: auto;
+    font-size: 12px;
+}
+
+td.linenos .normal { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #aaaaaa; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #404040 }
+.highlight { background: #202020; color: #d0d0d0 }
+.highlight .c { color: #ababab; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .esc { color: #d0d0d0 } /* Escape */
+.highlight .g { color: #d0d0d0 } /* Generic */
+.highlight .k { color: #6ebf26; font-weight: bold } /* Keyword */
+.highlight .l { color: #d0d0d0 } /* Literal */
+.highlight .n { color: #d0d0d0 } /* Name */
+.highlight .o { color: #d0d0d0 } /* Operator */
+.highlight .x { color: #d0d0d0 } /* Other */
+.highlight .p { color: #d0d0d0 } /* Punctuation */
+.highlight .ch { color: #ababab; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #ababab; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #ff3a3a; font-weight: bold } /* Comment.Preproc */
+.highlight .cpf { color: #ababab; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #ababab; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #e50808; font-weight: bold; background-color: #520000 } /* Comment.Special */
+.highlight .gd { color: #ff3a3a } /* Generic.Deleted */
+.highlight .ge { color: #d0d0d0; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #d0d0d0; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #ff3a3a } /* Generic.Error */
+.highlight .gh { color: #ffffff; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #589819 } /* Generic.Inserted */
+.highlight .go { color: #cccccc } /* Generic.Output */
+.highlight .gp { color: #aaaaaa } /* Generic.Prompt */
+.highlight .gs { color: #d0d0d0; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #ffffff; text-decoration: underline } /* Generic.Subheading */
+.highlight .gt { color: #ff3a3a } /* Generic.Traceback */
+.highlight .kc { color: #6ebf26; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #6ebf26; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #6ebf26; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #6ebf26 } /* Keyword.Pseudo */
+.highlight .kr { color: #6ebf26; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #6ebf26; font-weight: bold } /* Keyword.Type */
+.highlight .ld { color: #d0d0d0 } /* Literal.Date */
+.highlight .m { color: #51b2fd } /* Literal.Number */
+.highlight .s { color: #ed9d13 } /* Literal.String */
+.highlight .na { color: #bbbbbb } /* Name.Attribute */
+.highlight .nb { color: #2fbccd } /* Name.Builtin */
+.highlight .nc { color: #71adff; text-decoration: underline } /* Name.Class */
+.highlight .no { color: #40ffff } /* Name.Constant */
+.highlight .nd { color: #ffa500 } /* Name.Decorator */
+.highlight .ni { color: #d0d0d0 } /* Name.Entity */
+.highlight .ne { color: #bbbbbb } /* Name.Exception */
+.highlight .nf { color: #71adff } /* Name.Function */
+.highlight .nl { color: #d0d0d0 } /* Name.Label */
+.highlight .nn { color: #71adff; text-decoration: underline } /* Name.Namespace */
+.highlight .nx { color: #d0d0d0 } /* Name.Other */
+.highlight .py { color: #d0d0d0 } /* Name.Property */
+.highlight .nt { color: #6ebf26; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #40ffff } /* Name.Variable */
+.highlight .ow { color: #6ebf26; font-weight: bold } /* Operator.Word */
+.highlight .pm { color: #d0d0d0 } /* Punctuation.Marker */
+.highlight .w { color: #666666 } /* Text.Whitespace */
+.highlight .mb { color: #51b2fd } /* Literal.Number.Bin */
+.highlight .mf { color: #51b2fd } /* Literal.Number.Float */
+.highlight .mh { color: #51b2fd } /* Literal.Number.Hex */
+.highlight .mi { color: #51b2fd } /* Literal.Number.Integer */
+.highlight .mo { color: #51b2fd } /* Literal.Number.Oct */
+.highlight .sa { color: #ed9d13 } /* Literal.String.Affix */
+.highlight .sb { color: #ed9d13 } /* Literal.String.Backtick */
+.highlight .sc { color: #ed9d13 } /* Literal.String.Char */
+.highlight .dl { color: #ed9d13 } /* Literal.String.Delimiter */
+.highlight .sd { color: #ed9d13 } /* Literal.String.Doc */
+.highlight .s2 { color: #ed9d13 } /* Literal.String.Double */
+.highlight .se { color: #ed9d13 } /* Literal.String.Escape */
+.highlight .sh { color: #ed9d13 } /* Literal.String.Heredoc */
+.highlight .si { color: #ed9d13 } /* Literal.String.Interpol */
+.highlight .sx { color: #ffa500 } /* Literal.String.Other */
+.highlight .sr { color: #ed9d13 } /* Literal.String.Regex */
+.highlight .s1 { color: #ed9d13 } /* Literal.String.Single */
+.highlight .ss { color: #ed9d13 } /* Literal.String.Symbol */
+.highlight .bp { color: #2fbccd } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #71adff } /* Name.Function.Magic */
+.highlight .vc { color: #40ffff } /* Name.Variable.Class */
+.highlight .vg { color: #40ffff } /* Name.Variable.Global */
+.highlight .vi { color: #40ffff } /* Name.Variable.Instance */
+.highlight .vm { color: #40ffff } /* Name.Variable.Magic */
+.highlight .il { color: #51b2fd } /* Literal.Number.Integer.Long */
+        </style>
+        <div class="chat-container">
+                <div class="message user-message">
+                    <div class="sender user-sender">You</div>
+                    Help me transform the table 'stg_patients': 
+<i>The table is about patients, with details of their personal information. It includes demographic data like birth date, gender, race, and ethnicity. The table also contains contact information such as address, city, and state. Financial details like healthcare expenses, coverage, and income are included. Each patient has a unique identifier and some have additional IDs like SSN or driver's license number.</i>
+
+
+        <div style="max-width: 100%; overflow-x: auto;">
+            <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ssn</th>
+      <th>drivers_license</th>
+      <th>passport_number</th>
+      <th>name_prefix</th>
+      <th>first_name</th>
+      <th>last_name</th>
+      <th>name_suffix</th>
+      <th>maiden_name</th>
+      <th>marital_status</th>
+      <th>race</th>
+      <th>ethnicity</th>
+      <th>gender</th>
+      <th>birthplace</th>
+      <th>street_address</th>
+      <th>city</th>
+      <th>state</th>
+      <th>county</th>
+      <th>fips_code</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>healthcare_expenses</th>
+      <th>healthcare_coverage</th>
+      <th>annual_income</th>
+      <th>birth_date</th>
+      <th>death_date</th>
+      <th>patient_id</th>
+      <th>zip_code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Mel</td>
+      <td>Bailey598</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>M</td>
+      <td>Norton Center  Massachusetts  US</td>
+      <td>716 Wunsch Gardens Unit 48</td>
+      <td>Framingham</td>
+      <td>Massachusetts</td>
+      <td>Middlesex County</td>
+      <td>25017.0</td>
+      <td>42.275650</td>
+      <td>-71.476367</td>
+      <td>2520.80</td>
+      <td>4323.64</td>
+      <td>170754</td>
+      <td>2021-09-23</td>
+      <td>NaT</td>
+      <td>eb247227-e839-88d3-447d-b5972468f33b</td>
+      <td>1701</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>None</td>
+      <td>S99957814</td>
+      <td>X45639058X</td>
+      <td>Mrs.</td>
+      <td>Cheyenne</td>
+      <td>Marks830</td>
+      <td>None</td>
+      <td>Lowe</td>
+      <td>M</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>F</td>
+      <td>Longmeadow  Massachusetts  US</td>
+      <td>123 Bayer Camp</td>
+      <td>Taunton</td>
+      <td>Massachusetts</td>
+      <td>Bristol County</td>
+      <td>25005.0</td>
+      <td>41.892884</td>
+      <td>-71.066686</td>
+      <td>205342.20</td>
+      <td>94647.00</td>
+      <td>40526</td>
+      <td>1944-05-31</td>
+      <td>NaT</td>
+      <td>2ffa361e-5858-877e-e022-ce81fe32da1b</td>
+      <td>2718</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Hunter</td>
+      <td>Keebler762</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>M</td>
+      <td>Maynard  Massachusetts  US</td>
+      <td>575 Jast Rue Unit 48</td>
+      <td>Winchendon</td>
+      <td>Massachusetts</td>
+      <td>Worcester County</td>
+      <td>25027.0</td>
+      <td>42.670059</td>
+      <td>-72.074664</td>
+      <td>16381.92</td>
+      <td>17447.87</td>
+      <td>79884</td>
+      <td>2009-02-08</td>
+      <td>NaT</td>
+      <td>3dfb065a-67df-5b8a-3901-49bfd834bed1</td>
+      <td>1475</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>None</td>
+      <td>S99968506</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Herschel</td>
+      <td>Ernser583</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>asian</td>
+      <td>nonhispanic</td>
+      <td>M</td>
+      <td>Somerville  Massachusetts  US</td>
+      <td>184 Langworth Parade Apt 10</td>
+      <td>Boston</td>
+      <td>Massachusetts</td>
+      <td>Suffolk County</td>
+      <td>25025.0</td>
+      <td>42.395516</td>
+      <td>-71.059015</td>
+      <td>3850.00</td>
+      <td>44057.32</td>
+      <td>6420</td>
+      <td>1979-06-26</td>
+      <td>1995-07-04</td>
+      <td>db80575b-5e9b-921b-fad9-1e3a20929dc7</td>
+      <td>2131</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>None</td>
+      <td>S99967405</td>
+      <td>X86891718X</td>
+      <td>Mrs.</td>
+      <td>Lacey</td>
+      <td>Heathcote539</td>
+      <td>None</td>
+      <td>Hegmann</td>
+      <td>M</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>F</td>
+      <td>Natick  Massachusetts  US</td>
+      <td>801 Morissette Divide</td>
+      <td>Hingham</td>
+      <td>Massachusetts</td>
+      <td>Plymouth County</td>
+      <td>25023.0</td>
+      <td>42.200723</td>
+      <td>-70.836590</td>
+      <td>66662.10</td>
+      <td>1777031.06</td>
+      <td>933420</td>
+      <td>1973-05-31</td>
+      <td>NaT</td>
+      <td>d84815a3-c5b3-8ca2-025f-6323a4ec59ef</td>
+      <td>2043</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+        
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Putting the question in context using Cocoon's ER story... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Patient registers with healthcare system and local facilities.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersonHealthcareAssociation</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Healthcare facilities are established at specific locations.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CareSiteLocation</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Doctors and nurses are assigned to healthcare facilities.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ProviderCareSiteAssignment</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Patient schedules and attends initial healthcare visit.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientVisitEncounters</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Detailed information about patient&#39;s visit is recorded.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientVisitDetails</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Doctor takes patient&#39;s vital signs and measurements.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersonProviderVisitMeasurements</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Doctor notes observations about patient&#39;s health condition.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientProviderObservations</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Doctor diagnoses patient&#39;s condition and plans treatment.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientConditionTreatment</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Doctor prescribes medication for patient&#39;s condition.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientDrugExposure</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Patient receives medical device for ongoing treatment.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientDeviceExposures</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Patient undergoes medical procedure at healthcare facility.</span>
+<span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PatientProcedureVisits</span>
+<span class="w">  </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Relation</span>
+</pre></div>
+🤓 <b>We've found the related relations:</b> PersonHealthcareAssociation, PatientVisitEncounters, PatientVisitDetails, PersonProviderVisitMeasurements, PatientConditionTreatment, PatientDrugExposure
+    <p>Story behind the relationships <small class="text-muted">(oval for entity, box for relation, octagon for table group))</small></p><ol class="small"><li><b>[PersonHealthcareAssociation]: Patient registers with healthcare system and local facilities.</b></li><li>[CareSiteLocation]: Healthcare facilities are established at specific locations.</li><li>[ProviderCareSiteAssignment]: Doctors and nurses are assigned to healthcare facilities.</li><li><b>[PatientVisitEncounters]: Patient schedules and attends initial healthcare visit.</b></li><li><b>[PatientVisitDetails]: Detailed information about patient's visit is recorded.</b></li><li><b>[PersonProviderVisitMeasurements]: Doctor takes patient's vital signs and measurements.</b></li><li>[PatientProviderObservations]: Doctor notes observations about patient's health condition.</li><li><b>[PatientConditionTreatment]: Doctor diagnoses patient's condition and plans treatment.</b></li><li><b>[PatientDrugExposure]: Doctor prescribes medication for patient's condition.</b></li><li>[PatientDeviceExposures]: Patient receives medical device for ongoing treatment.</li><li>[PatientProcedureVisits]: Patient undergoes medical procedure at healthcare facility.</li></ol>
+    
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="1310pt" height="88pt"
+ viewBox="0.00 0.00 1309.50 88.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 84)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-84 1305.5,-84 1305.5,4 -4,4"/>
+<!-- PersonHealthcareAssociation -->
+<g id="node1" class="node">
+<title>PersonHealthcareAssociation</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="1213,-80 1092,-80 1092,-58 1213,-58 1213,-80"/>
+<text text-anchor="middle" x="1152.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PersonHealthcareAssociation</text>
+</g>
+<!-- Persons -->
+<g id="node12" class="node">
+<title>Persons</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="549.5" cy="-11" rx="18.17" ry="11"/>
+<text text-anchor="middle" x="549.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Persons</text>
+</g>
+<!-- PersonHealthcareAssociation&#45;&#45;Persons -->
+<g id="edge1" class="edge">
+<title>PersonHealthcareAssociation&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M1091.83,-59.08C1088.67,-58.69 1085.55,-58.33 1082.5,-58 868.94,-34.8 813.39,-50.72 600.5,-22 588.88,-20.43 575.91,-17.88 565.95,-15.74"/>
+</g>
+<!-- Locations -->
+<g id="node13" class="node">
+<title>Locations</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="1209.5" cy="-11" rx="21.84" ry="11"/>
+<text text-anchor="middle" x="1209.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Locations</text>
+</g>
+<!-- PersonHealthcareAssociation&#45;&#45;Locations -->
+<g id="edge2" class="edge">
+<title>PersonHealthcareAssociation&#45;&#45;Locations</title>
+<path fill="none" stroke="#4fc3f7" d="M1162.69,-57.99C1173.32,-47.54 1189.85,-31.31 1200.15,-21.18"/>
+</g>
+<!-- Healthcare Providers -->
+<g id="node14" class="node">
+<title>Healthcare Providers</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="656.5" cy="-11" rx="46.65" ry="11"/>
+<text text-anchor="middle" x="656.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Healthcare Providers</text>
+</g>
+<!-- PersonHealthcareAssociation&#45;&#45;Healthcare Providers -->
+<g id="edge3" class="edge">
+<title>PersonHealthcareAssociation&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M1091.81,-59.2C1088.66,-58.78 1085.55,-58.38 1082.5,-58 941.89,-40.37 774.65,-23.51 698.28,-16.03"/>
+</g>
+<!-- Care Sites -->
+<g id="node15" class="node">
+<title>Care Sites</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="1015.5" cy="-11" rx="23.03" ry="11"/>
+<text text-anchor="middle" x="1015.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Care Sites</text>
+</g>
+<!-- PersonHealthcareAssociation&#45;&#45;Care Sites -->
+<g id="edge4" class="edge">
+<title>PersonHealthcareAssociation&#45;&#45;Care Sites</title>
+<path fill="none" stroke="#4fc3f7" d="M1128.01,-57.99C1100.3,-46.66 1055.93,-28.53 1032.03,-18.76"/>
+</g>
+<!-- CareSiteLocation -->
+<g id="node2" class="node">
+<title>CareSiteLocation</title>
+<polygon fill="#ffffff" stroke="#000000" points="1301.5,-80 1231.5,-80 1231.5,-58 1301.5,-58 1301.5,-80"/>
+<text text-anchor="middle" x="1266.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">CareSiteLocation</text>
+</g>
+<!-- CareSiteLocation&#45;&#45;Locations -->
+<g id="edge12" class="edge">
+<title>CareSiteLocation&#45;&#45;Locations</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M1256.31,-57.99C1245.68,-47.54 1229.15,-31.31 1218.85,-21.18"/>
+</g>
+<!-- CareSiteLocation&#45;&#45;Care Sites -->
+<g id="edge11" class="edge">
+<title>CareSiteLocation&#45;&#45;Care Sites</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M1231.44,-60.02C1228.42,-59.33 1225.4,-58.65 1222.5,-58 1154.08,-42.62 1072.86,-24.66 1035.78,-16.47"/>
+</g>
+<!-- ProviderCareSiteAssignment -->
+<g id="node3" class="node">
+<title>ProviderCareSiteAssignment</title>
+<polygon fill="#ffffff" stroke="#000000" points="1073.5,-80 957.5,-80 957.5,-58 1073.5,-58 1073.5,-80"/>
+<text text-anchor="middle" x="1015.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">ProviderCareSiteAssignment</text>
+</g>
+<!-- ProviderCareSiteAssignment&#45;&#45;Healthcare Providers -->
+<g id="edge5" class="edge">
+<title>ProviderCareSiteAssignment&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M957.42,-58.94C882.9,-47.32 755.83,-27.49 693.37,-17.75"/>
+</g>
+<!-- ProviderCareSiteAssignment&#45;&#45;Care Sites -->
+<g id="edge6" class="edge">
+<title>ProviderCareSiteAssignment&#45;&#45;Care Sites</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M1015.5,-57.99C1015.5,-47.92 1015.5,-32.47 1015.5,-22.3"/>
+</g>
+<!-- PatientVisitEncounters -->
+<g id="node4" class="node">
+<title>PatientVisitEncounters</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="939,-80 846,-80 846,-58 939,-58 939,-80"/>
+<text text-anchor="middle" x="892.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientVisitEncounters</text>
+</g>
+<!-- PatientVisitEncounters&#45;&#45;Persons -->
+<g id="edge8" class="edge">
+<title>PatientVisitEncounters&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M845.71,-59.4C842.93,-58.92 840.18,-58.45 837.5,-58 732.41,-40.47 705.47,-40.25 600.5,-22 589.12,-20.02 576.37,-17.52 566.47,-15.52"/>
+</g>
+<!-- PatientVisitEncounters&#45;&#45;Healthcare Providers -->
+<g id="edge9" class="edge">
+<title>PatientVisitEncounters&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M850.31,-57.99C803.51,-46.88 729.11,-29.23 687.42,-19.34"/>
+</g>
+<!-- PatientVisitEncounters&#45;&#45;Care Sites -->
+<g id="edge10" class="edge">
+<title>PatientVisitEncounters&#45;&#45;Care Sites</title>
+<path fill="none" stroke="#4fc3f7" d="M914.49,-57.99C938.95,-46.85 977.87,-29.13 999.57,-19.25"/>
+</g>
+<!-- Visit Occurrences -->
+<g id="node16" class="node">
+<title>Visit Occurrences</title>
+<ellipse fill="#e1f5fe" stroke="#4fc3f7" cx="439.5" cy="-11" rx="38.81" ry="11"/>
+<text text-anchor="middle" x="439.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">Visit Occurrences</text>
+</g>
+<!-- PatientVisitEncounters&#45;&#45;Visit Occurrences -->
+<g id="edge7" class="edge">
+<title>PatientVisitEncounters&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#4fc3f7" d="M845.73,-59.28C842.95,-58.83 840.19,-58.4 837.5,-58 698.1,-37.39 662.45,-38.43 522.5,-22 506.5,-20.12 488.77,-17.99 473.82,-16.18"/>
+</g>
+<!-- PatientVisitDetails -->
+<g id="node5" class="node">
+<title>PatientVisitDetails</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="828,-80 753,-80 753,-58 828,-58 828,-80"/>
+<text text-anchor="middle" x="790.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientVisitDetails</text>
+</g>
+<!-- PatientVisitDetails&#45;&#45;Persons -->
+<g id="edge31" class="edge">
+<title>PatientVisitDetails&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M752.84,-59.25C699.49,-46.85 604.15,-24.7 565.97,-15.83"/>
+</g>
+<!-- PatientVisitDetails&#45;&#45;Healthcare Providers -->
+<g id="edge32" class="edge">
+<title>PatientVisitDetails&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M766.54,-57.99C741.25,-47.42 701.76,-30.92 677.6,-20.82"/>
+</g>
+<!-- PatientVisitDetails&#45;&#45;Care Sites -->
+<g id="edge34" class="edge">
+<title>PatientVisitDetails&#45;&#45;Care Sites</title>
+<path fill="none" stroke="#4fc3f7" d="M828.16,-58.63C876.45,-46.61 958.41,-26.21 995.82,-16.9"/>
+</g>
+<!-- PatientVisitDetails&#45;&#45;Visit Occurrences -->
+<g id="edge33" class="edge">
+<title>PatientVisitDetails&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#4fc3f7" d="M752.88,-59.62C750.05,-59.05 747.23,-58.5 744.5,-58 646.54,-39.98 529.92,-23.86 473.47,-16.4"/>
+</g>
+<!-- PersonProviderVisitMeasurements -->
+<g id="node6" class="node">
+<title>PersonProviderVisitMeasurements</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="473,-80 334,-80 334,-58 473,-58 473,-80"/>
+<text text-anchor="middle" x="403.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PersonProviderVisitMeasurements</text>
+</g>
+<!-- PersonProviderVisitMeasurements&#45;&#45;Persons -->
+<g id="edge22" class="edge">
+<title>PersonProviderVisitMeasurements&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M429.6,-57.99C460.28,-46.22 510.11,-27.11 534.75,-17.66"/>
+</g>
+<!-- PersonProviderVisitMeasurements&#45;&#45;Healthcare Providers -->
+<g id="edge23" class="edge">
+<title>PersonProviderVisitMeasurements&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M448.73,-57.99C499.33,-46.79 580.01,-28.93 624.48,-19.09"/>
+</g>
+<!-- PersonProviderVisitMeasurements&#45;&#45;Visit Occurrences -->
+<g id="edge24" class="edge">
+<title>PersonProviderVisitMeasurements&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#4fc3f7" d="M409.94,-57.99C416.49,-47.8 426.59,-32.09 433.12,-21.93"/>
+</g>
+<!-- PatientProviderObservations -->
+<g id="node7" class="node">
+<title>PatientProviderObservations</title>
+<polygon fill="#ffffff" stroke="#000000" points="607.5,-80 491.5,-80 491.5,-58 607.5,-58 607.5,-80"/>
+<text text-anchor="middle" x="549.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientProviderObservations</text>
+</g>
+<!-- PatientProviderObservations&#45;&#45;Persons -->
+<g id="edge25" class="edge">
+<title>PatientProviderObservations&#45;&#45;Persons</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M549.5,-57.99C549.5,-47.92 549.5,-32.47 549.5,-22.3"/>
+</g>
+<!-- PatientProviderObservations&#45;&#45;Healthcare Providers -->
+<g id="edge26" class="edge">
+<title>PatientProviderObservations&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M568.63,-57.99C588.47,-47.61 619.24,-31.5 638.6,-21.37"/>
+</g>
+<!-- PatientProviderObservations&#45;&#45;Visit Occurrences -->
+<g id="edge27" class="edge">
+<title>PatientProviderObservations&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M529.83,-57.99C509.19,-47.48 477.04,-31.11 457.18,-21"/>
+</g>
+<!-- PatientConditionTreatment -->
+<g id="node8" class="node">
+<title>PatientConditionTreatment</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="735,-80 626,-80 626,-58 735,-58 735,-80"/>
+<text text-anchor="middle" x="680.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientConditionTreatment</text>
+</g>
+<!-- PatientConditionTreatment&#45;&#45;Persons -->
+<g id="edge13" class="edge">
+<title>PatientConditionTreatment&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M657.08,-57.99C630,-46.41 586.27,-27.72 563.82,-18.12"/>
+</g>
+<!-- PatientConditionTreatment&#45;&#45;Healthcare Providers -->
+<g id="edge14" class="edge">
+<title>PatientConditionTreatment&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M676.21,-57.99C671.89,-47.92 665.27,-32.47 660.92,-22.3"/>
+</g>
+<!-- PatientConditionTreatment&#45;&#45;Visit Occurrences -->
+<g id="edge15" class="edge">
+<title>PatientConditionTreatment&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#4fc3f7" d="M637.41,-57.99C588.4,-46.6 509.76,-28.33 467.89,-18.6"/>
+</g>
+<!-- PatientDrugExposure -->
+<g id="node9" class="node">
+<title>PatientDrugExposure</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="87,-80 0,-80 0,-58 87,-58 87,-80"/>
+<text text-anchor="middle" x="43.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientDrugExposure</text>
+</g>
+<!-- PatientDrugExposure&#45;&#45;Persons -->
+<g id="edge19" class="edge">
+<title>PatientDrugExposure&#45;&#45;Persons</title>
+<path fill="none" stroke="#4fc3f7" d="M87.12,-59.43C90.29,-58.91 93.44,-58.43 96.5,-58 269.33,-33.79 314.37,-43.91 487.5,-22 502.75,-20.07 520.01,-17.23 532.44,-15.07"/>
+</g>
+<!-- PatientDrugExposure&#45;&#45;Healthcare Providers -->
+<g id="edge20" class="edge">
+<title>PatientDrugExposure&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#4fc3f7" d="M87.11,-59.37C90.28,-58.87 93.44,-58.4 96.5,-58 308.61,-30.12 363.63,-43.27 576.5,-22 590.01,-20.65 604.77,-18.89 617.89,-17.22"/>
+</g>
+<!-- PatientDrugExposure&#45;&#45;Visit Occurrences -->
+<g id="edge21" class="edge">
+<title>PatientDrugExposure&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#4fc3f7" d="M87.14,-59.58C90.3,-59.02 93.45,-58.49 96.5,-58 208.9,-39.87 342.84,-23.38 404.84,-16.03"/>
+</g>
+<!-- PatientDeviceExposures -->
+<g id="node10" class="node">
+<title>PatientDeviceExposures</title>
+<polygon fill="#ffffff" stroke="#000000" points="205.5,-80 105.5,-80 105.5,-58 205.5,-58 205.5,-80"/>
+<text text-anchor="middle" x="155.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientDeviceExposures</text>
+</g>
+<!-- PatientDeviceExposures&#45;&#45;Persons -->
+<g id="edge16" class="edge">
+<title>PatientDeviceExposures&#45;&#45;Persons</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M205.69,-59.36C208.67,-58.89 211.62,-58.43 214.5,-58 335.52,-39.77 366.41,-39.75 487.5,-22 502.71,-19.77 519.97,-16.96 532.41,-14.89"/>
+</g>
+<!-- PatientDeviceExposures&#45;&#45;Healthcare Providers -->
+<g id="edge17" class="edge">
+<title>PatientDeviceExposures&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M205.68,-59.25C208.66,-58.81 211.62,-58.39 214.5,-58 374.74,-36.48 415.83,-40.03 576.5,-22 589.85,-20.5 604.44,-18.72 617.46,-17.08"/>
+</g>
+<!-- PatientDeviceExposures&#45;&#45;Visit Occurrences -->
+<g id="edge18" class="edge">
+<title>PatientDeviceExposures&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M205.62,-58.12C264.54,-46.5 360.44,-27.59 409.1,-17.99"/>
+</g>
+<!-- PatientProcedureVisits -->
+<g id="node11" class="node">
+<title>PatientProcedureVisits</title>
+<polygon fill="#ffffff" stroke="#000000" points="315.5,-80 223.5,-80 223.5,-58 315.5,-58 315.5,-80"/>
+<text text-anchor="middle" x="269.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">PatientProcedureVisits</text>
+</g>
+<!-- PatientProcedureVisits&#45;&#45;Persons -->
+<g id="edge28" class="edge">
+<title>PatientProcedureVisits&#45;&#45;Persons</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M315.74,-58.75C379.27,-46.05 490.47,-23.81 532.64,-15.37"/>
+</g>
+<!-- PatientProcedureVisits&#45;&#45;Healthcare Providers -->
+<g id="edge29" class="edge">
+<title>PatientProcedureVisits&#45;&#45;Healthcare Providers</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M315.69,-59.46C318.67,-58.95 321.63,-58.46 324.5,-58 429.93,-41.12 554.8,-24.8 617.07,-16.92"/>
+</g>
+<!-- PatientProcedureVisits&#45;&#45;Visit Occurrences -->
+<g id="edge30" class="edge">
+<title>PatientProcedureVisits&#45;&#45;Visit Occurrences</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M299.89,-57.99C333.13,-47.04 385.68,-29.73 415.93,-19.76"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        
+    <b>Reasoning</b>: The question is about a source table called 'stg_patients' that contains detailed patient information including demographics, contact details, and financial information. In the story, it is asking for tables that could be mapped to this comprehensive patient data. We need to identify steps that involve collecting or storing patient-specific information.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the related tables Cocoon set up... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_condition_occurrence</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about condition occurrences for patients. It includes details</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">like condition start and end dates, provider, visit information, condition source,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and status. Each row represents a specific medical condition instance for a patient,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">identified by a unique condition_occurrence_id. The table links conditions to</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">patients via person_id and to healthcare visits via visit_occurrence_id.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_occurrence_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stop_reason</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_status_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_end_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_end_datetime</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_start_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">condition_start_datetime</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_death</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about death records. It contains details of deceased individuals.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each record includes a person ID, death date, precise death datetime, and cause</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">of death. The cause of death is represented by a code, likely from a standardized</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">classification system like ICD-10. The table provides essential information for</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">tracking mortality and its causes.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cause_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_datetime</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_provider</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about healthcare providers. It contains details like provider</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">ID, name, NPI number, DEA number, care site ID, provider source value, specialty,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and gender. Each row represents a unique provider with their identifying information</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and professional details. The table likely serves as a reference for provider</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">information in a healthcare system.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provider_name</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dea</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provider_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specialty_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gender_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">npi</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_drug_exposure</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about drug exposures. It includes patient identifiers,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">drug administration dates, dosage details, and prescriber information. Each row</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">represents a single drug exposure event. The table captures key information like</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">drug name, quantity, dosage instructions, and reasons for stopping medication.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">It also links to other healthcare entities through IDs for the patient, provider,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and visit.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">drug_exposure_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stop_reason</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refills</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">days_supply</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sig</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lot_number</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">drug_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">route_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dose_unit_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">drug_exposure_end_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">drug_exposure_start_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">verbatim_end_date</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_measurement</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about medical measurements. It includes measurement ID,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">person ID, date and time of measurement, measured value, provider ID, visit ID,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">measurement type, unit, and source value. Each row represents a single measurement</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">taken for a specific person during a healthcare visit.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measurement_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_as_number</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measurement_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measurement_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">measurement_datetime</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">value_source_value</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_payer_plan_period</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about payer plan periods. It contains details of insurance</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">coverage periods for individuals. Each record includes a unique ID, person ID,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">start and end dates of the coverage, reason for stopping, payer information, plan</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">details, sponsor information, and family plan details. The table tracks insurance</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">coverage periods and associated information for each person.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stop_reason</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payer_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plan_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sponsor_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">family_plan_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payer_plan_period_end_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payer_plan_period_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">payer_plan_period_start_date</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_visit_occurrence</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about visit occurrences in a healthcare setting. It contains</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">details of patient visits, including visit ID, patient ID, start and end dates/times,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">provider and care site IDs, visit source, admission source, discharge destination,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and preceding visit ID. Each row represents a single visit event with its associated</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">information.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admitting_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discharge_to_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_end_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_end_datetime</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_start_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_start_datetime</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_specimen</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about biological specimens. It includes specimen ID, person</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">ID, collection date and time, quantity, source, unit, anatomical site, and disease</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">status. Each row represents a unique specimen with its associated details. The</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">table tracks important information for medical or research purposes, linking samples</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">to individuals and their health status.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specimen_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quantity</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specimen_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unit_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anatomic_site_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disease_status_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specimen_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">specimen_datetime</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_care_site</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about care sites. It contains details of healthcare facilities.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each care site has an ID, name, location ID, source value, and place of service</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">type. The table tracks different types of healthcare facilities like hospitals</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and clinics. It links care sites to specific locations and categorizes them by</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">service type.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">care_site_name</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">care_site_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">place_of_service_source_value</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_visit_detail</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about patient visit details. It includes information such</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">as visit ID, patient ID, visit start and end dates/times, provider ID, care site</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">ID, and visit source values. Each row represents a unique visit detail, with links</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">to the patient and the broader visit occurrence. The table captures both outpatient</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and inpatient visits, as well as emergency room visits.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admitting_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">discharge_to_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_end_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_end_datetime</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_start_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">visit_detail_start_datetime</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_person</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about individual persons. It includes personal details</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">like birth date, gender, race, and ethnicity. It also contains healthcare-related</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">information such as provider ID and care site ID. Each person has a unique identifier</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and source values for various attributes. The table links persons to locations</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">and healthcare providers.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_of_birth</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_of_birth</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">day_of_birth</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gender_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">race_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ethnicity_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">birth_datetime</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_source_value</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_cost</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about medical or prescription costs. It includes details</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">like total charges, amounts paid, and breakdowns of payments by different parties.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Each row represents a unique cost entry identified by cost_id. The table tracks</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">payments made by insurers, patients, and other payers. It also includes specific</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">patient payment types like copays, coinsurance, and deductibles.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cost_id</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_charge</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_paid</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_allowed</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_payer</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_patient</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_copay</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_coinsurance</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_deductible</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_primary</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_ingredient_cost</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_dispensing_fee</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_location</span>
+<span class="w">  </span><span class="nt">table_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The table is about locations. It contains details of physical addresses,</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">including street, city, state, zip code, and county. Each location has a unique</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">identifier and source value. Geographic coordinates (latitude and longitude) are</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">also provided. The table stores comprehensive location data for various places</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">or establishments.</span>
+<span class="w">  </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">address_1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">address_2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">city</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">state</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">county</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location_source_value</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latitude</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">longitude</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zip</span>
+</pre></div>
+🤓 <b>We've identified the related tables</b>: stg_person, stg_death, stg_location, stg_cost
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="951pt" height="320pt"
+ viewBox="0.00 0.00 950.50 320.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 316)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-316 946.5,-316 946.5,4 -4,4"/>
+<!-- stg_drug_exposure -->
+<g id="node1" class="node">
+<title>stg_drug_exposure</title>
+<polygon fill="#ffffff" stroke="#000000" points="160,-312 83,-312 83,-290 160,-290 160,-312"/>
+<text text-anchor="middle" x="121.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_drug_exposure</text>
+</g>
+<!-- stg_provider -->
+<g id="node11" class="node">
+<title>stg_provider</title>
+<polygon fill="#ffffff" stroke="#000000" points="405,-138 354,-138 354,-116 405,-116 405,-138"/>
+<text text-anchor="middle" x="379.5" y="-125.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_provider</text>
+</g>
+<!-- stg_drug_exposure&#45;&gt;stg_provider -->
+<g id="edge22" class="edge">
+<title>stg_drug_exposure&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M130.85,-289.88C152.76,-266.65 209.93,-208.85 267.5,-174 293.2,-158.45 325.1,-145.92 348.28,-137.89"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="348.97,-139.88 353.97,-135.95 347.61,-135.9 348.97,-139.88"/>
+</g>
+<!-- stg_visit_occurrence -->
+<g id="node12" class="node">
+<title>stg_visit_occurrence</title>
+<polygon fill="#ffffff" stroke="#000000" points="367,-254 284,-254 284,-232 367,-232 367,-254"/>
+<text text-anchor="middle" x="325.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_visit_occurrence</text>
+</g>
+<!-- stg_drug_exposure&#45;&gt;stg_visit_occurrence -->
+<g id="edge30" class="edge">
+<title>stg_drug_exposure&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M157.97,-289.99C193.11,-280.34 246.24,-265.76 283.21,-255.61"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="283.77,-257.63 289,-254.02 282.66,-253.58 283.77,-257.63"/>
+</g>
+<!-- stg_person -->
+<g id="node16" class="node">
+<title>stg_person</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="524.5,-196 478.5,-196 478.5,-174 524.5,-174 524.5,-196"/>
+<text text-anchor="middle" x="501.5" y="-183.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_person</text>
+</g>
+<!-- stg_drug_exposure&#45;&gt;stg_person -->
+<g id="edge11" class="edge">
+<title>stg_drug_exposure&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M136.94,-289.76C160.31,-274.75 206.48,-246.95 249.5,-232 327.29,-204.97 424.41,-192.97 472.18,-188.41"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="472.53,-190.48 478.31,-187.84 472.14,-186.3 472.53,-190.48"/>
+</g>
+<!-- stg_visit_detail -->
+<g id="node2" class="node">
+<title>stg_visit_detail</title>
+<polygon fill="#ffffff" stroke="#000000" points="61,-312 0,-312 0,-290 61,-290 61,-312"/>
+<text text-anchor="middle" x="30.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_visit_detail</text>
+</g>
+<!-- stg_visit_detail&#45;&gt;stg_provider -->
+<g id="edge26" class="edge">
+<title>stg_visit_detail&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M45.35,-289.84C65.22,-276.32 101.66,-251.81 133.5,-232 176.79,-205.05 185.87,-194.64 232.5,-174 271.01,-156.96 317.78,-143.47 348.07,-135.62"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="348.6,-137.65 353.9,-134.13 347.56,-133.58 348.6,-137.65"/>
+</g>
+<!-- stg_visit_detail&#45;&gt;stg_visit_occurrence -->
+<g id="edge34" class="edge">
+<title>stg_visit_detail&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M61.46,-292.61C65.51,-291.7 69.6,-290.81 73.5,-290 144.43,-275.29 227.11,-260.68 277.88,-251.99"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="278.35,-254.04 283.91,-250.96 277.64,-249.9 278.35,-254.04"/>
+</g>
+<!-- stg_care_site -->
+<g id="node15" class="node">
+<title>stg_care_site</title>
+<polygon fill="#ffffff" stroke="#000000" points="406.5,-80 352.5,-80 352.5,-58 406.5,-58 406.5,-80"/>
+<text text-anchor="middle" x="379.5" y="-67.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_care_site</text>
+</g>
+<!-- stg_visit_detail&#45;&gt;stg_care_site -->
+<g id="edge4" class="edge">
+<title>stg_visit_detail&#45;&gt;stg_care_site</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M45.85,-289.86C65.98,-276.56 102.37,-252.52 133.5,-232 217.22,-176.8 317.04,-111.1 359.16,-83.39"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="360.38,-85.09 364.24,-80.04 358.07,-81.59 360.38,-85.09"/>
+</g>
+<!-- stg_visit_detail&#45;&gt;stg_person -->
+<g id="edge17" class="edge">
+<title>stg_visit_detail&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M50.91,-289.91C82,-274.97 143.42,-247.1 198.5,-232 296.82,-205.04 417.71,-192.67 472.3,-188.15"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="472.5,-190.24 478.31,-187.66 472.16,-186.05 472.5,-190.24"/>
+</g>
+<!-- stg_death -->
+<g id="node3" class="node">
+<title>stg_death</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="521,-254 480,-254 480,-232 521,-232 521,-254"/>
+<text text-anchor="middle" x="500.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_death</text>
+</g>
+<!-- stg_death&#45;&gt;stg_person -->
+<g id="edge9" class="edge">
+<title>stg_death&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M500.68,-231.99C500.82,-223.81 501.03,-212.08 501.21,-202.51"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="503.31,-202.34 501.32,-196.3 499.11,-202.27 503.31,-202.34"/>
+</g>
+<!-- stg_payer_plan_period -->
+<g id="node4" class="node">
+<title>stg_payer_plan_period</title>
+<polygon fill="#ffffff" stroke="#000000" points="631.5,-254 539.5,-254 539.5,-232 631.5,-232 631.5,-254"/>
+<text text-anchor="middle" x="585.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_payer_plan_period</text>
+</g>
+<!-- stg_payer_plan_period&#45;&gt;stg_person -->
+<g id="edge14" class="edge">
+<title>stg_payer_plan_period&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M570.48,-231.99C556.95,-222.97 536.93,-209.62 521.94,-199.63"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="522.83,-197.69 516.67,-196.11 520.5,-201.19 522.83,-197.69"/>
+</g>
+<!-- stg_specimen -->
+<g id="node5" class="node">
+<title>stg_specimen</title>
+<polygon fill="#ffffff" stroke="#000000" points="707,-254 650,-254 650,-232 707,-232 707,-254"/>
+<text text-anchor="middle" x="678.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_specimen</text>
+</g>
+<!-- stg_specimen&#45;&gt;stg_person -->
+<g id="edge16" class="edge">
+<title>stg_specimen&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M649.67,-232.88C616.84,-222.49 563.5,-205.62 530.57,-195.2"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="531.02,-193.14 524.67,-193.33 529.76,-197.14 531.02,-193.14"/>
+</g>
+<!-- stg_cost -->
+<g id="node6" class="node">
+<title>stg_cost</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="761.5,-254 725.5,-254 725.5,-232 761.5,-232 761.5,-254"/>
+<text text-anchor="middle" x="743.5" y="-241.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_cost</text>
+</g>
+<!-- stg_cost&#45;&gt;stg_person -->
+<g id="edge8" class="edge">
+<title>stg_cost&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M725.32,-234.86C722.39,-233.83 719.38,-232.84 716.5,-232 651.13,-213.01 572.49,-198.15 530.8,-190.89"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="530.95,-188.78 524.68,-189.83 530.23,-192.92 530.95,-188.78"/>
+</g>
+<!-- stg_location -->
+<g id="node7" class="node">
+<title>stg_location</title>
+<polygon fill="#e1f5fe" stroke="#4fc3f7" points="460.5,-22 410.5,-22 410.5,0 460.5,0 460.5,-22"/>
+<text text-anchor="middle" x="435.5" y="-9.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_location</text>
+</g>
+<!-- stg_condition_occurrence -->
+<g id="node8" class="node">
+<title>stg_condition_occurrence</title>
+<polygon fill="#ffffff" stroke="#000000" points="283,-312 178,-312 178,-290 283,-290 283,-312"/>
+<text text-anchor="middle" x="230.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_condition_occurrence</text>
+</g>
+<!-- stg_condition_occurrence&#45;&gt;stg_provider -->
+<g id="edge20" class="edge">
+<title>stg_condition_occurrence&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M232.1,-289.89C234.52,-276.22 239.91,-251.32 249.5,-232 263.89,-203.02 268.89,-195 293.5,-174 309.82,-160.08 331.04,-148.67 348.33,-140.7"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="349.42,-142.51 354.02,-138.13 347.69,-138.68 349.42,-142.51"/>
+</g>
+<!-- stg_condition_occurrence&#45;&gt;stg_visit_occurrence -->
+<g id="edge28" class="edge">
+<title>stg_condition_occurrence&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M247.48,-289.99C262.92,-280.89 285.82,-267.39 302.82,-257.37"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="304.24,-258.97 308.34,-254.11 302.11,-255.35 304.24,-258.97"/>
+</g>
+<!-- stg_condition_occurrence&#45;&gt;stg_person -->
+<g id="edge7" class="edge">
+<title>stg_condition_occurrence&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M234.1,-289.85C240.04,-274.7 253.35,-246.41 274.5,-232 306.43,-210.24 418.36,-195.23 472.17,-189.09"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="472.71,-191.15 478.44,-188.39 472.24,-186.97 472.71,-191.15"/>
+</g>
+<!-- stg_device -->
+<g id="node9" class="node">
+<title>stg_device</title>
+<polygon fill="#ffffff" stroke="#000000" points="347.5,-312 303.5,-312 303.5,-290 347.5,-290 347.5,-312"/>
+<text text-anchor="middle" x="325.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_device</text>
+</g>
+<!-- stg_device&#45;&gt;stg_provider -->
+<g id="edge21" class="edge">
+<title>stg_device&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M308.26,-289.96C296.32,-281.93 281.38,-269.47 274.5,-254 270.53,-245.07 270.74,-241.02 274.5,-232 291.28,-191.76 332.04,-159.12 357.56,-141.72"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="358.94,-143.32 362.76,-138.24 356.6,-139.83 358.94,-143.32"/>
+</g>
+<!-- stg_device&#45;&gt;stg_visit_occurrence -->
+<g id="edge29" class="edge">
+<title>stg_device&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M325.5,-289.99C325.5,-281.81 325.5,-270.08 325.5,-260.51"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="327.6,-260.3 325.5,-254.3 323.4,-260.3 327.6,-260.3"/>
+</g>
+<!-- stg_device&#45;&gt;stg_person -->
+<g id="edge10" class="edge">
+<title>stg_device&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M341.12,-289.88C372.82,-269.35 444.74,-222.77 480.5,-199.6"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="482.02,-201.12 485.92,-196.09 479.74,-197.59 482.02,-201.12"/>
+</g>
+<!-- stg_procedure_occurrence -->
+<g id="node10" class="node">
+<title>stg_procedure_occurrence</title>
+<polygon fill="#ffffff" stroke="#000000" points="506,-312 397,-312 397,-290 506,-290 506,-312"/>
+<text text-anchor="middle" x="451.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_procedure_occurrence</text>
+</g>
+<!-- stg_procedure_occurrence&#45;&gt;stg_provider -->
+<g id="edge25" class="edge">
+<title>stg_procedure_occurrence&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M447.21,-289.76C435.13,-260.91 400.77,-178.82 386.18,-143.96"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="388.11,-143.13 383.86,-138.41 384.24,-144.75 388.11,-143.13"/>
+</g>
+<!-- stg_procedure_occurrence&#45;&gt;stg_visit_occurrence -->
+<g id="edge33" class="edge">
+<title>stg_procedure_occurrence&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M428.97,-289.99C407.96,-280.65 376.53,-266.68 353.83,-256.59"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="354.59,-254.63 348.26,-254.11 352.89,-258.47 354.59,-254.63"/>
+</g>
+<!-- stg_procedure_occurrence&#45;&gt;stg_person -->
+<g id="edge15" class="edge">
+<title>stg_procedure_occurrence&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M506.01,-300.36C587.97,-299.6 736.93,-292.75 770.5,-254 776.9,-246.61 776.8,-239.47 770.5,-232 740.08,-195.94 594.18,-188.14 530.9,-186.46"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="530.73,-184.36 524.68,-186.31 530.62,-188.56 530.73,-184.36"/>
+</g>
+<!-- stg_provider&#45;&gt;stg_care_site -->
+<g id="edge6" class="edge">
+<title>stg_provider&#45;&gt;stg_care_site</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M379.5,-115.99C379.5,-107.81 379.5,-96.08 379.5,-86.51"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="381.6,-86.3 379.5,-80.3 377.4,-86.3 381.6,-86.3"/>
+</g>
+<!-- stg_visit_occurrence&#45;&gt;stg_provider -->
+<g id="edge27" class="edge">
+<title>stg_visit_occurrence&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M330.29,-231.88C339.72,-211.99 360.72,-167.65 372,-143.84"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="373.97,-144.58 374.64,-138.26 370.17,-142.78 373.97,-144.58"/>
+</g>
+<!-- stg_visit_occurrence&#45;&gt;stg_visit_occurrence -->
+<g id="edge35" class="edge">
+<title>stg_visit_occurrence&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M367.21,-253.71C377.41,-252.91 385,-249.34 385,-243 385,-238.04 380.37,-234.78 373.47,-233.21"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="373.45,-231.09 367.21,-232.29 372.84,-235.24 373.45,-231.09"/>
+</g>
+<!-- stg_visit_occurrence&#45;&gt;stg_care_site -->
+<g id="edge5" class="edge">
+<title>stg_visit_occurrence&#45;&gt;stg_care_site</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M325.36,-231.74C325.4,-209.65 327.44,-156.34 344.5,-116 349.29,-104.67 357.52,-93.65 364.79,-85.23"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="366.72,-86.22 369.16,-80.35 363.59,-83.42 366.72,-86.22"/>
+</g>
+<!-- stg_visit_occurrence&#45;&gt;stg_person -->
+<g id="edge18" class="edge">
+<title>stg_visit_occurrence&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M356.97,-231.99C389.69,-221.58 440.49,-205.41 472.33,-195.28"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="473.36,-197.16 478.44,-193.34 472.08,-193.16 473.36,-197.16"/>
+</g>
+<!-- stg_measurement -->
+<g id="node13" class="node">
+<title>stg_measurement</title>
+<polygon fill="#ffffff" stroke="#000000" points="858.5,-312 784.5,-312 784.5,-290 858.5,-290 858.5,-312"/>
+<text text-anchor="middle" x="821.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_measurement</text>
+</g>
+<!-- stg_measurement&#45;&gt;stg_provider -->
+<g id="edge23" class="edge">
+<title>stg_measurement&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M822.86,-289.74C824.2,-274.96 824.27,-247.73 809.5,-232 754.43,-173.37 501.58,-141.05 411.49,-131.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="411.48,-129.13 405.29,-130.58 411.03,-133.31 411.48,-129.13"/>
+</g>
+<!-- stg_measurement&#45;&gt;stg_visit_occurrence -->
+<g id="edge31" class="edge">
+<title>stg_measurement&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M784.22,-295.79C695.4,-285.76 471.38,-260.47 373.04,-249.37"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="373.22,-247.28 367.03,-248.69 372.75,-251.45 373.22,-247.28"/>
+</g>
+<!-- stg_measurement&#45;&gt;stg_person -->
+<g id="edge12" class="edge">
+<title>stg_measurement&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M819.32,-289.8C815.5,-274.57 806.06,-246.19 786.5,-232 746.01,-202.62 595.34,-191.09 530.97,-187.43"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="530.75,-185.32 524.65,-187.09 530.52,-189.51 530.75,-185.32"/>
+</g>
+<!-- stg_observation -->
+<g id="node14" class="node">
+<title>stg_observation</title>
+<polygon fill="#ffffff" stroke="#000000" points="942.5,-312 876.5,-312 876.5,-290 942.5,-290 942.5,-312"/>
+<text text-anchor="middle" x="909.5" y="-299.1" font-family="Segoe UI" font-size="8.00" fill="#000000">stg_observation</text>
+</g>
+<!-- stg_observation&#45;&gt;stg_provider -->
+<g id="edge24" class="edge">
+<title>stg_observation&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M901.47,-289.67C889.89,-275.3 867.27,-249.1 843.5,-232 795.09,-197.17 779.64,-191.06 722.5,-174 611.18,-140.76 472.34,-131.49 411.06,-128.94"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="411.11,-126.84 405.03,-128.71 410.94,-131.04 411.11,-126.84"/>
+</g>
+<!-- stg_observation&#45;&gt;stg_visit_occurrence -->
+<g id="edge32" class="edge">
+<title>stg_observation&#45;&gt;stg_visit_occurrence</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M876.12,-291.58C873.22,-290.99 870.31,-290.45 867.5,-290 819.42,-282.28 496.95,-257.14 373.47,-247.66"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="373.54,-245.56 367.39,-247.19 373.21,-249.75 373.54,-245.56"/>
+</g>
+<!-- stg_observation&#45;&gt;stg_person -->
+<g id="edge13" class="edge">
+<title>stg_observation&#45;&gt;stg_person</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M898.47,-289.98C881.01,-274.73 845.28,-245.99 809.5,-232 712.53,-194.09 587.16,-187.18 530.99,-186.09"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="530.84,-183.99 524.81,-185.99 530.77,-188.19 530.84,-183.99"/>
+</g>
+<!-- stg_care_site&#45;&gt;stg_location -->
+<g id="edge1" class="edge">
+<title>stg_care_site&#45;&gt;stg_location</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M389.51,-57.99C398.24,-49.26 411.02,-36.48 420.89,-26.61"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="422.44,-28.03 425.2,-22.3 419.47,-25.06 422.44,-28.03"/>
+</g>
+<!-- stg_person&#45;&gt;stg_location -->
+<g id="edge2" class="edge">
+<title>stg_person&#45;&gt;stg_location</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M497.57,-173.76C486.54,-145.02 455.26,-63.49 441.79,-28.4"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="443.6,-27.26 439.49,-22.41 439.68,-28.76 443.6,-27.26"/>
+</g>
+<!-- stg_person&#45;&gt;stg_provider -->
+<g id="edge19" class="edge">
+<title>stg_person&#45;&gt;stg_provider</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M479.69,-173.99C459.43,-164.69 429.17,-150.8 407.21,-140.72"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="407.86,-138.71 401.53,-138.11 406.11,-142.53 407.86,-138.71"/>
+</g>
+<!-- stg_person&#45;&gt;stg_care_site -->
+<g id="edge3" class="edge">
+<title>stg_person&#45;&gt;stg_care_site</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M490.67,-173.88C468.93,-153.57 419.91,-107.76 394.86,-84.36"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="396.3,-82.82 390.48,-80.26 393.43,-85.89 396.3,-82.82"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        🧠 <b>Explanation</b>: The available data is sufficient to transform the source table 'stg_patients' into several target tables. The 'stg_patients' table contains a wide range of patient information that can be mapped to various tables in the provided schema. Here's how the data can be transformed:
+1. stg_person: Many attributes from 'stg_patients' directly map to 'stg_person', including birth date, gender, race, and ethnicity. 2. stg_death: The death_date from 'stg_patients' can be used to populate this table. 3. stg_location: Address information from 'stg_patients' can be used to create location records. 4. stg_cost: Healthcare expenses and coverage from 'stg_patients' could potentially be used to create cost records, though more detailed cost breakdowns might be needed.
+The transformation would involve selecting relevant columns from 'stg_patients' and inserting them into the appropriate target tables. In some cases, data may need to be split or combined to fit the target schema.<br>💡 <b>Instruction to write SQL</b>: 1. Insert into stg_person:
+   - Select patient_id, first_name, last_name, birth_date, gender, race, ethnicity from stg_patients
+   - Transform birth_date into year_of_birth, month_of_birth, day_of_birth
+   - Map gender, race, and ethnicity to their respective source_value columns
+
+2. Insert into stg_death:
+   - Select patient_id, death_date from stg_patients where death_date is not null
+
+3. Insert into stg_location:
+   - Select distinct street_address, city, state, county, zip_code, latitude, longitude from stg_patients
+   - Generate a unique location_id for each distinct address
+
+4. Update stg_person with location information:
+   - Join stg_person with the newly created stg_location records to add location_id
+
+5. Insert into stg_cost:
+   - Select patient_id, healthcare_expenses as total_paid, healthcare_coverage as paid_by_payer from stg_patients
+   - Generate a unique cost_id for each record
+
+Note: Some tables like stg_provider, stg_care_site, and others cannot be directly populated from the given 'stg_patients' data and would require additional source data.<br>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the column details for <i>stg_person</i> ... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">year_of_birth</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Year when the person was born</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">month_of_birth</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Month when the person was born</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">day_of_birth</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Day of the month when the person was born</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gender_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original value for person&#39;s gender</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">race_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original value for person&#39;s race</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ethnicity_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original value for person&#39;s ethnicity</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">birth_datetime</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Full date and time of person&#39;s birth</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Original identifier for the person</span>
+</pre></div>
+<h3>Summary:</h3><p>7 out of 8 columns in the target table can be transformed from the source table. The 'year_of_birth', 'month_of_birth', and 'day_of_birth' can be extracted from the 'birth_date' column. 'gender_source_value', 'race_source_value', and 'ethnicity_source_value' can be directly copied from corresponding columns. 'birth_datetime' can be constructed from 'birth_date'. 'person_source_value' can be directly copied from 'patient_id'.</p>
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="246pt" height="540pt"
+ viewBox="0.00 0.00 246.00 540.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 536)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-536 242,-536 242,4 -4,4"/>
+<!-- stg_patients -->
+<g id="node1" class="node">
+<title>stg_patients</title>
+<polygon fill="#ffffff" stroke="transparent" points="98,-532 0,-532 0,0 98,0 98,-532"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<polygon fill="none" stroke="#000000" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<text text-anchor="start" x="21" y="-521.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_patients</text>
+<polygon fill="none" stroke="#000000" points="0,-494 0,-513 98,-513 98,-494 0,-494"/>
+<text text-anchor="start" x="5" y="-501.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ssn</text>
+<polygon fill="none" stroke="#000000" points="0,-475 0,-494 98,-494 98,-475 0,-475"/>
+<text text-anchor="start" x="5" y="-482.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">drivers_license</text>
+<polygon fill="none" stroke="#000000" points="0,-456 0,-475 98,-475 98,-456 0,-456"/>
+<text text-anchor="start" x="5" y="-463.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">passport_number</text>
+<polygon fill="none" stroke="#000000" points="0,-437 0,-456 98,-456 98,-437 0,-437"/>
+<text text-anchor="start" x="5" y="-444.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_prefix</text>
+<polygon fill="none" stroke="#000000" points="0,-418 0,-437 98,-437 98,-418 0,-418"/>
+<text text-anchor="start" x="5" y="-425.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">first_name</text>
+<polygon fill="none" stroke="#000000" points="0,-399 0,-418 98,-418 98,-399 0,-399"/>
+<text text-anchor="start" x="5" y="-406.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">last_name</text>
+<polygon fill="none" stroke="#000000" points="0,-380 0,-399 98,-399 98,-380 0,-380"/>
+<text text-anchor="start" x="5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_suffix</text>
+<polygon fill="none" stroke="#000000" points="0,-361 0,-380 98,-380 98,-361 0,-361"/>
+<text text-anchor="start" x="5" y="-368.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">maiden_name</text>
+<polygon fill="none" stroke="#000000" points="0,-342 0,-361 98,-361 98,-342 0,-342"/>
+<text text-anchor="start" x="5" y="-349.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">marital_status</text>
+<polygon fill="none" stroke="#000000" points="0,-323 0,-342 98,-342 98,-323 0,-323"/>
+<text text-anchor="start" x="5" y="-330.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">race</text>
+<polygon fill="none" stroke="#000000" points="0,-304 0,-323 98,-323 98,-304 0,-304"/>
+<text text-anchor="start" x="5" y="-311.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ethnicity</text>
+<polygon fill="none" stroke="#000000" points="0,-285 0,-304 98,-304 98,-285 0,-285"/>
+<text text-anchor="start" x="5" y="-292.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">gender</text>
+<polygon fill="none" stroke="#000000" points="0,-266 0,-285 98,-285 98,-266 0,-266"/>
+<text text-anchor="start" x="5" y="-273.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birthplace</text>
+<polygon fill="none" stroke="#000000" points="0,-247 0,-266 98,-266 98,-247 0,-247"/>
+<text text-anchor="start" x="5" y="-254.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">street_address</text>
+<polygon fill="none" stroke="#000000" points="0,-228 0,-247 98,-247 98,-228 0,-228"/>
+<text text-anchor="start" x="5" y="-235.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">city</text>
+<polygon fill="none" stroke="#000000" points="0,-209 0,-228 98,-228 98,-209 0,-209"/>
+<text text-anchor="start" x="5" y="-216.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">state</text>
+<polygon fill="none" stroke="#000000" points="0,-190 0,-209 98,-209 98,-190 0,-190"/>
+<text text-anchor="start" x="5" y="-197.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">county</text>
+<polygon fill="none" stroke="#000000" points="0,-171 0,-190 98,-190 98,-171 0,-171"/>
+<text text-anchor="start" x="5" y="-178.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">fips_code</text>
+<polygon fill="none" stroke="#000000" points="0,-152 0,-171 98,-171 98,-152 0,-152"/>
+<text text-anchor="start" x="5" y="-159.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">latitude</text>
+<polygon fill="none" stroke="#000000" points="0,-133 0,-152 98,-152 98,-133 0,-133"/>
+<text text-anchor="start" x="5" y="-140.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">longitude</text>
+<polygon fill="none" stroke="#000000" points="0,-114 0,-133 98,-133 98,-114 0,-114"/>
+<text text-anchor="start" x="5" y="-121.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_expenses</text>
+<polygon fill="none" stroke="#000000" points="0,-95 0,-114 98,-114 98,-95 0,-95"/>
+<text text-anchor="start" x="5" y="-102.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_coverage</text>
+<polygon fill="none" stroke="#000000" points="0,-76 0,-95 98,-95 98,-76 0,-76"/>
+<text text-anchor="start" x="5" y="-83.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">annual_income</text>
+<polygon fill="none" stroke="#000000" points="0,-57 0,-76 98,-76 98,-57 0,-57"/>
+<text text-anchor="start" x="5" y="-64.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birth_date</text>
+<polygon fill="none" stroke="#000000" points="0,-38 0,-57 98,-57 98,-38 0,-38"/>
+<text text-anchor="start" x="5" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_date</text>
+<polygon fill="none" stroke="#000000" points="0,-19 0,-38 98,-38 98,-19 0,-19"/>
+<text text-anchor="start" x="5" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">patient_id</text>
+<polygon fill="none" stroke="#000000" points="0,0 0,-19 98,-19 98,0 0,0"/>
+<text text-anchor="start" x="5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">zip_code</text>
+</g>
+<!-- stg_person -->
+<g id="node2" class="node">
+<title>stg_person</title>
+<polygon fill="#ffffff" stroke="transparent" points="238,-200.5 134,-200.5 134,-29.5 238,-29.5 238,-200.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="134,-181 134,-200 238,-200 238,-181 134,-181"/>
+<polygon fill="none" stroke="#000000" points="134,-181 134,-200 238,-200 238,-181 134,-181"/>
+<text text-anchor="start" x="161.5" y="-189.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_person</text>
+<polygon fill="none" stroke="#000000" points="134,-162 134,-181 238,-181 238,-162 134,-162"/>
+<text text-anchor="start" x="139" y="-169.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">year_of_birth</text>
+<polygon fill="none" stroke="#000000" points="134,-143 134,-162 238,-162 238,-143 134,-143"/>
+<text text-anchor="start" x="139" y="-150.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">month_of_birth</text>
+<polygon fill="none" stroke="#000000" points="134,-124 134,-143 238,-143 238,-124 134,-124"/>
+<text text-anchor="start" x="139" y="-131.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">day_of_birth</text>
+<polygon fill="none" stroke="#000000" points="134,-105 134,-124 238,-124 238,-105 134,-105"/>
+<text text-anchor="start" x="139" y="-112.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">gender_source_value</text>
+<polygon fill="none" stroke="#000000" points="134,-86 134,-105 238,-105 238,-86 134,-86"/>
+<text text-anchor="start" x="139" y="-93.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">race_source_value</text>
+<polygon fill="none" stroke="#000000" points="134,-67 134,-86 238,-86 238,-67 134,-67"/>
+<text text-anchor="start" x="139" y="-74.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ethnicity_source_value</text>
+<polygon fill="none" stroke="#000000" points="134,-48 134,-67 238,-67 238,-48 134,-48"/>
+<text text-anchor="start" x="139" y="-55.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birth_datetime</text>
+<polygon fill="none" stroke="#000000" points="134,-29 134,-48 238,-48 238,-29 134,-29"/>
+<text text-anchor="start" x="139" y="-36.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">person_source_value</text>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge1" class="edge">
+<title>stg_patients:f23&#45;&gt;stg_person:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-66C145.42,-66 89.95,-162.3 127.73,-171.32"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.81,-173.44 134,-172 128.26,-169.27 127.81,-173.44"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge2" class="edge">
+<title>stg_patients:f23&#45;&gt;stg_person:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-66C137.56,-66 97.1,-143.74 127.91,-152.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.79,-154.35 134,-153 128.3,-150.18 127.79,-154.35"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge3" class="edge">
+<title>stg_patients:f23&#45;&gt;stg_person:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-66C129.93,-66 103.81,-125.27 128.03,-133.14"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.76,-135.22 134,-134 128.36,-131.07 127.76,-135.22"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge4" class="edge">
+<title>stg_patients:f11&#45;&gt;stg_person:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-295C177.78,-295 58.82,-123.76 127.73,-114.4"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.15,-116.48 134,-114 127.88,-112.29 128.15,-116.48"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge5" class="edge">
+<title>stg_patients:f9&#45;&gt;stg_person:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-333C202.79,-333 34.2,-104.66 127.77,-95.3"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.11,-97.38 134,-95 127.91,-93.19 128.11,-97.38"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge6" class="edge">
+<title>stg_patients:f10&#45;&gt;stg_person:f5</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-314C202.79,-314 34.2,-85.66 127.77,-76.3"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.11,-78.38 134,-76 127.91,-74.19 128.11,-78.38"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge7" class="edge">
+<title>stg_patients:f23&#45;&gt;stg_person:f6</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-66C112.17,-66 116.39,-59.35 127.77,-57.48"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.18,-59.56 134,-57 127.86,-55.37 128.18,-59.56"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_person -->
+<g id="edge8" class="edge">
+<title>stg_patients:f25&#45;&gt;stg_person:f7</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-28C112.27,-28 116.34,-35.39 127.74,-37.46"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.84,-39.58 134,-38 128.2,-35.39 127.84,-39.58"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <h3>Column Matching Results:</h3><ul><li><b>year_of_birth</b>:<ul><li>Source columns: birth_date</li><li>Transformation: feature extraction (EXTRACT(YEAR FROM birth_date))</li></ul></li><li><b>month_of_birth</b>:<ul><li>Source columns: birth_date</li><li>Transformation: feature extraction (EXTRACT(MONTH FROM birth_date))</li></ul></li><li><b>day_of_birth</b>:<ul><li>Source columns: birth_date</li><li>Transformation: feature extraction (EXTRACT(DAY FROM birth_date))</li></ul></li><li><b>gender_source_value</b>:<ul><li>Source columns: gender</li><li>Transformation: direct copy</li></ul></li><li><b>race_source_value</b>:<ul><li>Source columns: race</li><li>Transformation: direct copy</li></ul></li><li><b>ethnicity_source_value</b>:<ul><li>Source columns: ethnicity</li><li>Transformation: direct copy</li></ul></li><li><b>birth_datetime</b>:<ul><li>Source columns: birth_date</li><li>Transformation: feature extraction (CAST(birth_date AS TIMESTAMP))</li></ul></li><li><b>person_source_value</b>:<ul><li>Source columns: patient_id</li><li>Transformation: direct copy</li></ul></li></ul>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    ✅ <b>We have finished the SQL writing!</b> <div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">    </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">birth_date</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">year_of_birth</span><span class="p">,</span>
+<span class="w">    </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">MONTH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">birth_date</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">month_of_birth</span><span class="p">,</span>
+<span class="w">    </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">DAY</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">birth_date</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">day_of_birth</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gender</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">gender_source_value</span><span class="p">,</span>
+<span class="w">    </span><span class="n">race</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">race_source_value</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ethnicity</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ethnicity_source_value</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CAST</span><span class="p">(</span><span class="n">birth_date</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">birth_datetime</span><span class="p">,</span>
+<span class="w">    </span><span class="n">patient_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">person_source_value</span>
+<span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;stg_patients&quot;</span>
+
+<span class="w"> </span>
+</pre></div>
+<br>Here are the samples (first 5 rows):<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year_of_birth</th>
+      <th>month_of_birth</th>
+      <th>day_of_birth</th>
+      <th>gender_source_value</th>
+      <th>race_source_value</th>
+      <th>ethnicity_source_value</th>
+      <th>birth_datetime</th>
+      <th>person_source_value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021</td>
+      <td>9</td>
+      <td>23</td>
+      <td>M</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>2021-09-23</td>
+      <td>eb247227-e839-88d3-447d-b5972468f33b</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1944</td>
+      <td>5</td>
+      <td>31</td>
+      <td>F</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>1944-05-31</td>
+      <td>2ffa361e-5858-877e-e022-ce81fe32da1b</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2009</td>
+      <td>2</td>
+      <td>8</td>
+      <td>M</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>2009-02-08</td>
+      <td>3dfb065a-67df-5b8a-3901-49bfd834bed1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1979</td>
+      <td>6</td>
+      <td>26</td>
+      <td>M</td>
+      <td>asian</td>
+      <td>nonhispanic</td>
+      <td>1979-06-26</td>
+      <td>db80575b-5e9b-921b-fad9-1e3a20929dc7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1973</td>
+      <td>5</td>
+      <td>31</td>
+      <td>F</td>
+      <td>white</td>
+      <td>nonhispanic</td>
+      <td>1973-05-31</td>
+      <td>d84815a3-c5b3-8ca2-025f-6323a4ec59ef</td>
+    </tr>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the column details for <i>stg_death</i> ... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cause_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">If available, put the source code representing the cause of death here</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_date</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Date of death for the individual</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_datetime</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Precise date and time of death</span>
+</pre></div>
+<h3>Summary:</h3><p>2 columns can be transformed from the source table to the target table. The "death_date" column can be directly copied from the source table. The "death_datetime" column can be derived from the "death_date" column by adding a default time. The "cause_source_value" column cannot be populated as there is no relevant information in the source table.</p>
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="235pt" height="540pt"
+ viewBox="0.00 0.00 235.00 540.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 536)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-536 231,-536 231,4 -4,4"/>
+<!-- stg_patients -->
+<g id="node1" class="node">
+<title>stg_patients</title>
+<polygon fill="#ffffff" stroke="transparent" points="98,-532 0,-532 0,0 98,0 98,-532"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<polygon fill="none" stroke="#000000" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<text text-anchor="start" x="21" y="-521.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_patients</text>
+<polygon fill="none" stroke="#000000" points="0,-494 0,-513 98,-513 98,-494 0,-494"/>
+<text text-anchor="start" x="5" y="-501.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ssn</text>
+<polygon fill="none" stroke="#000000" points="0,-475 0,-494 98,-494 98,-475 0,-475"/>
+<text text-anchor="start" x="5" y="-482.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">drivers_license</text>
+<polygon fill="none" stroke="#000000" points="0,-456 0,-475 98,-475 98,-456 0,-456"/>
+<text text-anchor="start" x="5" y="-463.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">passport_number</text>
+<polygon fill="none" stroke="#000000" points="0,-437 0,-456 98,-456 98,-437 0,-437"/>
+<text text-anchor="start" x="5" y="-444.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_prefix</text>
+<polygon fill="none" stroke="#000000" points="0,-418 0,-437 98,-437 98,-418 0,-418"/>
+<text text-anchor="start" x="5" y="-425.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">first_name</text>
+<polygon fill="none" stroke="#000000" points="0,-399 0,-418 98,-418 98,-399 0,-399"/>
+<text text-anchor="start" x="5" y="-406.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">last_name</text>
+<polygon fill="none" stroke="#000000" points="0,-380 0,-399 98,-399 98,-380 0,-380"/>
+<text text-anchor="start" x="5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_suffix</text>
+<polygon fill="none" stroke="#000000" points="0,-361 0,-380 98,-380 98,-361 0,-361"/>
+<text text-anchor="start" x="5" y="-368.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">maiden_name</text>
+<polygon fill="none" stroke="#000000" points="0,-342 0,-361 98,-361 98,-342 0,-342"/>
+<text text-anchor="start" x="5" y="-349.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">marital_status</text>
+<polygon fill="none" stroke="#000000" points="0,-323 0,-342 98,-342 98,-323 0,-323"/>
+<text text-anchor="start" x="5" y="-330.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">race</text>
+<polygon fill="none" stroke="#000000" points="0,-304 0,-323 98,-323 98,-304 0,-304"/>
+<text text-anchor="start" x="5" y="-311.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ethnicity</text>
+<polygon fill="none" stroke="#000000" points="0,-285 0,-304 98,-304 98,-285 0,-285"/>
+<text text-anchor="start" x="5" y="-292.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">gender</text>
+<polygon fill="none" stroke="#000000" points="0,-266 0,-285 98,-285 98,-266 0,-266"/>
+<text text-anchor="start" x="5" y="-273.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birthplace</text>
+<polygon fill="none" stroke="#000000" points="0,-247 0,-266 98,-266 98,-247 0,-247"/>
+<text text-anchor="start" x="5" y="-254.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">street_address</text>
+<polygon fill="none" stroke="#000000" points="0,-228 0,-247 98,-247 98,-228 0,-228"/>
+<text text-anchor="start" x="5" y="-235.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">city</text>
+<polygon fill="none" stroke="#000000" points="0,-209 0,-228 98,-228 98,-209 0,-209"/>
+<text text-anchor="start" x="5" y="-216.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">state</text>
+<polygon fill="none" stroke="#000000" points="0,-190 0,-209 98,-209 98,-190 0,-190"/>
+<text text-anchor="start" x="5" y="-197.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">county</text>
+<polygon fill="none" stroke="#000000" points="0,-171 0,-190 98,-190 98,-171 0,-171"/>
+<text text-anchor="start" x="5" y="-178.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">fips_code</text>
+<polygon fill="none" stroke="#000000" points="0,-152 0,-171 98,-171 98,-152 0,-152"/>
+<text text-anchor="start" x="5" y="-159.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">latitude</text>
+<polygon fill="none" stroke="#000000" points="0,-133 0,-152 98,-152 98,-133 0,-133"/>
+<text text-anchor="start" x="5" y="-140.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">longitude</text>
+<polygon fill="none" stroke="#000000" points="0,-114 0,-133 98,-133 98,-114 0,-114"/>
+<text text-anchor="start" x="5" y="-121.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_expenses</text>
+<polygon fill="none" stroke="#000000" points="0,-95 0,-114 98,-114 98,-95 0,-95"/>
+<text text-anchor="start" x="5" y="-102.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_coverage</text>
+<polygon fill="none" stroke="#000000" points="0,-76 0,-95 98,-95 98,-76 0,-76"/>
+<text text-anchor="start" x="5" y="-83.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">annual_income</text>
+<polygon fill="none" stroke="#000000" points="0,-57 0,-76 98,-76 98,-57 0,-57"/>
+<text text-anchor="start" x="5" y="-64.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birth_date</text>
+<polygon fill="none" stroke="#000000" points="0,-38 0,-57 98,-57 98,-38 0,-38"/>
+<text text-anchor="start" x="5" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_date</text>
+<polygon fill="none" stroke="#000000" points="0,-19 0,-38 98,-38 98,-19 0,-19"/>
+<text text-anchor="start" x="5" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">patient_id</text>
+<polygon fill="none" stroke="#000000" points="0,0 0,-19 98,-19 98,0 0,0"/>
+<text text-anchor="start" x="5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">zip_code</text>
+</g>
+<!-- stg_death -->
+<g id="node2" class="node">
+<title>stg_death</title>
+<polygon fill="#ffffff" stroke="transparent" points="227,-105 134,-105 134,-29 227,-29 227,-105"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="134.5,-86 134.5,-105 227.5,-105 227.5,-86 134.5,-86"/>
+<polygon fill="none" stroke="#000000" points="134.5,-86 134.5,-105 227.5,-105 227.5,-86 134.5,-86"/>
+<text text-anchor="start" x="158.5" y="-94.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_death</text>
+<polygon fill="none" stroke="#000000" points="134.5,-67 134.5,-86 227.5,-86 227.5,-67 134.5,-67"/>
+<text text-anchor="start" x="139.5" y="-74.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">cause_source_value</text>
+<polygon fill="none" stroke="#000000" points="134.5,-48 134.5,-67 227.5,-67 227.5,-48 134.5,-48"/>
+<text text-anchor="start" x="139.5" y="-55.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_date</text>
+<polygon fill="none" stroke="#000000" points="134.5,-29 134.5,-48 227.5,-48 227.5,-29 134.5,-29"/>
+<text text-anchor="start" x="139.5" y="-36.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_datetime</text>
+</g>
+<!-- stg_patients&#45;&gt;stg_death -->
+<g id="edge1" class="edge">
+<title>stg_patients:f24&#45;&gt;stg_death:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-47C112.27,-47 116.34,-54.39 127.74,-56.46"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.84,-58.58 134,-57 128.2,-54.39 127.84,-58.58"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_death -->
+<g id="edge2" class="edge">
+<title>stg_patients:f24&#45;&gt;stg_death:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-47C112.17,-47 116.39,-40.35 127.77,-38.48"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.18,-40.56 134,-38 127.86,-36.37 128.18,-40.56"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <h3>Column Matching Results:</h3><ul><li><b>death_date</b>:<ul><li>Source columns: death_date</li><li>Transformation: direct copy</li></ul></li><li><b>death_datetime</b>:<ul><li>Source columns: death_date</li><li>Transformation: feature extraction - add default time to date</li></ul></li></ul>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    ✅ <b>We have finished the SQL writing!</b> <div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">    </span><span class="n">death_date</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">death_date</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">death_date</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">death_date</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39; 00:00:00&#39;</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">death_datetime</span>
+<span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;stg_patients&quot;</span>
+
+<span class="w"> </span>
+</pre></div>
+<br>Here are the samples (first 5 rows):<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>death_date</th>
+      <th>death_datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1995-07-04</td>
+      <td>1995-07-04 00:00:00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaT</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the column details for <i>stg_location</i> ... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">address_1</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Primary street address</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">address_2</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secondary address information (suite, apartment, etc.)</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">city</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Name of the city</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">state</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">State abbreviation</span>
+<span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[</span><span class="se">&#39;&#39;</span><span class="s">CA</span><span class="se">&#39;&#39;</span><span class="s">,</span><span class="nv"> </span><span class="se">&#39;&#39;</span><span class="s">NY</span><span class="se">&#39;&#39;</span><span class="s">]&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">county</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Name of the county</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location_source_value</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Source identifier for the location data</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latitude</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Geographic coordinate representing north-south position</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">longitude</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Geographic coordinate representing east-west position</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">zip</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Postal code</span>
+</pre></div>
+<h3>Summary:</h3><p>7 out of 9 columns in the target table can be transformed from the source table. The 'address_2' column cannot be directly derived from the available source data. The 'state' column in the target table has a specific domain that doesn't match the source data, so it would require additional mapping or filtering.</p>
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="243pt" height="540pt"
+ viewBox="0.00 0.00 243.00 540.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 536)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-536 239,-536 239,4 -4,4"/>
+<!-- stg_patients -->
+<g id="node1" class="node">
+<title>stg_patients</title>
+<polygon fill="#ffffff" stroke="transparent" points="98,-532 0,-532 0,0 98,0 98,-532"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<polygon fill="none" stroke="#000000" points="0,-513 0,-532 98,-532 98,-513 0,-513"/>
+<text text-anchor="start" x="21" y="-521.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_patients</text>
+<polygon fill="none" stroke="#000000" points="0,-494 0,-513 98,-513 98,-494 0,-494"/>
+<text text-anchor="start" x="5" y="-501.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ssn</text>
+<polygon fill="none" stroke="#000000" points="0,-475 0,-494 98,-494 98,-475 0,-475"/>
+<text text-anchor="start" x="5" y="-482.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">drivers_license</text>
+<polygon fill="none" stroke="#000000" points="0,-456 0,-475 98,-475 98,-456 0,-456"/>
+<text text-anchor="start" x="5" y="-463.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">passport_number</text>
+<polygon fill="none" stroke="#000000" points="0,-437 0,-456 98,-456 98,-437 0,-437"/>
+<text text-anchor="start" x="5" y="-444.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_prefix</text>
+<polygon fill="none" stroke="#000000" points="0,-418 0,-437 98,-437 98,-418 0,-418"/>
+<text text-anchor="start" x="5" y="-425.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">first_name</text>
+<polygon fill="none" stroke="#000000" points="0,-399 0,-418 98,-418 98,-399 0,-399"/>
+<text text-anchor="start" x="5" y="-406.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">last_name</text>
+<polygon fill="none" stroke="#000000" points="0,-380 0,-399 98,-399 98,-380 0,-380"/>
+<text text-anchor="start" x="5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_suffix</text>
+<polygon fill="none" stroke="#000000" points="0,-361 0,-380 98,-380 98,-361 0,-361"/>
+<text text-anchor="start" x="5" y="-368.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">maiden_name</text>
+<polygon fill="none" stroke="#000000" points="0,-342 0,-361 98,-361 98,-342 0,-342"/>
+<text text-anchor="start" x="5" y="-349.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">marital_status</text>
+<polygon fill="none" stroke="#000000" points="0,-323 0,-342 98,-342 98,-323 0,-323"/>
+<text text-anchor="start" x="5" y="-330.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">race</text>
+<polygon fill="none" stroke="#000000" points="0,-304 0,-323 98,-323 98,-304 0,-304"/>
+<text text-anchor="start" x="5" y="-311.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ethnicity</text>
+<polygon fill="none" stroke="#000000" points="0,-285 0,-304 98,-304 98,-285 0,-285"/>
+<text text-anchor="start" x="5" y="-292.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">gender</text>
+<polygon fill="none" stroke="#000000" points="0,-266 0,-285 98,-285 98,-266 0,-266"/>
+<text text-anchor="start" x="5" y="-273.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birthplace</text>
+<polygon fill="none" stroke="#000000" points="0,-247 0,-266 98,-266 98,-247 0,-247"/>
+<text text-anchor="start" x="5" y="-254.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">street_address</text>
+<polygon fill="none" stroke="#000000" points="0,-228 0,-247 98,-247 98,-228 0,-228"/>
+<text text-anchor="start" x="5" y="-235.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">city</text>
+<polygon fill="none" stroke="#000000" points="0,-209 0,-228 98,-228 98,-209 0,-209"/>
+<text text-anchor="start" x="5" y="-216.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">state</text>
+<polygon fill="none" stroke="#000000" points="0,-190 0,-209 98,-209 98,-190 0,-190"/>
+<text text-anchor="start" x="5" y="-197.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">county</text>
+<polygon fill="none" stroke="#000000" points="0,-171 0,-190 98,-190 98,-171 0,-171"/>
+<text text-anchor="start" x="5" y="-178.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">fips_code</text>
+<polygon fill="none" stroke="#000000" points="0,-152 0,-171 98,-171 98,-152 0,-152"/>
+<text text-anchor="start" x="5" y="-159.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">latitude</text>
+<polygon fill="none" stroke="#000000" points="0,-133 0,-152 98,-152 98,-133 0,-133"/>
+<text text-anchor="start" x="5" y="-140.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">longitude</text>
+<polygon fill="none" stroke="#000000" points="0,-114 0,-133 98,-133 98,-114 0,-114"/>
+<text text-anchor="start" x="5" y="-121.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_expenses</text>
+<polygon fill="none" stroke="#000000" points="0,-95 0,-114 98,-114 98,-95 0,-95"/>
+<text text-anchor="start" x="5" y="-102.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_coverage</text>
+<polygon fill="none" stroke="#000000" points="0,-76 0,-95 98,-95 98,-76 0,-76"/>
+<text text-anchor="start" x="5" y="-83.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">annual_income</text>
+<polygon fill="none" stroke="#000000" points="0,-57 0,-76 98,-76 98,-57 0,-57"/>
+<text text-anchor="start" x="5" y="-64.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birth_date</text>
+<polygon fill="none" stroke="#000000" points="0,-38 0,-57 98,-57 98,-38 0,-38"/>
+<text text-anchor="start" x="5" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_date</text>
+<polygon fill="none" stroke="#000000" points="0,-19 0,-38 98,-38 98,-19 0,-19"/>
+<text text-anchor="start" x="5" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">patient_id</text>
+<polygon fill="none" stroke="#000000" points="0,0 0,-19 98,-19 98,0 0,0"/>
+<text text-anchor="start" x="5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">zip_code</text>
+</g>
+<!-- stg_location -->
+<g id="node2" class="node">
+<title>stg_location</title>
+<polygon fill="#ffffff" stroke="transparent" points="235,-303 134,-303 134,-113 235,-113 235,-303"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="134.5,-284 134.5,-303 235.5,-303 235.5,-284 134.5,-284"/>
+<polygon fill="none" stroke="#000000" points="134.5,-284 134.5,-303 235.5,-303 235.5,-284 134.5,-284"/>
+<text text-anchor="start" x="157.5" y="-292.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_location</text>
+<polygon fill="none" stroke="#000000" points="134.5,-265 134.5,-284 235.5,-284 235.5,-265 134.5,-265"/>
+<text text-anchor="start" x="139.5" y="-272.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">address_1</text>
+<polygon fill="none" stroke="#000000" points="134.5,-246 134.5,-265 235.5,-265 235.5,-246 134.5,-246"/>
+<text text-anchor="start" x="139.5" y="-253.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">address_2</text>
+<polygon fill="none" stroke="#000000" points="134.5,-227 134.5,-246 235.5,-246 235.5,-227 134.5,-227"/>
+<text text-anchor="start" x="139.5" y="-234.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">city</text>
+<polygon fill="none" stroke="#000000" points="134.5,-208 134.5,-227 235.5,-227 235.5,-208 134.5,-208"/>
+<text text-anchor="start" x="139.5" y="-215.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">state</text>
+<polygon fill="none" stroke="#000000" points="134.5,-189 134.5,-208 235.5,-208 235.5,-189 134.5,-189"/>
+<text text-anchor="start" x="139.5" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">county</text>
+<polygon fill="none" stroke="#000000" points="134.5,-170 134.5,-189 235.5,-189 235.5,-170 134.5,-170"/>
+<text text-anchor="start" x="139.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">location_source_value</text>
+<polygon fill="none" stroke="#000000" points="134.5,-151 134.5,-170 235.5,-170 235.5,-151 134.5,-151"/>
+<text text-anchor="start" x="139.5" y="-158.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">latitude</text>
+<polygon fill="none" stroke="#000000" points="134.5,-132 134.5,-151 235.5,-151 235.5,-132 134.5,-132"/>
+<text text-anchor="start" x="139.5" y="-139.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">longitude</text>
+<polygon fill="none" stroke="#000000" points="134.5,-113 134.5,-132 235.5,-132 235.5,-113 134.5,-113"/>
+<text text-anchor="start" x="139.5" y="-120.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">zip</text>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge1" class="edge">
+<title>stg_patients:f13&#45;&gt;stg_location:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-256C113.83,-256 115.67,-270.55 128,-274.18"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.77,-276.27 134,-275 128.34,-272.11 127.77,-276.27"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge2" class="edge">
+<title>stg_patients:f14&#45;&gt;stg_location:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-237C111.75,-237 116.64,-237 127.9,-237"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128,-239.1 134,-237 128,-234.9 128,-239.1"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge3" class="edge">
+<title>stg_patients:f15&#45;&gt;stg_location:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-218C111.75,-218 116.64,-218 127.9,-218"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128,-220.1 134,-218 128,-215.9 128,-220.1"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge4" class="edge">
+<title>stg_patients:f16&#45;&gt;stg_location:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-199C111.76,-199 116.63,-198.26 127.89,-198.05"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.02,-200.15 134,-198 127.98,-195.95 128.02,-200.15"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge5" class="edge">
+<title>stg_patients:f25&#45;&gt;stg_location:f5</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-28C164.7,-28 71.59,-169.14 127.68,-178.51"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.86,-180.63 134,-179 128.18,-176.44 127.86,-180.63"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge6" class="edge">
+<title>stg_patients:f18&#45;&gt;stg_location:f6</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-161C111.76,-161 116.63,-160.26 127.89,-160.05"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.02,-162.15 134,-160 127.98,-157.95 128.02,-162.15"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge7" class="edge">
+<title>stg_patients:f19&#45;&gt;stg_location:f7</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-142C111.76,-142 116.63,-141.26 127.89,-141.05"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128.02,-143.15 134,-141 127.98,-138.95 128.02,-143.15"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_location -->
+<g id="edge8" class="edge">
+<title>stg_patients:f26&#45;&gt;stg_location:f8</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-9C148.44,-9 87.03,-112.5 127.86,-121.39"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="127.82,-123.5 134,-122 128.24,-119.32 127.82,-123.5"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <h3>Column Matching Results:</h3><ul><li><b>address_1</b>:<ul><li>Source columns: street_address</li><li>Transformation: direct copy</li></ul></li><li><b>city</b>:<ul><li>Source columns: city</li><li>Transformation: direct copy</li></ul></li><li><b>state</b>:<ul><li>Source columns: state</li><li>Transformation: value mapping (requires additional logic to map to 'CA' or 'NY')</li></ul></li><li><b>county</b>:<ul><li>Source columns: county</li><li>Transformation: feature extraction (remove ' County' suffix)</li></ul></li><li><b>location_source_value</b>:<ul><li>Source columns: patient_id</li><li>Transformation: direct copy</li></ul></li><li><b>latitude</b>:<ul><li>Source columns: latitude</li><li>Transformation: direct copy</li></ul></li><li><b>longitude</b>:<ul><li>Source columns: longitude</li><li>Transformation: direct copy</li></ul></li><li><b>zip</b>:<ul><li>Source columns: zip_code</li><li>Transformation: direct copy</li></ul></li></ul>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    ✅ <b>We have finished the SQL writing!</b> <div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">    </span><span class="n">street_address</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">address_1</span><span class="p">,</span>
+<span class="w">    </span><span class="k">NULL</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">address_2</span><span class="p">,</span>
+<span class="w">    </span><span class="n">city</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Massachusetts&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;NY&#39;</span><span class="w"> </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;NY&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">state</span><span class="p">,</span>
+<span class="w">    </span><span class="k">REPLACE</span><span class="p">(</span><span class="n">county</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; County&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">county</span><span class="p">,</span>
+<span class="w">    </span><span class="n">patient_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">location_source_value</span><span class="p">,</span>
+<span class="w">    </span><span class="n">latitude</span><span class="p">,</span>
+<span class="w">    </span><span class="n">longitude</span><span class="p">,</span>
+<span class="w">    </span><span class="n">zip_code</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">zip</span>
+<span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;stg_patients&quot;</span>
+
+<span class="w"> </span>
+</pre></div>
+<br>Here are the samples (first 5 rows):<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>address_1</th>
+      <th>address_2</th>
+      <th>city</th>
+      <th>state</th>
+      <th>county</th>
+      <th>location_source_value</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>zip</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>716 Wunsch Gardens Unit 48</td>
+      <td>NaN</td>
+      <td>Framingham</td>
+      <td>NY</td>
+      <td>Middlesex</td>
+      <td>eb247227-e839-88d3-447d-b5972468f33b</td>
+      <td>42.275650</td>
+      <td>-71.476367</td>
+      <td>1701</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>123 Bayer Camp</td>
+      <td>NaN</td>
+      <td>Taunton</td>
+      <td>NY</td>
+      <td>Bristol</td>
+      <td>2ffa361e-5858-877e-e022-ce81fe32da1b</td>
+      <td>41.892884</td>
+      <td>-71.066686</td>
+      <td>2718</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>575 Jast Rue Unit 48</td>
+      <td>NaN</td>
+      <td>Winchendon</td>
+      <td>NY</td>
+      <td>Worcester</td>
+      <td>3dfb065a-67df-5b8a-3901-49bfd834bed1</td>
+      <td>42.670059</td>
+      <td>-72.074664</td>
+      <td>1475</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>184 Langworth Parade Apt 10</td>
+      <td>NaN</td>
+      <td>Boston</td>
+      <td>NY</td>
+      <td>Suffolk</td>
+      <td>db80575b-5e9b-921b-fad9-1e3a20929dc7</td>
+      <td>42.395516</td>
+      <td>-71.059015</td>
+      <td>2131</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>801 Morissette Divide</td>
+      <td>NaN</td>
+      <td>Hingham</td>
+      <td>NY</td>
+      <td>Plymouth</td>
+      <td>d84815a3-c5b3-8ca2-025f-6323a4ec59ef</td>
+      <td>42.200723</td>
+      <td>-70.836590</td>
+      <td>2043</td>
+    </tr>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Checking out all the column details for <i>stg_cost</i> ... <div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cost_id</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique identifier for each cost entry</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_charge</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total amount charged for the service</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total_paid</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total amount paid for the service</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amount_allowed</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount allowed by the insurance plan</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_payer</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount paid by the insurance company</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_patient</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total amount paid by the patient</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_copay</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount paid by patient as copay</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_coinsurance</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount paid by patient as coinsurance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_patient_deductible</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount paid by patient towards deductible</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_by_primary</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Amount paid by primary insurance</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_ingredient_cost</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cost of ingredients in prescription</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paid_dispensing_fee</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fee for dispensing the prescription</span>
+</pre></div>
+<h3>Summary:</h3><p>2 columns can be transformed from the source table to the target table. The healthcare_expenses column can be used to derive the total_charge, and the healthcare_coverage column can be used to derive the total_paid. Other columns in the target table cannot be directly or indirectly derived from the available source data.</p>
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="258pt" height="617pt"
+ viewBox="0.00 0.00 258.00 616.50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 612.5)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-612.5 254,-612.5 254,4 -4,4"/>
+<!-- stg_patients -->
+<g id="node1" class="node">
+<title>stg_patients</title>
+<polygon fill="#ffffff" stroke="transparent" points="98,-608.5 0,-608.5 0,-76.5 98,-76.5 98,-608.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-589.5 0,-608.5 98,-608.5 98,-589.5 0,-589.5"/>
+<polygon fill="none" stroke="#000000" points="0,-589.5 0,-608.5 98,-608.5 98,-589.5 0,-589.5"/>
+<text text-anchor="start" x="21" y="-598.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_patients</text>
+<polygon fill="none" stroke="#000000" points="0,-570.5 0,-589.5 98,-589.5 98,-570.5 0,-570.5"/>
+<text text-anchor="start" x="5" y="-578.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ssn</text>
+<polygon fill="none" stroke="#000000" points="0,-551.5 0,-570.5 98,-570.5 98,-551.5 0,-551.5"/>
+<text text-anchor="start" x="5" y="-559.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">drivers_license</text>
+<polygon fill="none" stroke="#000000" points="0,-532.5 0,-551.5 98,-551.5 98,-532.5 0,-532.5"/>
+<text text-anchor="start" x="5" y="-540.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">passport_number</text>
+<polygon fill="none" stroke="#000000" points="0,-513.5 0,-532.5 98,-532.5 98,-513.5 0,-513.5"/>
+<text text-anchor="start" x="5" y="-521.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_prefix</text>
+<polygon fill="none" stroke="#000000" points="0,-494.5 0,-513.5 98,-513.5 98,-494.5 0,-494.5"/>
+<text text-anchor="start" x="5" y="-502.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">first_name</text>
+<polygon fill="none" stroke="#000000" points="0,-475.5 0,-494.5 98,-494.5 98,-475.5 0,-475.5"/>
+<text text-anchor="start" x="5" y="-483.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">last_name</text>
+<polygon fill="none" stroke="#000000" points="0,-456.5 0,-475.5 98,-475.5 98,-456.5 0,-456.5"/>
+<text text-anchor="start" x="5" y="-464.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name_suffix</text>
+<polygon fill="none" stroke="#000000" points="0,-437.5 0,-456.5 98,-456.5 98,-437.5 0,-437.5"/>
+<text text-anchor="start" x="5" y="-445.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">maiden_name</text>
+<polygon fill="none" stroke="#000000" points="0,-418.5 0,-437.5 98,-437.5 98,-418.5 0,-418.5"/>
+<text text-anchor="start" x="5" y="-426.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">marital_status</text>
+<polygon fill="none" stroke="#000000" points="0,-399.5 0,-418.5 98,-418.5 98,-399.5 0,-399.5"/>
+<text text-anchor="start" x="5" y="-407.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">race</text>
+<polygon fill="none" stroke="#000000" points="0,-380.5 0,-399.5 98,-399.5 98,-380.5 0,-380.5"/>
+<text text-anchor="start" x="5" y="-388.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">ethnicity</text>
+<polygon fill="none" stroke="#000000" points="0,-361.5 0,-380.5 98,-380.5 98,-361.5 0,-361.5"/>
+<text text-anchor="start" x="5" y="-369.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">gender</text>
+<polygon fill="none" stroke="#000000" points="0,-342.5 0,-361.5 98,-361.5 98,-342.5 0,-342.5"/>
+<text text-anchor="start" x="5" y="-350.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birthplace</text>
+<polygon fill="none" stroke="#000000" points="0,-323.5 0,-342.5 98,-342.5 98,-323.5 0,-323.5"/>
+<text text-anchor="start" x="5" y="-331.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">street_address</text>
+<polygon fill="none" stroke="#000000" points="0,-304.5 0,-323.5 98,-323.5 98,-304.5 0,-304.5"/>
+<text text-anchor="start" x="5" y="-312.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">city</text>
+<polygon fill="none" stroke="#000000" points="0,-285.5 0,-304.5 98,-304.5 98,-285.5 0,-285.5"/>
+<text text-anchor="start" x="5" y="-293.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">state</text>
+<polygon fill="none" stroke="#000000" points="0,-266.5 0,-285.5 98,-285.5 98,-266.5 0,-266.5"/>
+<text text-anchor="start" x="5" y="-274.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">county</text>
+<polygon fill="none" stroke="#000000" points="0,-247.5 0,-266.5 98,-266.5 98,-247.5 0,-247.5"/>
+<text text-anchor="start" x="5" y="-255.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">fips_code</text>
+<polygon fill="none" stroke="#000000" points="0,-228.5 0,-247.5 98,-247.5 98,-228.5 0,-228.5"/>
+<text text-anchor="start" x="5" y="-236.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">latitude</text>
+<polygon fill="none" stroke="#000000" points="0,-209.5 0,-228.5 98,-228.5 98,-209.5 0,-209.5"/>
+<text text-anchor="start" x="5" y="-217.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">longitude</text>
+<polygon fill="none" stroke="#000000" points="0,-190.5 0,-209.5 98,-209.5 98,-190.5 0,-190.5"/>
+<text text-anchor="start" x="5" y="-198.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_expenses</text>
+<polygon fill="none" stroke="#000000" points="0,-171.5 0,-190.5 98,-190.5 98,-171.5 0,-171.5"/>
+<text text-anchor="start" x="5" y="-179.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">healthcare_coverage</text>
+<polygon fill="none" stroke="#000000" points="0,-152.5 0,-171.5 98,-171.5 98,-152.5 0,-152.5"/>
+<text text-anchor="start" x="5" y="-160.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">annual_income</text>
+<polygon fill="none" stroke="#000000" points="0,-133.5 0,-152.5 98,-152.5 98,-133.5 0,-133.5"/>
+<text text-anchor="start" x="5" y="-141.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">birth_date</text>
+<polygon fill="none" stroke="#000000" points="0,-114.5 0,-133.5 98,-133.5 98,-114.5 0,-114.5"/>
+<text text-anchor="start" x="5" y="-122.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">death_date</text>
+<polygon fill="none" stroke="#000000" points="0,-95.5 0,-114.5 98,-114.5 98,-95.5 0,-95.5"/>
+<text text-anchor="start" x="5" y="-103.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">patient_id</text>
+<polygon fill="none" stroke="#000000" points="0,-76.5 0,-95.5 98,-95.5 98,-76.5 0,-76.5"/>
+<text text-anchor="start" x="5" y="-84.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">zip_code</text>
+</g>
+<!-- stg_cost -->
+<g id="node2" class="node">
+<title>stg_cost</title>
+<polygon fill="#ffffff" stroke="transparent" points="250,-247 134,-247 134,0 250,0 250,-247"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="134,-227.5 134,-246.5 250,-246.5 250,-227.5 134,-227.5"/>
+<polygon fill="none" stroke="#000000" points="134,-227.5 134,-246.5 250,-246.5 250,-227.5 134,-227.5"/>
+<text text-anchor="start" x="173.5" y="-236.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_cost</text>
+<polygon fill="none" stroke="#000000" points="134,-208.5 134,-227.5 250,-227.5 250,-208.5 134,-208.5"/>
+<text text-anchor="start" x="139" y="-216.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">cost_id</text>
+<polygon fill="none" stroke="#000000" points="134,-189.5 134,-208.5 250,-208.5 250,-189.5 134,-189.5"/>
+<text text-anchor="start" x="139" y="-197.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">total_charge</text>
+<polygon fill="none" stroke="#000000" points="134,-170.5 134,-189.5 250,-189.5 250,-170.5 134,-170.5"/>
+<text text-anchor="start" x="139" y="-178.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">total_paid</text>
+<polygon fill="none" stroke="#000000" points="134,-151.5 134,-170.5 250,-170.5 250,-151.5 134,-151.5"/>
+<text text-anchor="start" x="139" y="-159.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">amount_allowed</text>
+<polygon fill="none" stroke="#000000" points="134,-132.5 134,-151.5 250,-151.5 250,-132.5 134,-132.5"/>
+<text text-anchor="start" x="139" y="-140.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_by_payer</text>
+<polygon fill="none" stroke="#000000" points="134,-113.5 134,-132.5 250,-132.5 250,-113.5 134,-113.5"/>
+<text text-anchor="start" x="139" y="-121.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_by_patient</text>
+<polygon fill="none" stroke="#000000" points="134,-94.5 134,-113.5 250,-113.5 250,-94.5 134,-94.5"/>
+<text text-anchor="start" x="139" y="-102.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_patient_copay</text>
+<polygon fill="none" stroke="#000000" points="134,-75.5 134,-94.5 250,-94.5 250,-75.5 134,-75.5"/>
+<text text-anchor="start" x="139" y="-83.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_patient_coinsurance</text>
+<polygon fill="none" stroke="#000000" points="134,-56.5 134,-75.5 250,-75.5 250,-56.5 134,-56.5"/>
+<text text-anchor="start" x="139" y="-64.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_patient_deductible</text>
+<polygon fill="none" stroke="#000000" points="134,-37.5 134,-56.5 250,-56.5 250,-37.5 134,-37.5"/>
+<text text-anchor="start" x="139" y="-45.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_by_primary</text>
+<polygon fill="none" stroke="#000000" points="134,-18.5 134,-37.5 250,-37.5 250,-18.5 134,-18.5"/>
+<text text-anchor="start" x="139" y="-26.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_ingredient_cost</text>
+<polygon fill="none" stroke="#000000" points="134,0.5 134,-18.5 250,-18.5 250,0.5 134,0.5"/>
+<text text-anchor="start" x="139" y="-7.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">paid_dispensing_fee</text>
+</g>
+<!-- stg_patients&#45;&gt;stg_cost -->
+<g id="edge1" class="edge">
+<title>stg_patients:f20&#45;&gt;stg_cost:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-199.5C111.75,-199.5 116.64,-199.5 127.9,-199.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128,-201.6 134,-199.5 128,-197.4 128,-201.6"/>
+</g>
+<!-- stg_patients&#45;&gt;stg_cost -->
+<g id="edge2" class="edge">
+<title>stg_patients:f21&#45;&gt;stg_cost:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M98,-180.5C111.75,-180.5 116.64,-180.5 127.9,-180.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="128,-182.6 134,-180.5 128,-178.4 128,-182.6"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <h3>Column Matching Results:</h3><ul><li><b>total_charge</b>:<ul><li>Source columns: healthcare_expenses</li><li>Transformation: direct copy</li></ul></li><li><b>total_paid</b>:<ul><li>Source columns: healthcare_coverage</li><li>Transformation: direct copy</li></ul></li></ul>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    ✅ <b>We have finished the SQL writing!</b> <div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">healthcare_expenses</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_charge</span><span class="p">,</span>
+<span class="w">    </span><span class="n">healthcare_coverage</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">total_paid</span>
+<span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;stg_patients&quot;</span>
+
+<span class="w"> </span>
+</pre></div>
+<br>Here are the samples (first 5 rows):<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>total_charge</th>
+      <th>total_paid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2520.80</td>
+      <td>4323.64</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>205342.20</td>
+      <td>94647.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>16381.92</td>
+      <td>17447.87</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3850.00</td>
+      <td>44057.32</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>66662.10</td>
+      <td>1777031.06</td>
+    </tr>
+  </tbody>
+</table>
+                </div>
+            
+                <div class="message bot-message">
+                    <div class="sender bot-sender">GenAI</div>
+                    😎 <b>RAG from Cocoon</b>: Looking at how tables connect, thanks to Cocoon's key info... <div class="highlight"><pre><span></span><span class="nt">stg_cost</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_person</span>
+<span class="w">    </span><span class="nt">referential_integrity</span><span class="p">:</span>
+<span class="w">      </span><span class="s">&#39;%</span><span class="nv"> </span><span class="s">orphan&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.00%</span>
+<span class="w">      </span><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">time_keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">stg_death</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_person</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">  </span><span class="nt">time_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_date</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">death_datetime</span>
+<span class="nt">stg_location</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location_id</span>
+<span class="w">  </span><span class="nt">time_keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">stg_person</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">foreign_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">location_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_location</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provider_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">provider_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_provider</span>
+<span class="w">    </span><span class="nt">referential_integrity</span><span class="p">:</span>
+<span class="w">      </span><span class="s">&#39;%</span><span class="nv"> </span><span class="s">orphan&#39;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.00%</span>
+<span class="w">      </span><span class="nt">explanation</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">care_site_id</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">column</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">care_site_id</span>
+<span class="w">      </span><span class="nt">table_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_care_site</span>
+<span class="w">  </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person_id</span>
+<span class="w">  </span><span class="nt">time_keys</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">birth_datetime</span>
+</pre></div>
+🤓 <b>We've planned the join:</b>
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="259pt" height="102pt"
+ viewBox="0.00 0.00 259.00 102.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 98)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-98 255,-98 255,4 -4,4"/>
+<!-- stg_person -->
+<g id="node1" class="node">
+<title>stg_person</title>
+<polygon fill="#ffffff" stroke="transparent" points="150,-66.5 91,-66.5 91,-9.5 150,-9.5 150,-66.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="91.5,-47 91.5,-66 150.5,-66 150.5,-47 91.5,-47"/>
+<polygon fill="none" stroke="#000000" points="91.5,-47 91.5,-66 150.5,-66 150.5,-47 91.5,-47"/>
+<text text-anchor="start" x="96.5" y="-55.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_person</text>
+<polygon fill="none" stroke="#000000" points="91.5,-28 91.5,-47 150.5,-47 150.5,-28 91.5,-28"/>
+<text text-anchor="start" x="96.5" y="-35.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">person_id</text>
+<polygon fill="none" stroke="#000000" points="91.5,-9 91.5,-28 150.5,-28 150.5,-9 91.5,-9"/>
+<text text-anchor="start" x="96.5" y="-16.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">location_id</text>
+</g>
+<!-- stg_location -->
+<g id="node2" class="node">
+<title>stg_location</title>
+<polygon fill="#ffffff" stroke="transparent" points="251,-47 186,-47 186,-9 251,-9 251,-47"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="186.5,-28 186.5,-47 251.5,-47 251.5,-28 186.5,-28"/>
+<polygon fill="none" stroke="#000000" points="186.5,-28 186.5,-47 251.5,-47 251.5,-28 186.5,-28"/>
+<text text-anchor="start" x="191.5" y="-36.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_location</text>
+<polygon fill="none" stroke="#000000" points="186.5,-9 186.5,-28 251.5,-28 251.5,-9 186.5,-9"/>
+<text text-anchor="start" x="191.5" y="-16.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">location_id</text>
+</g>
+<!-- stg_person&#45;&gt;stg_location -->
+<g id="edge1" class="edge">
+<title>stg_person:f1&#45;&gt;stg_location:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M150,-18C163.75,-18 168.64,-18 179.9,-18"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="180,-20.1 186,-18 180,-15.9 180,-20.1"/>
+</g>
+<!-- stg_death -->
+<g id="node3" class="node">
+<title>stg_death</title>
+<polygon fill="#ffffff" stroke="transparent" points="55,-94 0,-94 0,-56 55,-56 55,-94"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0.5,-75 0.5,-94 55.5,-94 55.5,-75 0.5,-75"/>
+<polygon fill="none" stroke="#000000" points="0.5,-75 0.5,-94 55.5,-94 55.5,-75 0.5,-75"/>
+<text text-anchor="start" x="5.5" y="-83.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_death</text>
+<polygon fill="none" stroke="#000000" points="0.5,-56 0.5,-75 55.5,-75 55.5,-56 0.5,-56"/>
+<text text-anchor="start" x="5.5" y="-63.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">person_id</text>
+</g>
+<!-- stg_death&#45;&gt;stg_person -->
+<g id="edge2" class="edge">
+<title>stg_death:f0&#45;&gt;stg_person:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M55,-65C72.89,-65 71.45,-43.18 84.82,-38.06"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="85.44,-40.09 91,-37 84.73,-35.95 85.44,-40.09"/>
+</g>
+<!-- stg_cost -->
+<g id="node4" class="node">
+<title>stg_cost</title>
+<polygon fill="#ffffff" stroke="transparent" points="54.5,-38 0.5,-38 0.5,0 54.5,0 54.5,-38"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="2.5,-19 2.5,-38 52.5,-38 52.5,-19 2.5,-19"/>
+<polygon fill="none" stroke="#000000" points="2.5,-19 2.5,-38 52.5,-38 52.5,-19 2.5,-19"/>
+<text text-anchor="start" x="9" y="-27.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">stg_cost</text>
+<polygon fill="none" stroke="#000000" points="2.5,0 2.5,-19 52.5,-19 52.5,0 2.5,0"/>
+<text text-anchor="start" x="7.5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">person_id</text>
+</g>
+<!-- stg_cost&#45;&gt;stg_person -->
+<g id="edge3" class="edge">
+<title>stg_cost:f0&#45;&gt;stg_person:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M53.5,-9C72.03,-9 70.8,-31.21 85,-36.07"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="84.75,-38.15 91,-37 85.39,-34 84.75,-38.15"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        
+                </div>
+            </div>

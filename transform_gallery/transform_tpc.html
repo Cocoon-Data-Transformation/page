@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        pre { line-height: 125%; }
+        .highlight {
+            background: #272822;
+            color: #f8f8f2;
+            border-radius: 4px;
+            padding: 1em;
+            margin: 1em 0;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ed007e; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #ff4689 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #ff4689 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #f8f8f2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #ff4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #ff4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #ff4689 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #ff4689 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+        .tag {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.4rem;
+    margin-right: 0.5em; /* Adds space between tags */
+}
+        
+table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+tr, th, td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+th {
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank"
+                        class="text-decoration-none text-dark">
+                        <div class="d-flex align-items-center">
+                            <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/cocoon_icon.png"
+                                alt="cocoon icon" width="40" class="mr-3">
+                            <div class="mx-3">
+                                <h4 class="mb-0">Cocoon Transformation</h4>
+                                <small class="mb-0 text-muted">Transform from Source to Target using LLMs</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-end">
+                    <h3></h3>
+                </div>
+            </div>
+            
+    <div class="dropdown mb-3">
+        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Select an option
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_All_Column_MatchingContent" aria-expanded="false" aria-controls="cocoon_All_Column_MatchingContent">All Column Matching</a></li><li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_stg_customerContent" aria-expanded="false" aria-controls="cocoon_stg_customerContent">stg_customer</a></li><li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_stg_dateContent" aria-expanded="false" aria-controls="cocoon_stg_dateContent">stg_date</a></li><li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_stg_lineorderContent" aria-expanded="false" aria-controls="cocoon_stg_lineorderContent">stg_lineorder</a></li><li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_stg_partContent" aria-expanded="false" aria-controls="cocoon_stg_partContent">stg_part</a></li><li><a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#cocoon_stg_supplierContent" aria-expanded="false" aria-controls="cocoon_stg_supplierContent">stg_supplier</a></li>
+        </ul>
+    </div>
+
+    <div id="cocoon">
+        
+            <div class="collapse" id="cocoon_All_Column_MatchingContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="262pt" height="799pt"
+ viewBox="0.00 0.00 262.00 798.50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 794.5)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-794.5 258,-794.5 258,4 -4,4"/>
+<!-- (target) stg_customer -->
+<g id="node1" class="node">
+<title>(target) stg_customer</title>
+<polygon fill="#ffffff" stroke="transparent" points="254,-246 146,-246 146,-132 254,-132 254,-246"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="146,-227 146,-246 254,-246 254,-227 146,-227"/>
+<polygon fill="none" stroke="#000000" points="146,-227 146,-246 254,-246 254,-227 146,-227"/>
+<text text-anchor="start" x="151" y="-235.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_customer</text>
+<polygon fill="none" stroke="#000000" points="146,-208 146,-227 254,-227 254,-208 146,-208"/>
+<text text-anchor="start" x="151" y="-215.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country</text>
+<polygon fill="none" stroke="#000000" points="146,-189 146,-208 254,-208 254,-189 146,-189"/>
+<text text-anchor="start" x="151" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">customer_name</text>
+<polygon fill="none" stroke="#000000" points="146,-170 146,-189 254,-189 254,-170 146,-170"/>
+<text text-anchor="start" x="151" y="-177.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">market_segment</text>
+<polygon fill="none" stroke="#000000" points="146,-151 146,-170 254,-170 254,-151 146,-151"/>
+<text text-anchor="start" x="151" y="-158.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+<polygon fill="none" stroke="#000000" points="146,-132 146,-151 254,-151 254,-132 146,-132"/>
+<text text-anchor="start" x="151" y="-139.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region</text>
+</g>
+<!-- (source) stg_nation -->
+<g id="node2" class="node">
+<title>(source) stg_nation</title>
+<polygon fill="#ffffff" stroke="transparent" points="104,-283 6,-283 6,-245 104,-245 104,-283"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="6,-264 6,-283 104,-283 104,-264 6,-264"/>
+<polygon fill="none" stroke="#000000" points="6,-264 6,-283 104,-283 104,-264 6,-264"/>
+<text text-anchor="start" x="11" y="-272.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_nation</text>
+<polygon fill="none" stroke="#000000" points="6,-245 6,-264 104,-264 104,-245 6,-245"/>
+<text text-anchor="start" x="11" y="-252.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country_name</text>
+</g>
+<!-- (source) stg_nation&#45;&gt;(target) stg_customer -->
+<g id="edge1" class="edge">
+<title>(source) stg_nation:f0&#45;&gt;(target) stg_customer:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-254C126.98,-254 122.88,-224.43 139.96,-218.89"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.37,-220.95 146,-218 139.76,-216.8 140.37,-220.95"/>
+</g>
+<!-- (target) stg_supplier -->
+<g id="node12" class="node">
+<title>(target) stg_supplier</title>
+<polygon fill="#ffffff" stroke="transparent" points="252,-114 148,-114 148,0 252,0 252,-114"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="148,-95 148,-114 252,-114 252,-95 148,-95"/>
+<polygon fill="none" stroke="#000000" points="148,-95 148,-114 252,-114 252,-95 148,-95"/>
+<text text-anchor="start" x="153" y="-103.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_supplier</text>
+<polygon fill="none" stroke="#000000" points="148,-76 148,-95 252,-95 252,-76 148,-76"/>
+<text text-anchor="start" x="153" y="-83.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country</text>
+<polygon fill="none" stroke="#000000" points="148,-57 148,-76 252,-76 252,-57 148,-57"/>
+<text text-anchor="start" x="153" y="-64.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+<polygon fill="none" stroke="#000000" points="148,-38 148,-57 252,-57 252,-38 148,-38"/>
+<text text-anchor="start" x="153" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region</text>
+<polygon fill="none" stroke="#000000" points="148,-19 148,-38 252,-38 252,-19 148,-19"/>
+<text text-anchor="start" x="153" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_name</text>
+<polygon fill="none" stroke="#000000" points="148,0 148,-19 252,-19 252,0 148,0"/>
+<text text-anchor="start" x="153" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">address</text>
+</g>
+<!-- (source) stg_nation&#45;&gt;(target) stg_supplier -->
+<g id="edge23" class="edge">
+<title>(source) stg_nation:f0&#45;&gt;(target) stg_supplier:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-254C179.71,-254 76.43,-95.7 140.71,-86.42"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="141.15,-88.5 147,-86 140.87,-84.31 141.15,-88.5"/>
+</g>
+<!-- (source) stg_customer -->
+<g id="node3" class="node">
+<title>(source) stg_customer</title>
+<polygon fill="#ffffff" stroke="transparent" points="110,-227 0,-227 0,-151 110,-151 110,-227"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-208 0,-227 110,-227 110,-208 0,-208"/>
+<polygon fill="none" stroke="#000000" points="0,-208 0,-227 110,-227 110,-208 0,-208"/>
+<text text-anchor="start" x="5" y="-216.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_customer</text>
+<polygon fill="none" stroke="#000000" points="0,-189 0,-208 110,-208 110,-189 0,-189"/>
+<text text-anchor="start" x="5" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">customer_name</text>
+<polygon fill="none" stroke="#000000" points="0,-170 0,-189 110,-189 110,-170 0,-170"/>
+<text text-anchor="start" x="5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">market_segment</text>
+<polygon fill="none" stroke="#000000" points="0,-151 0,-170 110,-170 110,-151 0,-151"/>
+<text text-anchor="start" x="5" y="-158.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge2" class="edge">
+<title>(source) stg_customer:f0&#45;&gt;(target) stg_customer:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-199C123.75,-199 128.64,-199 139.9,-199"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-201.1 146,-199 140,-196.9 140,-201.1"/>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge3" class="edge">
+<title>(source) stg_customer:f1&#45;&gt;(target) stg_customer:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-179C123.75,-179 128.64,-179 139.9,-179"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-181.1 146,-179 140,-176.9 140,-181.1"/>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge4" class="edge">
+<title>(source) stg_customer:f2&#45;&gt;(target) stg_customer:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-160C123.75,-160 128.64,-160 139.9,-160"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-162.1 146,-160 140,-157.9 140,-162.1"/>
+</g>
+<!-- (source) stg_region -->
+<g id="node4" class="node">
+<title>(source) stg_region</title>
+<polygon fill="#ffffff" stroke="transparent" points="104,-133 6,-133 6,-95 104,-95 104,-133"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="6,-114 6,-133 104,-133 104,-114 6,-114"/>
+<polygon fill="none" stroke="#000000" points="6,-114 6,-133 104,-133 104,-114 6,-114"/>
+<text text-anchor="start" x="11" y="-122.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_region</text>
+<polygon fill="none" stroke="#000000" points="6,-95 6,-114 104,-114 104,-95 6,-95"/>
+<text text-anchor="start" x="11" y="-102.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region_name</text>
+</g>
+<!-- (source) stg_region&#45;&gt;(target) stg_customer -->
+<g id="edge5" class="edge">
+<title>(source) stg_region:f0&#45;&gt;(target) stg_customer:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-104C127.24,-104 122.68,-134.39 139.9,-140.09"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.75,-142.19 146,-141 140.38,-138.03 139.75,-142.19"/>
+</g>
+<!-- (source) stg_region&#45;&gt;(target) stg_supplier -->
+<g id="edge25" class="edge">
+<title>(source) stg_region:f0&#45;&gt;(target) stg_supplier:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-104C134.13,-104 118.35,-55.15 140.82,-47.9"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="141.36,-49.94 147,-47 140.76,-45.78 141.36,-49.94"/>
+</g>
+<!-- (target) stg_date -->
+<g id="node5" class="node">
+<title>(target) stg_date</title>
+<polygon fill="#ffffff" stroke="transparent" points="98.5,-337 11.5,-337 11.5,-301 98.5,-301 98.5,-337"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="12,-309 12,-328 99,-328 99,-309 12,-309"/>
+<polygon fill="none" stroke="#000000" points="12,-309 12,-328 99,-328 99,-309 12,-309"/>
+<text text-anchor="start" x="17" y="-317.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_date</text>
+</g>
+<!-- (target) stg_lineorder -->
+<g id="node6" class="node">
+<title>(target) stg_lineorder</title>
+<polygon fill="#ffffff" stroke="transparent" points="254,-677 146,-677 146,-411 254,-411 254,-677"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="146,-658 146,-677 254,-677 254,-658 146,-658"/>
+<polygon fill="none" stroke="#000000" points="146,-658 146,-677 254,-677 254,-658 146,-658"/>
+<text text-anchor="start" x="151" y="-666.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_lineorder</text>
+<polygon fill="none" stroke="#000000" points="146,-639 146,-658 254,-658 254,-639 146,-639"/>
+<text text-anchor="start" x="151" y="-646.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">commit_date</text>
+<polygon fill="none" stroke="#000000" points="146,-620 146,-639 254,-639 254,-620 146,-620"/>
+<text text-anchor="start" x="151" y="-627.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">discount_percentage</text>
+<polygon fill="none" stroke="#000000" points="146,-601 146,-620 254,-620 254,-601 146,-601"/>
+<text text-anchor="start" x="151" y="-608.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_item_revenue</text>
+<polygon fill="none" stroke="#000000" points="146,-582 146,-601 254,-601 254,-582 146,-582"/>
+<text text-anchor="start" x="151" y="-589.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_item_total</text>
+<polygon fill="none" stroke="#000000" points="146,-563 146,-582 254,-582 254,-563 146,-563"/>
+<text text-anchor="start" x="151" y="-570.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_number</text>
+<polygon fill="none" stroke="#000000" points="146,-544 146,-563 254,-563 254,-544 146,-544"/>
+<text text-anchor="start" x="151" y="-551.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_date</text>
+<polygon fill="none" stroke="#000000" points="146,-525 146,-544 254,-544 254,-525 146,-525"/>
+<text text-anchor="start" x="151" y="-532.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_priority</text>
+<polygon fill="none" stroke="#000000" points="146,-506 146,-525 254,-525 254,-506 146,-506"/>
+<text text-anchor="start" x="151" y="-513.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_total</text>
+<polygon fill="none" stroke="#000000" points="146,-487 146,-506 254,-506 254,-487 146,-487"/>
+<text text-anchor="start" x="151" y="-494.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">quantity</text>
+<polygon fill="none" stroke="#000000" points="146,-468 146,-487 254,-487 254,-468 146,-468"/>
+<text text-anchor="start" x="151" y="-475.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_mode</text>
+<polygon fill="none" stroke="#000000" points="146,-449 146,-468 254,-468 254,-449 146,-449"/>
+<text text-anchor="start" x="151" y="-456.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_priority</text>
+<polygon fill="none" stroke="#000000" points="146,-430 146,-449 254,-449 254,-430 146,-430"/>
+<text text-anchor="start" x="151" y="-437.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supply_cost</text>
+<polygon fill="none" stroke="#000000" points="146,-411 146,-430 254,-430 254,-411 146,-411"/>
+<text text-anchor="start" x="151" y="-418.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">tax_percentage</text>
+</g>
+<!-- (source) stg_lineitem -->
+<g id="node7" class="node">
+<title>(source) stg_lineitem</title>
+<polygon fill="#ffffff" stroke="transparent" points="108,-677 2,-677 2,-525 108,-525 108,-677"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="2,-658 2,-677 108,-677 108,-658 2,-658"/>
+<polygon fill="none" stroke="#000000" points="2,-658 2,-677 108,-677 108,-658 2,-658"/>
+<text text-anchor="start" x="7" y="-666.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_lineitem</text>
+<polygon fill="none" stroke="#000000" points="2,-639 2,-658 108,-658 108,-639 2,-639"/>
+<text text-anchor="start" x="7" y="-646.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">commit_date</text>
+<polygon fill="none" stroke="#000000" points="2,-620 2,-639 108,-639 108,-620 2,-620"/>
+<text text-anchor="start" x="7" y="-627.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">discount_rate</text>
+<polygon fill="none" stroke="#000000" points="2,-601 2,-620 108,-620 108,-601 2,-601"/>
+<text text-anchor="start" x="7" y="-608.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">extended_price</text>
+<polygon fill="none" stroke="#000000" points="2,-582 2,-601 108,-601 108,-582 2,-582"/>
+<text text-anchor="start" x="7" y="-589.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_number</text>
+<polygon fill="none" stroke="#000000" points="2,-563 2,-582 108,-582 108,-563 2,-563"/>
+<text text-anchor="start" x="7" y="-570.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">quantity</text>
+<polygon fill="none" stroke="#000000" points="2,-544 2,-563 108,-563 108,-544 2,-544"/>
+<text text-anchor="start" x="7" y="-551.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_mode</text>
+<polygon fill="none" stroke="#000000" points="2,-525 2,-544 108,-544 108,-525 2,-525"/>
+<text text-anchor="start" x="7" y="-532.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">tax_rate</text>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge6" class="edge">
+<title>(source) stg_lineitem:f0&#45;&gt;(target) stg_lineorder:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-649C123.13,-649 128.16,-649 139.73,-649"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-651.1 146,-649 140,-646.9 140,-651.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge7" class="edge">
+<title>(source) stg_lineitem:f1&#45;&gt;(target) stg_lineorder:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-630C123.13,-630 128.16,-630 139.73,-630"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-632.1 146,-630 140,-627.9 140,-632.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge8" class="edge">
+<title>(source) stg_lineitem:f2&#45;&gt;(target) stg_lineorder:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-611C123.13,-611 128.16,-611 139.73,-611"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-613.1 146,-611 140,-608.9 140,-613.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge9" class="edge">
+<title>(source) stg_lineitem:f2&#45;&gt;(target) stg_lineorder:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-611C125.18,-611 127.22,-596.45 139.86,-592.82"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.33,-594.87 146,-592 139.78,-590.71 140.33,-594.87"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge10" class="edge">
+<title>(source) stg_lineitem:f3&#45;&gt;(target) stg_lineorder:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-591C125,-591 127.33,-577.22 139.91,-573.77"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.31,-575.84 146,-573 139.78,-571.67 140.31,-575.84"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge14" class="edge">
+<title>(source) stg_lineitem:f4&#45;&gt;(target) stg_lineorder:f8</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-572C144.22,-572 112.9,-505.2 139.81,-496.85"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.34,-498.9 146,-496 139.77,-494.74 140.34,-498.9"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge15" class="edge">
+<title>(source) stg_lineitem:f5&#45;&gt;(target) stg_lineorder:f9</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-553C144.22,-553 112.9,-486.2 139.81,-477.85"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.34,-479.9 146,-477 139.77,-475.74 140.34,-479.9"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge18" class="edge">
+<title>(source) stg_lineitem:f6&#45;&gt;(target) stg_lineorder:f12</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-534C159.98,-534 98.48,-429.59 139.79,-420.61"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.24,-422.68 146,-420 139.82,-418.5 140.24,-422.68"/>
+</g>
+<!-- (source) stg_order -->
+<g id="node8" class="node">
+<title>(source) stg_order</title>
+<polygon fill="#ffffff" stroke="transparent" points="101,-506.5 9,-506.5 9,-411.5 101,-411.5 101,-506.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="9,-487 9,-506 101,-506 101,-487 9,-487"/>
+<polygon fill="none" stroke="#000000" points="9,-487 9,-506 101,-506 101,-487 9,-487"/>
+<text text-anchor="start" x="14" y="-495.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_order</text>
+<polygon fill="none" stroke="#000000" points="9,-468 9,-487 101,-487 101,-468 9,-468"/>
+<text text-anchor="start" x="14" y="-475.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_date</text>
+<polygon fill="none" stroke="#000000" points="9,-449 9,-468 101,-468 101,-449 9,-449"/>
+<text text-anchor="start" x="14" y="-456.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_priority</text>
+<polygon fill="none" stroke="#000000" points="9,-430 9,-449 101,-449 101,-430 9,-430"/>
+<text text-anchor="start" x="14" y="-437.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">total_price</text>
+<polygon fill="none" stroke="#000000" points="9,-411 9,-430 101,-430 101,-411 9,-411"/>
+<text text-anchor="start" x="14" y="-418.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_priority</text>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge11" class="edge">
+<title>(source) stg_order:f0&#45;&gt;(target) stg_lineorder:f5</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-478C138.74,-478 110.71,-545.35 139.86,-553.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-555.35 146,-554 140.3,-551.19 139.79,-555.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge12" class="edge">
+<title>(source) stg_order:f1&#45;&gt;(target) stg_lineorder:f6</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-458C138.74,-458 110.71,-525.35 139.86,-533.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-535.35 146,-534 140.3,-531.19 139.79,-535.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge13" class="edge">
+<title>(source) stg_order:f2&#45;&gt;(target) stg_lineorder:f7</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-439C138.74,-439 110.71,-506.35 139.86,-514.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-516.35 146,-515 140.3,-512.19 139.79,-516.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge16" class="edge">
+<title>(source) stg_order:f3&#45;&gt;(target) stg_lineorder:f10</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-420C125.62,-420 121.23,-451.75 140.04,-457.21"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.78,-459.29 146,-458 140.33,-455.13 139.78,-459.29"/>
+</g>
+<!-- (source) stg_partsupp -->
+<g id="node9" class="node">
+<title>(source) stg_partsupp</title>
+<polygon fill="#ffffff" stroke="transparent" points="110,-393 0,-393 0,-355 110,-355 110,-393"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-374 0,-393 110,-393 110,-374 0,-374"/>
+<polygon fill="none" stroke="#000000" points="0,-374 0,-393 110,-393 110,-374 0,-374"/>
+<text text-anchor="start" x="5" y="-382.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_partsupp</text>
+<polygon fill="none" stroke="#000000" points="0,-355 0,-374 110,-374 110,-355 0,-355"/>
+<text text-anchor="start" x="5" y="-362.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supply_cost</text>
+</g>
+<!-- (source) stg_partsupp&#45;&gt;(target) stg_lineorder -->
+<g id="edge17" class="edge">
+<title>(source) stg_partsupp:f0&#45;&gt;(target) stg_lineorder:f11</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-364C144.66,-364 113.48,-429.92 139.91,-438.16"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.77,-440.26 146,-439 140.34,-436.1 139.77,-440.26"/>
+</g>
+<!-- (target) stg_part -->
+<g id="node10" class="node">
+<title>(target) stg_part</title>
+<polygon fill="#ffffff" stroke="transparent" points="243,-790.5 157,-790.5 157,-695.5 243,-695.5 243,-790.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="157,-771 157,-790 243,-790 243,-771 157,-771"/>
+<polygon fill="none" stroke="#000000" points="157,-771 157,-790 243,-790 243,-771 157,-771"/>
+<text text-anchor="start" x="162" y="-779.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_part</text>
+<polygon fill="none" stroke="#000000" points="157,-752 157,-771 243,-771 243,-752 157,-752"/>
+<text text-anchor="start" x="162" y="-759.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">container_type</text>
+<polygon fill="none" stroke="#000000" points="157,-733 157,-752 243,-752 243,-733 157,-733"/>
+<text text-anchor="start" x="162" y="-740.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">part_name</text>
+<polygon fill="none" stroke="#000000" points="157,-714 157,-733 243,-733 243,-714 157,-714"/>
+<text text-anchor="start" x="162" y="-721.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">size_</text>
+<polygon fill="none" stroke="#000000" points="157,-695 157,-714 243,-714 243,-695 157,-695"/>
+<text text-anchor="start" x="162" y="-702.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">type_and_material</text>
+</g>
+<!-- (source) stg_part -->
+<g id="node11" class="node">
+<title>(source) stg_part</title>
+<polygon fill="#ffffff" stroke="transparent" points="98.5,-790.5 11.5,-790.5 11.5,-695.5 98.5,-695.5 98.5,-790.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="12,-771 12,-790 99,-790 99,-771 12,-771"/>
+<polygon fill="none" stroke="#000000" points="12,-771 12,-790 99,-790 99,-771 12,-771"/>
+<text text-anchor="start" x="17" y="-779.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_part</text>
+<polygon fill="none" stroke="#000000" points="12,-752 12,-771 99,-771 99,-752 12,-752"/>
+<text text-anchor="start" x="17" y="-759.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">container</text>
+<polygon fill="none" stroke="#000000" points="12,-733 12,-752 99,-752 99,-733 12,-733"/>
+<text text-anchor="start" x="17" y="-740.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name</text>
+<polygon fill="none" stroke="#000000" points="12,-714 12,-733 99,-733 99,-714 12,-714"/>
+<text text-anchor="start" x="17" y="-721.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">size</text>
+<polygon fill="none" stroke="#000000" points="12,-695 12,-714 99,-714 99,-695 12,-695"/>
+<text text-anchor="start" x="17" y="-702.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">type</text>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge19" class="edge">
+<title>(source) stg_part:f0&#45;&gt;(target) stg_part:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M100,-762C122.75,-762 129.9,-762 149.97,-762"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="150,-764.1 156,-762 150,-759.9 150,-764.1"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge20" class="edge">
+<title>(source) stg_part:f1&#45;&gt;(target) stg_part:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M100,-742C122.75,-742 129.9,-742 149.97,-742"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="150,-744.1 156,-742 150,-739.9 150,-744.1"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge21" class="edge">
+<title>(source) stg_part:f2&#45;&gt;(target) stg_part:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M100,-723C122.75,-723 129.9,-723 149.97,-723"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="150,-725.1 156,-723 150,-720.9 150,-725.1"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge22" class="edge">
+<title>(source) stg_part:f3&#45;&gt;(target) stg_part:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M100,-704C122.75,-704 129.9,-704 149.97,-704"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="150,-706.1 156,-704 150,-701.9 150,-706.1"/>
+</g>
+<!-- (source) stg_supplier -->
+<g id="node13" class="node">
+<title>(source) stg_supplier</title>
+<polygon fill="#ffffff" stroke="transparent" points="108,-76 2,-76 2,0 108,0 108,-76"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="2,-57 2,-76 108,-76 108,-57 2,-57"/>
+<polygon fill="none" stroke="#000000" points="2,-57 2,-76 108,-76 108,-57 2,-57"/>
+<text text-anchor="start" x="7" y="-65.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_supplier</text>
+<polygon fill="none" stroke="#000000" points="2,-38 2,-57 108,-57 108,-38 2,-38"/>
+<text text-anchor="start" x="7" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_phone</text>
+<polygon fill="none" stroke="#000000" points="2,-19 2,-38 108,-38 108,-19 2,-19"/>
+<text text-anchor="start" x="7" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_name</text>
+<polygon fill="none" stroke="#000000" points="2,0 2,-19 108,-19 108,0 2,0"/>
+<text text-anchor="start" x="7" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_address</text>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge24" class="edge">
+<title>(source) stg_supplier:f0&#45;&gt;(target) stg_supplier:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-48C125.52,-48 127.77,-62.55 140.72,-66.18"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.78,-68.31 147,-67 141.32,-64.14 140.78,-68.31"/>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge26" class="edge">
+<title>(source) stg_supplier:f1&#45;&gt;(target) stg_supplier:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-28C123.65,-28 128.77,-28 140.88,-28"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="141,-30.1 147,-28 141,-25.9 141,-30.1"/>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge27" class="edge">
+<title>(source) stg_supplier:f2&#45;&gt;(target) stg_supplier:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-9C123.65,-9 128.77,-9 140.88,-9"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="141,-11.1 147,-9 141,-6.9 141,-11.1"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        
+            </div>
+            
+            <div class="collapse" id="cocoon_stg_customerContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="262pt" height="196pt"
+ viewBox="0.00 0.00 262.00 196.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 192)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-192 258,-192 258,4 -4,4"/>
+<!-- (target) stg_customer -->
+<g id="node1" class="node">
+<title>(target) stg_customer</title>
+<polygon fill="#ffffff" stroke="transparent" points="254,-151 146,-151 146,-37 254,-37 254,-151"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="146,-132 146,-151 254,-151 254,-132 146,-132"/>
+<polygon fill="none" stroke="#000000" points="146,-132 146,-151 254,-151 254,-132 146,-132"/>
+<text text-anchor="start" x="151" y="-140.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_customer</text>
+<polygon fill="none" stroke="#000000" points="146,-113 146,-132 254,-132 254,-113 146,-113"/>
+<text text-anchor="start" x="151" y="-120.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country</text>
+<polygon fill="none" stroke="#000000" points="146,-94 146,-113 254,-113 254,-94 146,-94"/>
+<text text-anchor="start" x="151" y="-101.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">customer_name</text>
+<polygon fill="none" stroke="#000000" points="146,-75 146,-94 254,-94 254,-75 146,-75"/>
+<text text-anchor="start" x="151" y="-82.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">market_segment</text>
+<polygon fill="none" stroke="#000000" points="146,-56 146,-75 254,-75 254,-56 146,-56"/>
+<text text-anchor="start" x="151" y="-63.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+<polygon fill="none" stroke="#000000" points="146,-37 146,-56 254,-56 254,-37 146,-37"/>
+<text text-anchor="start" x="151" y="-44.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region</text>
+</g>
+<!-- (source) stg_nation -->
+<g id="node2" class="node">
+<title>(source) stg_nation</title>
+<polygon fill="#ffffff" stroke="transparent" points="104,-188 6,-188 6,-150 104,-150 104,-188"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="6,-169 6,-188 104,-188 104,-169 6,-169"/>
+<polygon fill="none" stroke="#000000" points="6,-169 6,-188 104,-188 104,-169 6,-169"/>
+<text text-anchor="start" x="11" y="-177.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_nation</text>
+<polygon fill="none" stroke="#000000" points="6,-150 6,-169 104,-169 104,-150 6,-150"/>
+<text text-anchor="start" x="11" y="-157.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country_name</text>
+</g>
+<!-- (source) stg_nation&#45;&gt;(target) stg_customer -->
+<g id="edge1" class="edge">
+<title>(source) stg_nation:f0&#45;&gt;(target) stg_customer:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-159C126.98,-159 122.88,-129.43 139.96,-123.89"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.37,-125.95 146,-123 139.76,-121.8 140.37,-125.95"/>
+</g>
+<!-- (source) stg_customer -->
+<g id="node3" class="node">
+<title>(source) stg_customer</title>
+<polygon fill="#ffffff" stroke="transparent" points="110,-132 0,-132 0,-56 110,-56 110,-132"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-113 0,-132 110,-132 110,-113 0,-113"/>
+<polygon fill="none" stroke="#000000" points="0,-113 0,-132 110,-132 110,-113 0,-113"/>
+<text text-anchor="start" x="5" y="-121.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_customer</text>
+<polygon fill="none" stroke="#000000" points="0,-94 0,-113 110,-113 110,-94 0,-94"/>
+<text text-anchor="start" x="5" y="-101.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">customer_name</text>
+<polygon fill="none" stroke="#000000" points="0,-75 0,-94 110,-94 110,-75 0,-75"/>
+<text text-anchor="start" x="5" y="-82.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">market_segment</text>
+<polygon fill="none" stroke="#000000" points="0,-56 0,-75 110,-75 110,-56 0,-56"/>
+<text text-anchor="start" x="5" y="-63.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge2" class="edge">
+<title>(source) stg_customer:f0&#45;&gt;(target) stg_customer:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-104C123.75,-104 128.64,-104 139.9,-104"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-106.1 146,-104 140,-101.9 140,-106.1"/>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge3" class="edge">
+<title>(source) stg_customer:f1&#45;&gt;(target) stg_customer:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-84C123.75,-84 128.64,-84 139.9,-84"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-86.1 146,-84 140,-81.9 140,-86.1"/>
+</g>
+<!-- (source) stg_customer&#45;&gt;(target) stg_customer -->
+<g id="edge4" class="edge">
+<title>(source) stg_customer:f2&#45;&gt;(target) stg_customer:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-65C123.75,-65 128.64,-65 139.9,-65"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-67.1 146,-65 140,-62.9 140,-67.1"/>
+</g>
+<!-- (source) stg_region -->
+<g id="node4" class="node">
+<title>(source) stg_region</title>
+<polygon fill="#ffffff" stroke="transparent" points="104,-38 6,-38 6,0 104,0 104,-38"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="6,-19 6,-38 104,-38 104,-19 6,-19"/>
+<polygon fill="none" stroke="#000000" points="6,-19 6,-38 104,-38 104,-19 6,-19"/>
+<text text-anchor="start" x="11" y="-27.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_region</text>
+<polygon fill="none" stroke="#000000" points="6,0 6,-19 104,-19 104,0 6,0"/>
+<text text-anchor="start" x="11" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region_name</text>
+</g>
+<!-- (source) stg_region&#45;&gt;(target) stg_customer -->
+<g id="edge5" class="edge">
+<title>(source) stg_region:f0&#45;&gt;(target) stg_customer:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M105,-9C127.24,-9 122.68,-39.39 139.9,-45.09"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.75,-47.19 146,-46 140.38,-43.03 139.75,-47.19"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ed007e; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #ff4689 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #ff4689 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #f8f8f2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #ff4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #ff4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #ff4689 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #ff4689 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */</style>
+<style>
+.border-class {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    font-size: 12px;
+}
+</style>
+<div class="border-class"><div style="width: 100%; overflow: auto; max-height: 600px;"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">n</span><span class="p">.</span><span class="n">country_name</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">country</span><span class="p">,</span>
+<span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">customer_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">market_segment</span><span class="p">,</span>
+<span class="w">    </span><span class="k">c</span><span class="p">.</span><span class="n">phone_number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">r</span><span class="p">.</span><span class="n">region_name</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">region</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_customer</span><span class="w"> </span><span class="k">c</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_nation</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">nation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nation_id</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_region</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">region_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">region_id</span>
+</pre></div>
+</div></div><div style="color: orange; font-style: italic; font-size: 0.9em;">
+                ⚠️ SQL query is just for reference based on schema. To ensure correctness, data access is required.
+                </div>
+            </div>
+            
+            <div class="collapse" id="cocoon_stg_dateContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="95pt" height="44pt"
+ viewBox="0.00 0.00 95.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-40 91,-40 91,4 -4,4"/>
+<!-- (target) stg_date -->
+<g id="node1" class="node">
+<title>(target) stg_date</title>
+<polygon fill="#ffffff" stroke="transparent" points="87,-36 0,-36 0,0 87,0 87,-36"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0.5,-8 0.5,-27 87.5,-27 87.5,-8 0.5,-8"/>
+<polygon fill="none" stroke="#000000" points="0.5,-8 0.5,-27 87.5,-27 87.5,-8 0.5,-8"/>
+<text text-anchor="start" x="5.5" y="-16.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_date</text>
+</g>
+</g>
+</svg>
+
+        </div>
+        <div style="color: orange; font-style: italic; font-size: 0.9em;">
+                ⚠️ SQL query is just for reference based on schema. To ensure correctness, data access is required.
+                </div>
+            </div>
+            
+            <div class="collapse" id="cocoon_stg_lineorderContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="262pt" height="330pt"
+ viewBox="0.00 0.00 262.00 330.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 326)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-326 258,-326 258,4 -4,4"/>
+<!-- (target) stg_lineorder -->
+<g id="node1" class="node">
+<title>(target) stg_lineorder</title>
+<polygon fill="#ffffff" stroke="transparent" points="254,-322 146,-322 146,-56 254,-56 254,-322"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="146,-303 146,-322 254,-322 254,-303 146,-303"/>
+<polygon fill="none" stroke="#000000" points="146,-303 146,-322 254,-322 254,-303 146,-303"/>
+<text text-anchor="start" x="151" y="-311.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_lineorder</text>
+<polygon fill="none" stroke="#000000" points="146,-284 146,-303 254,-303 254,-284 146,-284"/>
+<text text-anchor="start" x="151" y="-291.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">commit_date</text>
+<polygon fill="none" stroke="#000000" points="146,-265 146,-284 254,-284 254,-265 146,-265"/>
+<text text-anchor="start" x="151" y="-272.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">discount_percentage</text>
+<polygon fill="none" stroke="#000000" points="146,-246 146,-265 254,-265 254,-246 146,-246"/>
+<text text-anchor="start" x="151" y="-253.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_item_revenue</text>
+<polygon fill="none" stroke="#000000" points="146,-227 146,-246 254,-246 254,-227 146,-227"/>
+<text text-anchor="start" x="151" y="-234.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_item_total</text>
+<polygon fill="none" stroke="#000000" points="146,-208 146,-227 254,-227 254,-208 146,-208"/>
+<text text-anchor="start" x="151" y="-215.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_number</text>
+<polygon fill="none" stroke="#000000" points="146,-189 146,-208 254,-208 254,-189 146,-189"/>
+<text text-anchor="start" x="151" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_date</text>
+<polygon fill="none" stroke="#000000" points="146,-170 146,-189 254,-189 254,-170 146,-170"/>
+<text text-anchor="start" x="151" y="-177.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_priority</text>
+<polygon fill="none" stroke="#000000" points="146,-151 146,-170 254,-170 254,-151 146,-151"/>
+<text text-anchor="start" x="151" y="-158.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_total</text>
+<polygon fill="none" stroke="#000000" points="146,-132 146,-151 254,-151 254,-132 146,-132"/>
+<text text-anchor="start" x="151" y="-139.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">quantity</text>
+<polygon fill="none" stroke="#000000" points="146,-113 146,-132 254,-132 254,-113 146,-113"/>
+<text text-anchor="start" x="151" y="-120.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_mode</text>
+<polygon fill="none" stroke="#000000" points="146,-94 146,-113 254,-113 254,-94 146,-94"/>
+<text text-anchor="start" x="151" y="-101.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_priority</text>
+<polygon fill="none" stroke="#000000" points="146,-75 146,-94 254,-94 254,-75 146,-75"/>
+<text text-anchor="start" x="151" y="-82.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supply_cost</text>
+<polygon fill="none" stroke="#000000" points="146,-56 146,-75 254,-75 254,-56 146,-56"/>
+<text text-anchor="start" x="151" y="-63.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">tax_percentage</text>
+</g>
+<!-- (source) stg_lineitem -->
+<g id="node2" class="node">
+<title>(source) stg_lineitem</title>
+<polygon fill="#ffffff" stroke="transparent" points="108,-322 2,-322 2,-170 108,-170 108,-322"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="2,-303 2,-322 108,-322 108,-303 2,-303"/>
+<polygon fill="none" stroke="#000000" points="2,-303 2,-322 108,-322 108,-303 2,-303"/>
+<text text-anchor="start" x="7" y="-311.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_lineitem</text>
+<polygon fill="none" stroke="#000000" points="2,-284 2,-303 108,-303 108,-284 2,-284"/>
+<text text-anchor="start" x="7" y="-291.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">commit_date</text>
+<polygon fill="none" stroke="#000000" points="2,-265 2,-284 108,-284 108,-265 2,-265"/>
+<text text-anchor="start" x="7" y="-272.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">discount_rate</text>
+<polygon fill="none" stroke="#000000" points="2,-246 2,-265 108,-265 108,-246 2,-246"/>
+<text text-anchor="start" x="7" y="-253.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">extended_price</text>
+<polygon fill="none" stroke="#000000" points="2,-227 2,-246 108,-246 108,-227 2,-227"/>
+<text text-anchor="start" x="7" y="-234.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">line_number</text>
+<polygon fill="none" stroke="#000000" points="2,-208 2,-227 108,-227 108,-208 2,-208"/>
+<text text-anchor="start" x="7" y="-215.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">quantity</text>
+<polygon fill="none" stroke="#000000" points="2,-189 2,-208 108,-208 108,-189 2,-189"/>
+<text text-anchor="start" x="7" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_mode</text>
+<polygon fill="none" stroke="#000000" points="2,-170 2,-189 108,-189 108,-170 2,-170"/>
+<text text-anchor="start" x="7" y="-177.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">tax_rate</text>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge1" class="edge">
+<title>(source) stg_lineitem:f0&#45;&gt;(target) stg_lineorder:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-294C123.13,-294 128.16,-294 139.73,-294"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-296.1 146,-294 140,-291.9 140,-296.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge2" class="edge">
+<title>(source) stg_lineitem:f1&#45;&gt;(target) stg_lineorder:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-275C123.13,-275 128.16,-275 139.73,-275"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-277.1 146,-275 140,-272.9 140,-277.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge3" class="edge">
+<title>(source) stg_lineitem:f2&#45;&gt;(target) stg_lineorder:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-256C123.13,-256 128.16,-256 139.73,-256"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140,-258.1 146,-256 140,-253.9 140,-258.1"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge4" class="edge">
+<title>(source) stg_lineitem:f2&#45;&gt;(target) stg_lineorder:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-256C125.18,-256 127.22,-241.45 139.86,-237.82"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.33,-239.87 146,-237 139.78,-235.71 140.33,-239.87"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge5" class="edge">
+<title>(source) stg_lineitem:f3&#45;&gt;(target) stg_lineorder:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-236C125,-236 127.33,-222.22 139.91,-218.77"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.31,-220.84 146,-218 139.78,-216.67 140.31,-220.84"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge9" class="edge">
+<title>(source) stg_lineitem:f4&#45;&gt;(target) stg_lineorder:f8</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-217C144.22,-217 112.9,-150.2 139.81,-141.85"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.34,-143.9 146,-141 139.77,-139.74 140.34,-143.9"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge10" class="edge">
+<title>(source) stg_lineitem:f5&#45;&gt;(target) stg_lineorder:f9</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-198C144.22,-198 112.9,-131.2 139.81,-122.85"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.34,-124.9 146,-122 139.77,-120.74 140.34,-124.9"/>
+</g>
+<!-- (source) stg_lineitem&#45;&gt;(target) stg_lineorder -->
+<g id="edge13" class="edge">
+<title>(source) stg_lineitem:f6&#45;&gt;(target) stg_lineorder:f12</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M109,-179C159.98,-179 98.48,-74.59 139.79,-65.61"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="140.24,-67.68 146,-65 139.82,-63.5 140.24,-67.68"/>
+</g>
+<!-- (source) stg_order -->
+<g id="node3" class="node">
+<title>(source) stg_order</title>
+<polygon fill="#ffffff" stroke="transparent" points="101,-151.5 9,-151.5 9,-56.5 101,-56.5 101,-151.5"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="9,-132 9,-151 101,-151 101,-132 9,-132"/>
+<polygon fill="none" stroke="#000000" points="9,-132 9,-151 101,-151 101,-132 9,-132"/>
+<text text-anchor="start" x="14" y="-140.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_order</text>
+<polygon fill="none" stroke="#000000" points="9,-113 9,-132 101,-132 101,-113 9,-113"/>
+<text text-anchor="start" x="14" y="-120.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_date</text>
+<polygon fill="none" stroke="#000000" points="9,-94 9,-113 101,-113 101,-94 9,-94"/>
+<text text-anchor="start" x="14" y="-101.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">order_priority</text>
+<polygon fill="none" stroke="#000000" points="9,-75 9,-94 101,-94 101,-75 9,-75"/>
+<text text-anchor="start" x="14" y="-82.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">total_price</text>
+<polygon fill="none" stroke="#000000" points="9,-56 9,-75 101,-75 101,-56 9,-56"/>
+<text text-anchor="start" x="14" y="-63.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">shipping_priority</text>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge6" class="edge">
+<title>(source) stg_order:f0&#45;&gt;(target) stg_lineorder:f5</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-123C138.74,-123 110.71,-190.35 139.86,-198.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-200.35 146,-199 140.3,-196.19 139.79,-200.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge7" class="edge">
+<title>(source) stg_order:f1&#45;&gt;(target) stg_lineorder:f6</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-103C138.74,-103 110.71,-170.35 139.86,-178.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-180.35 146,-179 140.3,-176.19 139.79,-180.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge8" class="edge">
+<title>(source) stg_order:f2&#45;&gt;(target) stg_lineorder:f7</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-84C138.74,-84 110.71,-151.35 139.86,-159.25"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.79,-161.35 146,-160 140.3,-157.19 139.79,-161.35"/>
+</g>
+<!-- (source) stg_order&#45;&gt;(target) stg_lineorder -->
+<g id="edge11" class="edge">
+<title>(source) stg_order:f3&#45;&gt;(target) stg_lineorder:f10</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M102,-65C125.62,-65 121.23,-96.75 140.04,-102.21"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.78,-104.29 146,-103 140.33,-100.13 139.78,-104.29"/>
+</g>
+<!-- (source) stg_partsupp -->
+<g id="node4" class="node">
+<title>(source) stg_partsupp</title>
+<polygon fill="#ffffff" stroke="transparent" points="110,-38 0,-38 0,0 110,0 110,-38"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-19 0,-38 110,-38 110,-19 0,-19"/>
+<polygon fill="none" stroke="#000000" points="0,-19 0,-38 110,-38 110,-19 0,-19"/>
+<text text-anchor="start" x="5" y="-27.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_partsupp</text>
+<polygon fill="none" stroke="#000000" points="0,0 0,-19 110,-19 110,0 0,0"/>
+<text text-anchor="start" x="5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supply_cost</text>
+</g>
+<!-- (source) stg_partsupp&#45;&gt;(target) stg_lineorder -->
+<g id="edge12" class="edge">
+<title>(source) stg_partsupp:f0&#45;&gt;(target) stg_lineorder:f11</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M110,-9C144.66,-9 113.48,-74.92 139.91,-83.16"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="139.77,-85.26 146,-84 140.34,-81.1 139.77,-85.26"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ed007e; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #ff4689 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #ff4689 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #f8f8f2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #ff4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #ff4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #ff4689 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #ff4689 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */</style>
+<style>
+.border-class {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    font-size: 12px;
+}
+</style>
+<div class="border-class"><div style="width: 100%; overflow: auto; max-height: 600px;"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">commit_date</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">discount_rate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">discount_percentage</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">extended_price</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">line_item_revenue</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">extended_price</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">line_item_total</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">line_number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1-URGENT&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Urgent&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2-HIGH&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;High&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;3-MEDIUM&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Medium&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;4-LOW&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Low&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;5-NOT URGENT&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Not Urgent&#39;</span>
+<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_priority</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">order_priority</span><span class="p">,</span>
+<span class="w">    </span><span class="n">o</span><span class="p">.</span><span class="n">total_price</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">order_total</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">quantity</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span><span class="w"> </span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">shipping_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;TRUCK&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;TRUCK&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">shipping_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;AIR&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;AIR&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">shipping_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;MAIL&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;MAIL&#39;</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">shipping_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;RAIL&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;RAIL&#39;</span>
+<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;OTHER&#39;</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">shipping_mode</span><span class="p">,</span>
+<span class="w">    </span><span class="n">o</span><span class="p">.</span><span class="n">shipping_priority</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ps</span><span class="p">.</span><span class="n">supply_cost</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">tax_rate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">tax_percentage</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_lineitem</span><span class="w"> </span><span class="n">l</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_order</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">order_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_partsupp</span><span class="w"> </span><span class="n">ps</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">part_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ps</span><span class="p">.</span><span class="n">part_key</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">supplier_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ps</span><span class="p">.</span><span class="n">supplier_key</span>
+</pre></div>
+</div></div><div style="color: orange; font-style: italic; font-size: 0.9em;">
+                ⚠️ SQL query is just for reference based on schema. To ensure correctness, data access is required.
+                </div>
+            </div>
+            
+            <div class="collapse" id="cocoon_stg_partContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="217pt" height="103pt"
+ viewBox="0.00 0.00 217.00 103.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 99)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-99 213,-99 213,4 -4,4"/>
+<!-- (target) stg_part -->
+<g id="node1" class="node">
+<title>(target) stg_part</title>
+<polygon fill="#ffffff" stroke="transparent" points="209,-95 123,-95 123,0 209,0 209,-95"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="123,-75.5 123,-94.5 209,-94.5 209,-75.5 123,-75.5"/>
+<polygon fill="none" stroke="#000000" points="123,-75.5 123,-94.5 209,-94.5 209,-75.5 123,-75.5"/>
+<text text-anchor="start" x="128" y="-84.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_part</text>
+<polygon fill="none" stroke="#000000" points="123,-56.5 123,-75.5 209,-75.5 209,-56.5 123,-56.5"/>
+<text text-anchor="start" x="128" y="-64.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">container_type</text>
+<polygon fill="none" stroke="#000000" points="123,-37.5 123,-56.5 209,-56.5 209,-37.5 123,-37.5"/>
+<text text-anchor="start" x="128" y="-45.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">part_name</text>
+<polygon fill="none" stroke="#000000" points="123,-18.5 123,-37.5 209,-37.5 209,-18.5 123,-18.5"/>
+<text text-anchor="start" x="128" y="-26.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">size_</text>
+<polygon fill="none" stroke="#000000" points="123,0.5 123,-18.5 209,-18.5 209,0.5 123,0.5"/>
+<text text-anchor="start" x="128" y="-7.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">type_and_material</text>
+</g>
+<!-- (source) stg_part -->
+<g id="node2" class="node">
+<title>(source) stg_part</title>
+<polygon fill="#ffffff" stroke="transparent" points="87,-95 0,-95 0,0 87,0 87,-95"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0.5,-75.5 0.5,-94.5 87.5,-94.5 87.5,-75.5 0.5,-75.5"/>
+<polygon fill="none" stroke="#000000" points="0.5,-75.5 0.5,-94.5 87.5,-94.5 87.5,-75.5 0.5,-75.5"/>
+<text text-anchor="start" x="5.5" y="-84.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_part</text>
+<polygon fill="none" stroke="#000000" points="0.5,-56.5 0.5,-75.5 87.5,-75.5 87.5,-56.5 0.5,-56.5"/>
+<text text-anchor="start" x="5.5" y="-64.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">container</text>
+<polygon fill="none" stroke="#000000" points="0.5,-37.5 0.5,-56.5 87.5,-56.5 87.5,-37.5 0.5,-37.5"/>
+<text text-anchor="start" x="5.5" y="-45.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">name</text>
+<polygon fill="none" stroke="#000000" points="0.5,-18.5 0.5,-37.5 87.5,-37.5 87.5,-18.5 0.5,-18.5"/>
+<text text-anchor="start" x="5.5" y="-26.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">size</text>
+<polygon fill="none" stroke="#000000" points="0.5,0.5 0.5,-18.5 87.5,-18.5 87.5,0.5 0.5,0.5"/>
+<text text-anchor="start" x="5.5" y="-7.1" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">type</text>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge1" class="edge">
+<title>(source) stg_part:f0&#45;&gt;(target) stg_part:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M87,-66.5C100.75,-66.5 105.64,-66.5 116.9,-66.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="117,-68.6 123,-66.5 117,-64.4 117,-68.6"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge2" class="edge">
+<title>(source) stg_part:f1&#45;&gt;(target) stg_part:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M87,-46.5C100.75,-46.5 105.64,-46.5 116.9,-46.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="117,-48.6 123,-46.5 117,-44.4 117,-48.6"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge3" class="edge">
+<title>(source) stg_part:f2&#45;&gt;(target) stg_part:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M87,-27.5C100.75,-27.5 105.64,-27.5 116.9,-27.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="117,-29.6 123,-27.5 117,-25.4 117,-29.6"/>
+</g>
+<!-- (source) stg_part&#45;&gt;(target) stg_part -->
+<g id="edge4" class="edge">
+<title>(source) stg_part:f3&#45;&gt;(target) stg_part:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M87,-8.5C100.75,-8.5 105.64,-8.5 116.9,-8.5"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="117,-10.6 123,-8.5 117,-6.4 117,-10.6"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ed007e; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #ff4689 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #ff4689 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #f8f8f2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #ff4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #ff4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #ff4689 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #ff4689 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */</style>
+<style>
+.border-class {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    font-size: 12px;
+}
+</style>
+<div class="border-class"><div style="width: 100%; overflow: auto; max-height: 600px;"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">container</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">container_type</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">part_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">size</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">size_</span><span class="p">,</span>
+<span class="w">    </span><span class="k">type</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">type_and_material</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_part</span>
+</pre></div>
+</div></div><div style="color: orange; font-style: italic; font-size: 0.9em;">
+                ⚠️ SQL query is just for reference based on schema. To ensure correctness, data access is required.
+                </div>
+            </div>
+            
+            <div class="collapse" id="cocoon_stg_supplierContent" data-bs-parent="#cocoon">
+                
+        <div style="overflow: auto; border: 1px solid #cccccc;">
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: %3 Pages: 1 -->
+<svg width="254pt" height="196pt"
+ viewBox="0.00 0.00 254.00 196.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 192)">
+<title>%3</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-192 250,-192 250,4 -4,4"/>
+<!-- (target) stg_supplier -->
+<g id="node1" class="node">
+<title>(target) stg_supplier</title>
+<polygon fill="#ffffff" stroke="transparent" points="246,-114 142,-114 142,0 246,0 246,-114"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="142,-95 142,-114 246,-114 246,-95 142,-95"/>
+<polygon fill="none" stroke="#000000" points="142,-95 142,-114 246,-114 246,-95 142,-95"/>
+<text text-anchor="start" x="147" y="-103.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(target) stg_supplier</text>
+<polygon fill="none" stroke="#000000" points="142,-76 142,-95 246,-95 246,-76 142,-76"/>
+<text text-anchor="start" x="147" y="-83.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country</text>
+<polygon fill="none" stroke="#000000" points="142,-57 142,-76 246,-76 246,-57 142,-57"/>
+<text text-anchor="start" x="147" y="-64.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">phone_number</text>
+<polygon fill="none" stroke="#000000" points="142,-38 142,-57 246,-57 246,-38 142,-38"/>
+<text text-anchor="start" x="147" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region</text>
+<polygon fill="none" stroke="#000000" points="142,-19 142,-38 246,-38 246,-19 142,-19"/>
+<text text-anchor="start" x="147" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_name</text>
+<polygon fill="none" stroke="#000000" points="142,0 142,-19 246,-19 246,0 142,0"/>
+<text text-anchor="start" x="147" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">address</text>
+</g>
+<!-- (source) stg_nation -->
+<g id="node2" class="node">
+<title>(source) stg_nation</title>
+<polygon fill="#ffffff" stroke="transparent" points="102,-188 4,-188 4,-150 102,-150 102,-188"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="4,-169 4,-188 102,-188 102,-169 4,-169"/>
+<polygon fill="none" stroke="#000000" points="4,-169 4,-188 102,-188 102,-169 4,-169"/>
+<text text-anchor="start" x="9" y="-177.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_nation</text>
+<polygon fill="none" stroke="#000000" points="4,-150 4,-169 102,-169 102,-150 4,-150"/>
+<text text-anchor="start" x="9" y="-157.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">country_name</text>
+</g>
+<!-- (source) stg_nation&#45;&gt;(target) stg_supplier -->
+<g id="edge1" class="edge">
+<title>(source) stg_nation:f0&#45;&gt;(target) stg_supplier:f0</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M103,-159C137.49,-159 109.26,-94.84 135.9,-86.82"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="136.33,-88.88 142,-86 135.77,-84.72 136.33,-88.88"/>
+</g>
+<!-- (source) stg_supplier -->
+<g id="node3" class="node">
+<title>(source) stg_supplier</title>
+<polygon fill="#ffffff" stroke="transparent" points="106,-76 0,-76 0,0 106,0 106,-76"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="0,-57 0,-76 106,-76 106,-57 0,-57"/>
+<polygon fill="none" stroke="#000000" points="0,-57 0,-76 106,-76 106,-57 0,-57"/>
+<text text-anchor="start" x="5" y="-65.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_supplier</text>
+<polygon fill="none" stroke="#000000" points="0,-38 0,-57 106,-57 106,-38 0,-38"/>
+<text text-anchor="start" x="5" y="-45.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_phone</text>
+<polygon fill="none" stroke="#000000" points="0,-19 0,-38 106,-38 106,-19 0,-19"/>
+<text text-anchor="start" x="5" y="-26.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_name</text>
+<polygon fill="none" stroke="#000000" points="0,0 0,-19 106,-19 106,0 0,0"/>
+<text text-anchor="start" x="5" y="-7.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">supplier_address</text>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge2" class="edge">
+<title>(source) stg_supplier:f0&#45;&gt;(target) stg_supplier:f1</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M106,-48C121.83,-48 123.67,-62.55 136,-66.18"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="135.77,-68.27 142,-67 136.34,-64.11 135.77,-68.27"/>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge4" class="edge">
+<title>(source) stg_supplier:f1&#45;&gt;(target) stg_supplier:f3</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M106,-28C119.75,-28 124.64,-28 135.9,-28"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="136,-30.1 142,-28 136,-25.9 136,-30.1"/>
+</g>
+<!-- (source) stg_supplier&#45;&gt;(target) stg_supplier -->
+<g id="edge5" class="edge">
+<title>(source) stg_supplier:f2&#45;&gt;(target) stg_supplier:f4</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M106,-9C119.75,-9 124.64,-9 135.9,-9"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="136,-11.1 142,-9 136,-6.9 136,-11.1"/>
+</g>
+<!-- (source) stg_region -->
+<g id="node4" class="node">
+<title>(source) stg_region</title>
+<polygon fill="#ffffff" stroke="transparent" points="102,-132 4,-132 4,-94 102,-94 102,-132"/>
+<polygon fill="#e0e0e0" stroke="transparent" points="4,-113 4,-132 102,-132 102,-113 4,-113"/>
+<polygon fill="none" stroke="#000000" points="4,-113 4,-132 102,-132 102,-113 4,-113"/>
+<text text-anchor="start" x="9" y="-121.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">(source) stg_region</text>
+<polygon fill="none" stroke="#000000" points="4,-94 4,-113 102,-113 102,-94 4,-94"/>
+<text text-anchor="start" x="9" y="-101.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#2e4057">region_name</text>
+</g>
+<!-- (source) stg_region&#45;&gt;(target) stg_supplier -->
+<g id="edge3" class="edge">
+<title>(source) stg_region:f0&#45;&gt;(target) stg_supplier:f2</title>
+<path fill="none" stroke="#000000" stroke-width="0.6" d="M103,-103C131.08,-103 114.6,-55 136.06,-47.88"/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.6" points="136.37,-49.96 142,-47 135.76,-45.8 136.37,-49.96"/>
+</g>
+</g>
+</svg>
+
+        </div>
+        <style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #959077 } /* Comment */
+.highlight .err { color: #ed007e; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #ff4689 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #959077 } /* Comment.Hashbang */
+.highlight .cm { color: #959077 } /* Comment.Multiline */
+.highlight .cp { color: #959077 } /* Comment.Preproc */
+.highlight .cpf { color: #959077 } /* Comment.PreprocFile */
+.highlight .c1 { color: #959077 } /* Comment.Single */
+.highlight .cs { color: #959077 } /* Comment.Special */
+.highlight .gd { color: #ff4689 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .ges { color: #f8f8f2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #ff4689; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #959077 } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #ff4689 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #ff4689 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #ff4689 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */</style>
+<style>
+.border-class {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    font-size: 12px;
+}
+</style>
+<div class="border-class"><div style="width: 100%; overflow: auto; max-height: 600px;"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span>
+<span class="w">    </span><span class="n">n</span><span class="p">.</span><span class="n">country_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">country</span><span class="p">,</span>
+<span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">supplier_phone</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">phone_number</span><span class="p">,</span>
+<span class="w">    </span><span class="n">r</span><span class="p">.</span><span class="n">region_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">region</span><span class="p">,</span>
+<span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">supplier_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">supplier_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">s</span><span class="p">.</span><span class="n">supplier_address</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">address</span>
+<span class="k">FROM</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_supplier</span><span class="w"> </span><span class="n">s</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_nation</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">nation_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nation_id</span>
+<span class="k">JOIN</span><span class="w"> </span>
+<span class="w">    </span><span class="n">stg_region</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">region_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">region_id</span>
+</pre></div>
+</div></div><div style="color: orange; font-style: italic; font-size: 0.9em;">
+                ⚠️ SQL query is just for reference based on schema. To ensure correctness, data access is required.
+                </div>
+            </div>
+            
+    </div>
+    
+        </div>
+    </div>    
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <div style="height: 6rem;"></div>
+        </div>
+    </footer>
+</body>
+</html>
+        

@@ -34,7 +34,7 @@
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/lineage">Lineage</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Model</a>
+                    <a class="nav-link" href="#">Catalog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/transform">Transform</a>
@@ -49,9 +49,9 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-8 col-md-12 mx-auto">
-                <h1>Data Modeling</h1>
+                <h1>Data Catalog</h1>
                 <p class="lead text-body-secondary">
-                    Your data warehouses may have too many tables with convoluted logic that are difficult to navigate. Cocoon uses LLMs to capture the core concepts  behind the tables, model the relationships among them and tell the story to help understanding.</p>
+                    Your data warehouses may have tons of tables with convoluted logic that are difficult to navigate, for both human and LLMs. Cocoon catalogs what each table is for, how they are connected and what is the business process behind.</p>
             </div>
             <div class="col-lg-10 col-md-12 mx-auto">   
                 <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/model.gif" class="img-fluid border border-3 rounded shadow">
@@ -95,7 +95,7 @@
     <section class="py-5">
         <div class="container">
             <h2 class="text-center" style="font-size: 2.5rem;">Gallery</h2>
-            <p class="text-center  lead text-body-secondary  mb-5">More example data models, mostly from fivetran data source</p>
+            <p class="text-center  lead text-body-secondary  mb-5">More example data catalogs, mostly from fivetran data source</p>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
 
                 <div class="col mb-5">
@@ -334,6 +334,27 @@
                 <div class="col mb-5">
                     <div class="card shadow-sm h-100">
                         <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Salesforce (Large)</h5>
+                            <p class="card-text flex-grow-1">Fivetran Salesforce (large with ~500 tables)</p>
+                            <div class="row mt-auto no-gutters">
+                                <div class="col-6 pr-1">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/SALESFORCE/models/model.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Report
+                                    </a>
+                                </div>
+                                <div class="col-6 pl-1">
+                                    <a href="https://github.com/Cocoon-Data-Transformation/cocoon/tree/main/documentation/model_gallery/SALESFORCE" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-code mr-2"></i>Codes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">Shopify</h5>
                             <p class="card-text flex-grow-1">Fivetran Shopify Source</p>
                             <div class="row mt-auto no-gutters">
@@ -485,6 +506,27 @@
                 <div class="col mb-5">
                     <div class="card shadow-sm h-100">
                         <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">SSB</h5>
+                            <p class="card-text flex-grow-1">Star Schema Benchmark</p>
+                            <div class="row mt-auto no-gutters">
+                                <div class="col-6 pr-1">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/ssb/models/model.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Report
+                                    </a>
+                                </div>
+                                <div class="col-6 pl-1">
+                                    <a href="https://github.com/Cocoon-Data-Transformation/cocoon/tree/main/documentation/model_gallery/ssb" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-code mr-2"></i>Codes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
                             <h5 class="card-title">TPC-DS</h5>
                             <p class="card-text flex-grow-1">TPC-DS</p>
                             <div class="row mt-auto no-gutters">
@@ -495,6 +537,27 @@
                                 </div>
                                 <div class="col-6 pl-1">
                                     <a href="https://github.com/Cocoon-Data-Transformation/cocoon/tree/main/documentation/model_gallery/tpcds" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-code mr-2"></i>Codes
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mb-5">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">TPC-H</h5>
+                            <p class="card-text flex-grow-1">TPC-H</p>
+                            <div class="row mt-auto no-gutters">
+                                <div class="col-6 pr-1">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/tpch/models/model.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Report
+                                    </a>
+                                </div>
+                                <div class="col-6 pl-1">
+                                    <a href="https://github.com/Cocoon-Data-Transformation/cocoon/tree/main/documentation/model_gallery/tpch" class="btn btn-secondary btn-block" target="_blank">
                                         <i class="fas fa-code mr-2"></i>Codes
                                     </a>
                                 </div>

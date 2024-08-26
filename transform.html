@@ -34,7 +34,7 @@
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/lineage">Lineage</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/model">Model</a>
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/model">Catalog</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/transform">Transform</a>
@@ -51,10 +51,10 @@
             <div class="col-lg-8 col-md-12 mx-auto">
                 <h1>Table Transform</h1>
                 <p class="lead text-body-secondary">Given your source databases and target schema specifications, Cocoon automatically writes SQL to perform the transformation</p>
-                
-            </div>
-            <div class="col-lg-6 col-md-9 mx-auto">
-                <img src="https://github.com/Cocoon-Data-Transformation/page/blob/main/table_transformation.png?raw=true" class="img-fluid border border-3 rounded shadow">
+                            
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/XuOAzVRfVAM" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -77,9 +77,9 @@
                                 <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-secondary mr-5 mb-2" target="_blank">
                                     <i class="fab fa-github"></i> Visit GitHub
                                 </a>
-                                <!-- <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/fuzzy_join.ipynb" class="btn btn-secondary mb-2" target="_blank">
+                                <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/Cocoon_Database_Transform.ipynb" class="btn btn-secondary mb-2" target="_blank">
                                     <i class="fab fa-google"></i> Google Colab
-                                </a> -->
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -90,27 +90,151 @@
             </p>
         </div>
     </section>
-    
-    <section class="py-5 container">
-        <div class="row">
-            <div class="col-lg-8 col-md-12 mx-auto">
-                <h2 class="text-center">Research</h2>
-                <p class="lead text-body-secondary  text-center">Table Transformation is based on the following research paper:</p>
-                <a href="#" target="_blank" class="text-decoration-none">
-                    <div class="card px-4 card-hover">
-                        <div class="card-body">
-                            <h5 class="card-title">Transform Table to Database Using Large Language Models</h5>
-                            <!-- <pre class="text-start"><code>@inproceedings{huang2024disambiguate,
-    title={Disambiguate Entity Matching using Large Language Models through Relation Discovery},
-    author={Huang, Zezhou},
-    booktitle={Proceedings of the Conference on Governance, Understanding and Integration of Data for Effective and Responsible AI},
-    pages={36--39},
-    year={2024}
-}</code></pre> -->
-<pre class="text-start"><code>To appear at TaDA@ VLDB 2024</code></pre>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center" style="font-size: 2.5rem;">Gallery</h2>
+            <p class="text-center  lead text-body-secondary  mb-5">More example database transformation results</p>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+
+                <div class="col mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                Hubspot <i class="fas fa-exchange-alt mx-2 text-muted"></i> Salesforce
+                            </h5>
+                            <!-- <p class="card-text flex-grow-1">Transform data from Hubspot to Salesforce</p> -->
+                            <div class="row g-2 mt-auto">
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/HUBSPOT/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Hubspot Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/SALESFORCE/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Salesforce Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/transform_gallery/transform_sales.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-exchange-alt mr-2"></i>View Transformation
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </a>
+                </div>
+
+
+                <div class="col mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                Amazon Ads <i class="fas fa-exchange-alt mx-2 text-muted"></i> Facebook Ads
+                            </h5>
+                            <!-- <p class="card-text flex-grow-1">Transform data from Amazon Ads to Facebook Ads</p> -->
+                            <div class="row g-2 mt-auto">
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/amazon_ads/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Amazon Ads Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/facebook_ads/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Facebook Ads Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/transform_gallery/transform_ads.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-exchange-alt mr-2"></i>View Transformation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                OMOP <i class="fas fa-exchange-alt mx-2 text-muted"></i> Synthea
+                            </h5>
+                            <!-- <p class="card-text flex-grow-1">Transform data from OMOP to Synthea</p> -->
+                            <div class="row g-2 mt-auto">
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/omop/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>OMOP Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/synthea/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>Synthea Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/transform_gallery/transform_omop.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-exchange-alt mr-2"></i>View Transformation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col mb-5">
+                    <div class="card shadow h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                TPC-H <i class="fas fa-exchange-alt mx-2 text-muted"></i> SSB
+                            </h5>
+                            <!-- <p class="card-text flex-grow-1">Transform data from TPC-H to Synthea</p> -->
+                            <div class="row g-2 mt-auto">
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/tpch/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>TPC-H Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/model_gallery/ssb/models/model.html" class="btn btn-outline-secondary btn-block" target="_blank">
+                                        <i class="fas fa-file-alt mr-2"></i>SSB Catalog
+                                    </a>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <a href="https://cocoon-data-transformation.github.io/page/transform_gallery/transform_tpc.html" class="btn btn-secondary btn-block" target="_blank">
+                                        <i class="fas fa-exchange-alt mr-2"></i>View Transformation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12 mx-auto">
+                    <h2 class="text-center">Research</h2>
+                    <p class="lead text-body-secondary  text-center">Database Transformation is based on the following research paper:</p>
+                    <a href="https://tabular-data-analysis.github.io/tada2024/papers/TaDA.6.pdf" target="_blank" class="text-decoration-none">
+                        <div class="card px-4 card-hover">
+                            <div class="card-body">
+                                <h5 class="card-title">Transform Table to Database Using Large Language Models</h5>
+                                Zezhou Huang, Jia Guo, and Eugene Wu. TaDA @ VLDB 2024
+                                <!-- <pre class="text-start"><code>@inproceedings{huang2024cocoon,
+    title={Cocoon: Semantic Table Profiling Using Large Language Models},
+    author={Huang, Zezhou and Wu, Eugene},
+    booktitle={Proceedings of the Workshop on Human-In-the-Loop Data Analytics},
+    year={2024}
+}</code></pre> -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>

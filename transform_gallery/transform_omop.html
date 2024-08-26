@@ -113,21 +113,44 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     border-radius: 0.4rem;
     margin-right: 0.5em; /* Adds space between tags */
 }
-.columns-table {
-    width: 100%;
-    border-collapse: collapse;
+table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
 }
-.columns-table th, .columns-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
 }
-.columns-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+tr, th, td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
 }
-.columns-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+th {
+  font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
 }
     </style>
 </head>
@@ -143,7 +166,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                                 alt="cocoon icon" width="40" class="mr-3">
                             <div class="mx-3">
                                 <h4 class="mb-0">Cocoon Transformation</h4>
-                                <small class="mb-0 text-muted">Transform from Source to Target</small>
+                                <small class="mb-0 text-muted">Transform from Source to Target using LLMs</small>
                             </div>
                         </div>
                     </a>

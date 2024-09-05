@@ -237,62 +237,45 @@ tbody tr:hover {
 </head>
 <body class="bg-light">
   <div class="container py-5">
-    <header class="text-center d-flex align-items-start justify-content-center">
-        <div class="bg-white rounded-circle p-2 me-3" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-top: -10px;">
-          <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/cocoon_icon.png" alt="cocoon icon" width="50">
+    <header class="text-center d-flex align-items-start justify-content-center mb-5">
+        <div class="bg-white rounded-circle p-2 me-3" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin-top: -10px;">
+          <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/cocoon_icon.png" alt="cocoon icon" width="70">
         </div>
         <div>
           <h1 class="fw-bold mb-2">
             Cocoon: RAG Large Data Pipeline
-            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank" class="text-decoration-none" title="View on GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-            </a>
           </h1>
-          <p class="lead mb-3 mx-auto">Cocoon prepares large & complex data pipeline for RAG, enabling dbt copilot functionality</p>
-        </div>
-    </header>
-    
-    <!-- Key Features Section -->
-    <section class="mb-4">
-        <div class="d-flex justify-content-center flex-wrap recommended">
-            <a href="#" class="m-2 text-decoration-none text-center" title="Models & Lineage Discovery" onclick="document.getElementById('question').value='What end reports are this DBT project building?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
-                <div class="btn btn-light rounded-circle p-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
+          <p class="lead mb-2">Cocoon prepares large & complex data pipeline for RAG. Enabling dbt copilot functionality: </p>
+          <div class="recommended mt-1">
+            <a href="#" class="m-1 text-decoration-none text-center" title="Models & Lineage Discovery" onclick="document.getElementById('question').value='What end reports are this DBT project building?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
                     </svg>
-                </div>
-                Models & Lineage Discovery
+                <small>Models & Lineage Discovery</small>
             </a>
-            <a href="#" class="m-2 text-decoration-none text-center" title="Safe Model Edits & Debugging" onclick="document.getElementById('question').value='For `stg_shopify__abandoned_checkout`, I want to update `checkout_id` to `abandoned_checkout_id`. Help me find the edits I need to make for downstream models.'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
-                <div class="btn btn-light rounded-circle p-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
-                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
-                        <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                    </svg>
-                </div>
-                Safe Model Edits & Debugging
+            <a href="#" class="m-1 text-decoration-none text-center" title="Safe Model Edits & Debugging" onclick="document.getElementById('question').value='For `stg_shopify__abandoned_checkout`, I want to update `checkout_id` to `abandoned_checkout_id`. Help me find the edits I need to make for downstream models.'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                    <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                    <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                <small>Safe Model Edits & Debugging</small>
             </a>
-            <a href="#" class="m-2 text-decoration-none text-center" title="New Pipelines Prototyping" onclick="document.getElementById('question').value='How many abandoned checkouts were there last month?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
-                <div class="btn btn-light rounded-circle p-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
-                        <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z"/>
-                    </svg>
-                </div>
-                New Pipelines Prototyping
+            <a href="#" class="m-1 text-decoration-none text-center" title="New Pipelines Prototyping" onclick="document.getElementById('question').value='How many abandoned checkouts were there last month?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning" viewBox="0 0 16 16">
+                    <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z"/>
+                </svg>
+                <small>New Pipelines Prototyping</small>
             </a>
-            <a href="#" class="m-2 text-decoration-none text-center" title="Natural Language Querying" onclick="document.getElementById('question').value='Are there any bottlenecks in our shipping process?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
-                <div class="btn btn-light rounded-circle p-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
-                        <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                        <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
-                    </svg>
-                </div>
-                Natural Language Querying
+            <a href="#" class="m-1 text-decoration-none text-center" title="Natural Language Querying" onclick="document.getElementById('question').value='Are there any bottlenecks in our shipping process?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
+                    <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+                </svg>
+                <small>Natural Language Querying</small>
             </a>
+            </div>
         </div>
-    </section>
+    </header>
 
 
         <!-- Video and Notebook CTA Section -->
@@ -313,13 +296,14 @@ tbody tr:hover {
 
           <!-- Live RAG Demo Section -->
           <section class="bg-white p-4 rounded shadow-sm mb-5">
-            <h2 class="h2 mb-4 text-center">Live RAG Demo on Shopify dbt project</h2>
             
+            <h2 class="h2 mb-2 text-center">Novel RAG representation</h2>
+            <p class="text-muted text-center mb-4"><small>Instead of traditional vector RAG, Cocoon builds the RAG based on pipeline lineage in seconds</small></p>
             <!-- Preparation Section -->
             <div class="mb-5">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text">First, Cocoon builds the RAG based on lineage in seconds:</p>
+                        
                         <div class="dropdown mb-3">
                             <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Explore Model
@@ -13321,12 +13305,14 @@ tbody tr:hover {
                     </div>
                 </div>
             </div>
-            
+        </section>  
+        <section class="bg-white p-4 rounded shadow-sm mb-5">  
+            <h2 class="h2 mb-2 text-center">Live RAG Demo on Shopify dbt project</h2>
+            <p class="text-muted text-center mb-4"><small>Ask any question about data pipelines. An AI copilot, powered by Cocoon's RAG, will provide live answers</small></p>
             <!-- Online Query Section -->
             <div>
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-text mb-4">Then, an interactive copilot is enabled for data pipelines management and beyond:</p>
                         <form class="search-form" onsubmit="return handleSubmit(event)">
                             <input 
                                 type="text" 
@@ -13351,6 +13337,14 @@ tbody tr:hover {
             </div>
         </section>
 
+        <section class="bg-light p-4 mb-5 text-center">
+            <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank">
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 100px; height: 100px;">
+            </a>
+            <h3 class="h4 mt-3">This project is open-sourced</h3>
+            <p class="mb-2">Need support or have questions?</p>
+            <p>Contact: <a href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
+        </section>
   </div>
 
 

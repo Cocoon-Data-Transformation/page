@@ -248,14 +248,14 @@ tbody tr:hover {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/database">Table</a>
+            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/database">RAG Tables</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">Pipeline</a>
+            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">RAG Pipelines</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Research
+              Other Features
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="researchDropdown">
               <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/profile">Profile</a></li>
@@ -336,9 +336,13 @@ tbody tr:hover {
           <section class="bg-white p-4 rounded shadow-sm mb-5">
             <h2 class="h1 mb-5 text-center">Live Demo: RAG Shopify dbt project in 2 steps</h1>
             <hr>
-
-
-            <h3 class="h3 mt-5 mb-2 text-center">Step 1: Prepare Lightweight RAG in Seconds</h3>
+            <div class="text-center mt-5 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-database-check" viewBox="0 0 16 16">
+                  <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514Z"/>
+                  <path d="M12.096 6.223A4.92 4.92 0 0 0 13 5.698V7c0 .289-.213.654-.753 1.007a4.493 4.493 0 0 1 1.753.25V4c0-1.007-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1s-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4v9c0 1.007.875 1.755 1.904 2.223C4.978 15.71 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.525 4.525 0 0 1-.813-.927C8.5 14.992 8.252 15 8 15c-1.464 0-2.766-.27-3.682-.687C3.356 13.875 3 13.373 3 13v-1.302c.271.202.58.378.904.525C4.978 12.71 6.427 13 8 13h.027a4.552 4.552 0 0 1 0-1H8c-1.464 0-2.766-.27-3.682-.687C3.356 10.875 3 10.373 3 10V8.698c.271.202.58.378.904.525C4.978 9.71 6.427 10 8 10c.262 0 .52-.008.774-.024a4.525 4.525 0 0 1 1.102-1.132C9.298 8.944 8.666 9 8 9c-1.464 0-2.766-.27-3.682-.687C3.356 7.875 3 7.373 3 7V5.698c.271.202.58.378.904.525C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777ZM3 4c0-.374.356-.875 1.318-1.313C5.234 2.271 6.536 2 8 2s2.766.27 3.682.687C12.644 3.125 13 3.627 13 4c0 .374-.356.875-1.318 1.313C10.766 5.729 9.464 6 8 6s-2.766-.27-3.682-.687C3.356 4.875 3 4.373 3 4Z"/>
+              </svg>
+          </div>
+          <h3 class="h3 mb-2 text-center">Step 1: Prepare Lightweight RAG in Seconds</h3>
             <p class="text-muted text-center mb-4"><small>Instead of traditional Vector RAG, Cocoon builds novel RAG based on pipeline lineage.<br> Optionally, Cocoon offers Deep RAG preparation that generates model & column description, and column lineage.</small></p>
      
             <!-- Preparation Section -->
@@ -14859,7 +14863,13 @@ Inventory Level = Inventory item @ a Location.
                 </div>
             </div>
             <hr>
-            <h3 class="h3 mt-5  mb-2 text-center">Step 2: Power Copilot with RAG</h3>
+            <div class="text-center mt-5 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16">
+                  <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5ZM3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.58 26.58 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.933.933 0 0 1-.765.935c-.845.147-2.34.346-4.235.346-1.895 0-3.39-.2-4.235-.346A.933.933 0 0 1 3 9.219V8.062Zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.767 24.767 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25.286 25.286 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135Z"/>
+                  <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2V1.866ZM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5Z"/>
+              </svg>
+          </div>
+          <h3 class="h3 mb-2 text-center">Step 2: Power Copilot with RAG</h3>
             <p class="text-muted text-center mb-4"><small>Ask any question about data pipelines. The copilot knows your large data pipeline, thanks to Cocoon RAG.</small></p>
         
             <!-- Online Query Section -->
@@ -14895,8 +14905,7 @@ Inventory Level = Inventory item @ a Location.
                 <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 100px; height: 100px;">
             </a>
             <h3 class="h4 mt-3">Cocoon is open-sourced</h3>
-            <p class="mb-2">Need support or have questions?</p>
-            <p>Contact: <a href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
+            <p class="mb-2">Need support or have questions? <a href="mailto:zach@trycocoon.xyz">Contact Us</a></p>
         </section>
   </div>
 

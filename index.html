@@ -31,50 +31,50 @@
     flex-grow: 1;
 }
 .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .bg-gradient {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-        .card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-top-left-radius: 0.375rem;
-            border-top-right-radius: 0.375rem;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .btn-outline-primary {
-            border-width: 2px;
-        }
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
-        }
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.bg-gradient {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+.card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.btn-outline-primary {
+    border-width: 2px;
+}
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
 </style>
 
 <body>
@@ -90,14 +90,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/database">Table</a>
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/database">RAG Tables</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">Pipeline</a>
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">RAG Pipelines</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Research
+                        Other Features
                     </a>
                     <div class="dropdown-menu" aria-labelledby="researchDropdown">
                         <a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/profile">Profile</a>
@@ -132,13 +132,14 @@
             <div class="col-lg-10 col-md-12 mx-auto pb-4">
                 <p class="lead text-body-secondary">
                     GenAI fails because enterprise data is large and messy with 1000+ tables. <br>
-                    Cocoon unlocks robust and scalable GenAI by building the RAG-ready Data Warehouse.
+                    Cocoon unlocks robust and scalable GenAI by cataloging your data warehouse for RAG.
                 </p>
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <ul class="list-unstyled text-left">
                         <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Thoroughly profile, clean, and document data with human verification</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Leverage existing knowledge from pipelines, documents, and BI objects</li>
                         <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Provide RAG for reliable GenAI apps like Pipeline Copilot and Self-Service BI</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Continuously monitor, maintain, and optimize the catalog for up-to-date RAG</li>
                     </ul>
                 </div>
             </div>
@@ -195,7 +196,7 @@
                     <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 150px; height: 150px;">
                 </a>
                 <h3 class="h2 mt-3">Cocoon is open-sourced</h3>
-                <p class="text-center lead text-body-secondary mb-3">Explore related research projects</p>
+                <p class="text-center lead text-body-secondary mb-3">Explore other features of Cocoon</p>
             </div>
             
             
@@ -287,7 +288,7 @@
             </div>
             
             <p class="text-center lead text-body-secondary mb-3">Need support or have questions?
-            Contact: <a href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
+             <a href="mailto:zach@trycocoon.xyz">Contact Us</a></p>
 
         </div>
         <!-- <div class="col-lg-8 col-md-12 mx-auto">

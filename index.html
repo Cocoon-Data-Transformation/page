@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cocoon</title>
+    <title>Cocoon: RAG Very Large Data Warehouses</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -30,13 +30,58 @@
 .card-body {
     flex-grow: 1;
 }
+.video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .bg-gradient {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-top-left-radius: 0.375rem;
+            border-top-right-radius: 0.375rem;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .btn-outline-primary {
+            border-width: 2px;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
 </style>
 
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="https://cocoon-data-transformation.github.io/page/">
-            Cocoon: Intelligence Layer for GenAI
+            Cocoon: RAG Very Large Data Warehouses
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,14 +121,32 @@
 
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-12 mx-auto pb-4">
-                <img src="https://github.com/Cocoon-Data-Transformation/page/blob/main/material/logo.png?raw=true"
-                    alt="Logo" class="img-fluid mb-4">
+            <div class="col-lg-12 col-md-12 mx-auto pb-4">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle border border-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 170px; height: 170px;">
+                            <img src="https://raw.githubusercontent.com/Cocoon-Data-Transformation/cocoon/main/images/cocoon_icon.png"
+                                alt="Logo" class="img-fluid" style="max-width: 80px;">
+                        </div>
+                        <div class="ml-5">
+                            <h1 class="display-4 font-weight-bold  text-left">Cocoon</h1>
+                            <h3 class="text-muted  text-left">RAG Very Large Data Warehouses</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-8 col-md-12 mx-auto pb-4">
+            <div class="col-lg-10 col-md-12 mx-auto pb-4">
                 <p class="lead text-body-secondary">
-                    Cocoon is a cross-team platform for creating and managing the next-gen data catalog, transforming
-                    large, messy enterprise data into GenAI-readable intelligence. </p>
+                    GenAI fails because enterprise data is very large and messy with 1000+ tables. <br>
+                    Cocoon unlocks GenAI by building the RAG-ready Data Warehouse. Specifically, Cocoon helps you:
+                </p>
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-unstyled text-left">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Thoroughly profile, clean, and document data with human verification</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Leverage existing knowledge from pipelines, documents, and BI objects</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mr-2"></i> Provide RAG for reliable GenAI apps like Pipeline Copilot and Self-Service BI</li>
+                    </ul>
+                </div>
             </div>
             <div class="col-lg-8 col-md-12 mx-auto">
                 <img src="https://github.com/Cocoon-Data-Transformation/page/blob/main/genai_gallery/genai2.png?raw=true"
@@ -94,189 +157,35 @@
 
     <section class="py-5 bg-light">
         <div class="container">
-            <div class="row py-lg-5 text-center">
-                <div class="col-lg-8 col-md-12 mx-auto">
-                    <h2>AI is Hard Because Data is Hard</h2>
-                    <p class="lead text-body-secondary">If Humans Can't Understand Enterprise Data, Neither Can AI</p>
-                </div>
-                <div class="col-lg-8 col-md-12 mx-auto mb-5">
-                    <img src="https://github.com/Cocoon-Data-Transformation/page/blob/main/genai_gallery/genai1.png?raw=true"
-                        class="p-4 img-fluid border border-3 rounded shadow">
-                </div>
-                <div class="col-lg-8 col-md-12 mx-auto mt-5">
-                    <h2>Cocoon unlocks AI in 3 steps</h2>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 my-5">
-                    <div class="card shadow">
-                        <div class="card-header bg-dark text-white py-4 text-center">
-                            <h4 class="mb-2">
-                                <i class="fas fa-book-open" style="margin-right: 10px;"></i>
-                                <span style="vertical-align: middle;">Catalog for GenAI</span>
-                            </h4>
-                            <p class="mb-0">Semantically describe your data</p>
+            <h2 class="fw-bold mb-5 text-center">Learn more about how Cocoon RAGs your ...</h2>
+            <div class="row justify-content-center">
+                <!-- Complex Data Warehouse tables -->
+                <div class="col-lg-6 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/xdmRXs0UnfE" allowfullscreen></iframe>
                         </div>
-                        <div class="card-body p-4">
-                            <ul class="list-unstyled">
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">Detailed catalog in YML</h6>
-                                    <p class="text-muted small mb-0">
-                                        Describe your tables and files in detail. Summarize their relationships and connect them to the business.
-                                    </p>
-                                </li>
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">Mostly in Natural Language</h6>
-                                    <p class="text-muted small mb-0">Easy for LLMs to use. Friendly for humans to understand, verify and maintain.</p>
-                                </li>
-                                <li class="mb-0">
-                                    <h6 class="fw-bold">Incorporate Enterprise Knowledge</h6>
-                                    <p class="text-muted small mb-0">Encompasses existing enterprise knowledge: DWs, lakes, documents, dbt models, human feedback, etc.</p>
-                                </li>
-
-                            </ul>
+                        <div class="card-body d-flex flex-column p-4 pt-5">
+                            <h4 class="card-title mb-3 font-weight-bold">Complex Data Warehouse Tables</h4>
+<p class="card-text flex-grow-1 text-muted">
+    Cocoon handles messy data warehouses by cleaning, profiling, and documenting. 
+    It connects numerous tables through business concepts, preparing them for RAG.
+</p>
+                            <a href="https://cocoon-data-transformation.github.io/page/database" class="btn btn-dark mt-auto">Learn more + Live Demo</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 my-5">
-                    <div class="card shadow">
-                        <div class="card-header bg-dark text-white py-4 text-center">
-                            <h4 class="mb-2">
-                                <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
-                                <span style="vertical-align: middle;">Quality Monitoring</span>
-                            </h4>
-                            <p class="mb-0">Continuously identify and resolve issues</p>
+                
+                <!-- Very Large Data Pipelines -->
+                <div class="col-lg-6 col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/kv5mwTkpfY0" allowfullscreen></iframe>
                         </div>
-                        <div class="card-body p-4">
-                            <ul class="list-unstyled">
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">Semantic Data Quality</h6>
-                                    <p class="text-muted small mb-0">Profile data semantically. Alert issues about data ambiguity, semantic overlap, and business logics.</p>
-                                </li>
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">Human-In-the-Loop</h6>
-                                    <p class="text-muted small mb-0">Seek clarification and verification from data providers. Explain the issues in natural language. </p>
-                                </li>
-                                <li class="mb-0">
-                                    <h6 class="fw-bold">Continuous Monitoring</h6>
-                                    <p class="text-muted small mb-0">Contextualize new data from the existing ones. Identify semantic inconsistency issues.  </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 my-5">
-                    <div class="card shadow">
-                        <div class="card-header bg-dark text-white py-4 text-center">
-                            <h4 class="mb-2">
-                                <i class="fas fa-cogs" style="margin-right: 10px;"></i>
-                                <span style="vertical-align: middle;">Data Preprocessing</span>
-                            </h4>
-                            <p class="mb-0">Shape your data, easy for online query</p>
-                        </div>
-                        <div class="card-body p-4">
-                            <ul class="list-unstyled">
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">Comprehensive Modeling in SQL</h6>
-                                    <p class="text-muted small mb-0">
-                                        Automatically write SQL for data modeling (casting, expanding JSON, SCD, normalization, etc.)
-                                    </p>
-                                </li>
-                                <li class="mb-4">
-                                    <h6 class="fw-bold">
-                                        Data Pipelines in DBT
-                                    </h6>
-                                    <p class="text-muted small mb-0">Follow the existing best practices from DBT (CI/CD, incremental materialization, governance, etc.) </p>
-                                </li>
-          
-                                <li class="mb-0">
-                                    <h6 class="fw-bold">Testing and Maintenance</h6>
-                                    <p class="text-muted small mb-0"> 
-                                        Automatically suggest tests based on semantic understanding. Propose fixes to broken pipelines.</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-    </section>
-
-    <section class="py-5 text-center container">
-        <div class="container-fluid">
-            <div class="row justify-content-center py-lg-5">
-                <div class="col-lg-10 col-md-12 mx-auto pb-4">
-                    <h2 class="fw-bold mb-4">Use cases: with Cocoon, Enterprise GenAI finally works</h2>
-                    <div class="row">
-                        <div class="col-md-6 my-5">
-                            <div class="card shadow">
-                                <div class="card-header bg-dark text-white py-4 text-center">
-                                    <i class="fas fa-lightbulb fa-3x mt-3"></i>
-                                    <h4 class="mb-2">
-                                        <span style="vertical-align: middle;">Unlock AI that failed before</span>
-                                    </h4>
-                                    <p class="mb-0">with catalog, serving as GPS for LLMs, enabling: </p>
-                                    
-                                </div>
-                                <div class="card-body p-4">
-                                    <ul class="list-unstyled">
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Data-informed customer-facing AI agents</h6>
-                                        </li>
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Self-service data analytics & reporting</h6>
-                                        </li>
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Business support functions’ co-pilots </h6>
-                                        </li>
-                                        <li class="mb-0">
-                                            <h6 class="fw-bold text-dark">Data-driven business processes optimization</h6>
-                                        </li>
-        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 my-5">
-                            <div class="card shadow">
-                                <div class="card-header bg-dark text-white py-4 text-center">
-                                    <i class="fas fa-cogs fa-3x mt-3"></i>
-                                    <h4 class="mb-2">
-                                        <span style="vertical-align: middle;">10x AI, Data & Analytics teams</span>
-                                    </h4>
-                                    <p class="mb-0">with co-pilot automating data preparation tasks:</p>
-                                    
-                                </div>
-                                <div class="card-body p-4">
-                                    <ul class="list-unstyled">
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Org’s churn- & politics-resistant source of truth
-                                            </h6>
-                                        </li>
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Discovery & understanding of new data sources
-                                            </h6>
-                                        </li>
-                                        <li class="mb-4">
-                                            <h6 class="fw-bold text-dark">Creating & maintaining data pipelines
-                                            </h6>
-                                        </li>
-                                        <li class="mb-0">
-                                            <h6 class="fw-bold text-dark">Lineage, quality & business issues identification
-                                            </h6>
-                                        </li>
-        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-        
-                    </div>
-
-                    <h2 class="fw-bold mb-4">Watch our demo</h2>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/xdmRXs0UnfE" allowfullscreen></iframe>
+                        <div class="card-body d-flex flex-column p-4 pt-5">
+                            <h4 class="card-title mb-3 font-weight-bold">Very Large Data Pipelines</h4>
+                            <p class="card-text flex-grow-1 text-muted">Cocoon learns and semantically connects large data pipelines. It analyzes models and traces column lineages, transforming pipeline data into RAG-ready formats.</p>
+                            <a href="https://cocoon-data-transformation.github.io/page/pipeline" class="btn btn-dark mt-auto">Learn more + Live Demo</a>
                     </div>
                 </div>
             </div>
@@ -285,19 +194,14 @@
 
 
 
-
-    <section class="py-5 bg-light">
+    <section class="py-5">
         <div class="container">
-            <div class="text-center" >
-                <h2>Related Research</h2> 
-                <p class="text-center  lead text-body-secondary  mb-3">Have questions? Contact me at <a
-                    href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
-
-                <a href="https://github.com/Cocoon-Data-Transformation/cocoon" class="btn btn-dark btn-lg mb-5"
-                        target="_blank">
-                        <i class="fab fa-github mr-2"></i> Visit GitHub
+            <div class="text-center mb-5">
+                <a href="https://github.com/Cocoon-Data-Transformation/cocoon" target="_blank">
+                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" style="width: 150px; height: 150px;">
                 </a>
-
+                <h3 class="h2 mt-3">Cocoon is open-sourced</h3>
+                <p class="text-center lead text-body-secondary mb-3">Explore Cocoon's features below</p>
             </div>
             
             
@@ -387,7 +291,9 @@
                     </div>
                 </div>
             </div>
-
+            
+            <p class="text-center lead text-body-secondary mb-3">Have questions? Contact me at <a
+                href="mailto:zh2408@columbia.edu">zh2408@columbia.edu</a></p>
 
         </div>
         <!-- <div class="col-lg-8 col-md-12 mx-auto">

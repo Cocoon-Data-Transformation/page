@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cocoon: RAG Large Data Pipeline</title>
+    <title>Cocoon: RAG for Large Data Pipeline</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -236,6 +236,41 @@ tbody tr:hover {
     </style>
 </head>
 <body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="https://cocoon-data-transformation.github.io/page/">
+        Cocoon: RAG for Large Data Warehouses
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/database">Table</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">Pipeline</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Research
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="researchDropdown">
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/clean">Clean</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/standardize">Standardize</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/lineage">Lineage</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/model">Catalog</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/transform">Transform</a></li>
+              <li><a class="dropdown-item" href="https://cocoon-data-transformation.github.io/page/genai">GenAI</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <div class="container py-5">
     <header class="text-center d-flex align-items-start justify-content-center mb-5">
       <div class="bg-white rounded-circle p-2 me-3" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin-top: -10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
@@ -243,7 +278,7 @@ tbody tr:hover {
       </div>
         <div>
           <h1 class="fw-bold mb-2">
-            Cocoon: RAG Large Data Pipeline
+            Cocoon: RAG for Large Data Pipeline
           </h1>
           <p class="lead mb-2">Cocoon prepares large & complex data pipeline for RAG, enabling dbt copilot functionality: </p>
           <div class="recommended mt-1">

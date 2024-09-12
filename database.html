@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cocoon: RAG for  Data Warehouse Tables</title>
+    <title>Cocoon: RAG for Data Warehouse Tables</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -254,6 +254,9 @@ tbody tr:hover {
               <li class="nav-item">
                 <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">RAG Pipelines</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/integration">RAG Both</a>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Other Features
@@ -280,9 +283,9 @@ tbody tr:hover {
       </div>
         <div class="col-lg-8">
           <h1 class="fw-bold mb-2">
-            Cocoon: RAG for Data Warehouse Tables
+            Cocoon: RAG for Large Data Warehouse
           </h1>
-          <p class="small mb-3 text-muted">Cocoon thoroughly prepares your Data Warehouse (e.g., Snowflake, Big Query, SQL Server, DuckDB...) for RAG. <br>Offline, Cocoon helps profile, clean, and connect your tables into a lightweight catalog (SQL + YML). <br>Online, you can easily RAG your database for use cases like data discovery and report building.</p>
+          <p class="lead mb-2">Cocoon prepares large data warehouse for RAG, enabling cursor-style chatbot functionality: </p>
 
           <div class="recommended mt-1">
             <a href="#" class="m-1 text-decoration-none text-center" title="Database Summary" onclick="document.getElementById('question').value='Give me a high-level summary of our database structure and main tables.'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
@@ -327,7 +330,8 @@ tbody tr:hover {
                 </div>
             </div>
             <div class="col-lg-5 text-center d-flex flex-column justify-content-center">
-                <h1 class="h3 mb-4">Get Started with Notebook</h1>
+                <h1 class="h3 mb-2">Get Started with Notebook</h1>
+                <p class="text-muted mb-4">The project is fully open-sourced. You can run Cocoon locally.</p>
                 <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/Cocoon_Genai_Demo.ipynb" target="_blank" class="btn btn-primary btn-lg w-100 mb-3">Try Cocoon</a>
             </div>
         </div>

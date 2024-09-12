@@ -253,6 +253,9 @@ tbody tr:hover {
           <li class="nav-item">
             <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">RAG Pipelines</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/integration">RAG Both</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Other Features
@@ -280,7 +283,7 @@ tbody tr:hover {
           <h1 class="fw-bold mb-2">
             Cocoon: RAG for Large Data Pipeline
           </h1>
-          <p class="lead mb-2">Cocoon prepares large & complex data pipeline for RAG, enabling dbt copilot functionality: </p>
+          <p class="lead mb-2">Cocoon prepares large data pipeline for RAG, enabling cursor-style chatbot functionality: </p>
           <div class="recommended mt-1">
             <a href="#" class="m-1 text-decoration-none text-center" title="Models & Lineage Discovery" onclick="document.getElementById('question').value='What end reports are this DBT project building?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
@@ -301,12 +304,12 @@ tbody tr:hover {
                 </svg>
                 <small>New Pipelines Prototyping</small>
             </a>
-            <a href="#" class="m-1 text-decoration-none text-center" title="Natural Language Querying" onclick="document.getElementById('question').value='Are there any bottlenecks in our shipping process?'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
+            <a href="#" class="m-1 text-decoration-none text-center" title="Natural Language Querying" onclick="document.getElementById('question').value='For `67. model.shopifysource.stgshopifytransaction`, could you read through each tables downstream usage, and suggest on which columns to partition by, based on the where clause'; document.querySelector('.search-form').scrollIntoView({behavior: 'smooth', block: 'center'}); return false;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots" viewBox="0 0 16 16">
                     <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                     <path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
                 </svg>
-                <small>Natural Language Querying</small>
+                <small>Pipeline Optimization</small>
             </a>
             </div>
         </div>
@@ -323,7 +326,8 @@ tbody tr:hover {
                 </div>
             </div>
             <div class="col-lg-5 text-center d-flex flex-column justify-content-center">
-                <h1 class="h3 mb-4">Get Started with Notebook</h1>
+                <h1 class="h3 mb-2">Get Started with Notebook</h1>
+                <p class="text-muted mb-4">The project is fully open-sourced. You can run Cocoon locally.</p>
                 <a href="https://colab.research.google.com/github/Cocoon-Data-Transformation/cocoon/blob/main/demo/Cocoon_RAG_pipeline.ipynb" target="_blank" class="btn btn-primary btn-lg w-100 mb-3">Try Cocoon</a>
             </div>
         </div>
@@ -14894,7 +14898,8 @@ Inventory Level = Inventory item @ a Location.
                             <a href="#" onclick="document.getElementById('question').value='For `stg_shopify__abandoned_checkout`, I want to update `checkout_id` to `abandoned_checkout_id`. Help me find the edits I need to make for downstream models.'; return false;">Safe Model Edit: check downstream lineage</a>
                             <a href="#" onclick="document.getElementById('question').value='How many abandoned checkouts were there last month?'; return false;">New Model: fast pipeline prototyping</a>
                             <a href="#" onclick="document.getElementById('question').value='Are there any bottlenecks in our shipping process?'; return false;">High-level Business Question: quick brainstorm</a>
-                        </div>
+                            <a href="#" onclick="document.getElementById('question').value='For `67. model.shopifysource.stgshopifytransaction`, could you read through each tables downstream usage, and suggest on which columns to partition by, based on the where clause'; return false;">Pipeline Optimization: recommend partition key</a>
+                          </div>
                     </div>
                 </div>
             </div>

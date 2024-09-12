@@ -95,6 +95,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/pipeline">RAG Pipelines</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://cocoon-data-transformation.github.io/page/integration">RAG Both</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="researchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Other Features
@@ -153,42 +156,75 @@
 
     <section class="py-5 bg-light">
         <div class="container">
-            <h2 class="fw-bold mb-5 text-center">Learn more about how Cocoon RAGs your ...</h2>
-            <div class="row justify-content-center">
-                <!-- Complex Data Warehouse tables -->
-                <div class="col-lg-6 col-md-6 mb-4">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
-                        <div class="video-container">
-                            <iframe src="https://www.youtube.com/embed/xdmRXs0UnfE" allowfullscreen></iframe>
-                        </div>
-                        <div class="card-body d-flex flex-column p-4 pt-5">
-                            <h4 class="card-title mb-3 font-weight-bold">Complex Data Warehouse Tables</h4>
-<p class="card-text flex-grow-1 text-muted">
-    Cocoon handles messy data warehouses by cleaning, profiling, and documenting. 
-    It connects numerous tables through business concepts, preparing them for RAG.
-</p>
-                            <a href="https://cocoon-data-transformation.github.io/page/database" class="btn btn-dark mt-auto">Learn more + Live Demo</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Very Large Data Pipelines -->
-                <div class="col-lg-6 col-md-6 mb-4">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+            <h2 class="fw-bold mb-5 text-center">Based on Cocoon RAG, we provide cursor-style chatbot for ...</h2>
+            
+            <!-- Very Large Data Pipelines -->
+            <div class="card mb-5 shadow-sm">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-lg-6">
                         <div class="video-container">
                             <iframe src="https://www.youtube.com/embed/kv5mwTkpfY0" allowfullscreen></iframe>
                         </div>
-                        <div class="card-body d-flex flex-column p-4 pt-5">
-                            <h4 class="card-title mb-3 font-weight-bold">Large Data Pipelines</h4>
-                            <p class="card-text flex-grow-1 text-muted">Cocoon learns and semantically connects large data pipelines. It analyzes models and traces column lineages, transforming pipeline data into RAG-ready formats.</p>
-                            <a href="https://cocoon-data-transformation.github.io/page/pipeline" class="btn btn-dark mt-auto">Learn more + Live Demo</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title mb-4 font-weight-bold">Large Data Pipelines</h4>
+                            <ul class="list-unstyled pl-3 small mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Model Discovery:</strong> <span class="text-muted">Find the models related to churn.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Pipeline Optimization:</strong> <span class="text-muted">Recommend partitions based on usage.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Pipeline Update:</strong> <span class="text-muted">Rename columns and update downstream models.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Pipeline Prototype:</strong> <span class="text-muted">Draft a model for customer retention.</span></li>
+                            </ul>
+                            <a href="https://cocoon-data-transformation.github.io/page/pipeline" class="btn btn-dark mt-auto w-100 text-center">Learn more + Live Demo</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <!-- Complex Data Warehouse tables -->
+            <div class="card mb-5 shadow-sm">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-lg-6 order-lg-2">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/xdmRXs0UnfE" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 order-lg-1">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3 font-weight-bold">Large Data Warehouse Tables</h4>
+                            <ul class="list-unstyled pl-3 small mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Data Discovery:</strong> <span class="text-muted">Explore tables related to customer churn.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Report Prototyping:</strong> <span class="text-muted">Create MRR report for products.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Feature Extraction:</strong> <span class="text-muted">Extract features for customer segmentation.</span></li>
+                            </ul>
+                            <a href="https://cocoon-data-transformation.github.io/page/database" class="btn btn-dark mt-auto w-100 text-center">Learn more + Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-5 shadow-sm">
+                <div class="row no-gutters align-items-center">
+                    <div class="col-lg-6">
+                        <div class="video-container">
+                            <iframe src="https://www.youtube.com/embed/ry-q4iZhm4w" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title mb-4 font-weight-bold">Both Pipelines and Tables</h4>
+                            <ul class="list-unstyled pl-3 small mb-4">
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Data Integration:</strong> <span class="text-muted">Integrate Salesforce and Hubspot customer tables into one.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Database Migration:</strong> <span class="text-muted">Migrate from Hubspot to Salesforce database.</span></li>
+                                <li class="mb-2"><i class="fas fa-check text-success mr-2"></i> <strong>Report Reconstruction:</strong> <span class="text-muted"> Recreate Hubspot models, but use Salesforce data.</span></li>
+                            </ul>
+                            <a href="https://cocoon-data-transformation.github.io/page/integration" class="btn btn-dark mt-auto w-100 text-center">Learn more + Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
     </section>
-
-
 
     <section class="py-5">
         <div class="container">

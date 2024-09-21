@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Request Forwarder</title>
+</head>
+<body>
+    <h1>CSV Request Forwarder</h1>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to forward the POST request
+            function forwardRequest(formData) {
+                fetch('http://34.168.161.63:5000/api/v1/display-csv', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerHTML = 'An error occurred while forwarding the request.';
+                });
+            }
+
+            // Check if this page was loaded via POST
+            if (document.referrer) {
+                // This is a bit of a hack since we can't directly access POST data
+                // In a real-world scenario, you'd need a server to handle this properly
+                var dummyFormData = new FormData();
+                dummyFormData.append('files', new Blob(['dummy,data\n1,2'], {type: 'text/csv'}), 'dummy.csv');
+                forwardRequest(dummyFormData);
+            } else {
+                document.getElementById('result').innerHTML = 'This page is meant to receive POST requests and forward them.';
+            }
+        });
+    </script>
+</body>
+</html>

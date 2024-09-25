@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your ERP Product Trial</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <!-- Add this script for the confetti effect -->
+    <script>
+        function triggerConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 160,
+                origin: { y: 0.6 },
+                scalar: 1.5
+            });
+        }
+
+        // Trigger confetti when the page loads
+        window.onload = triggerConfetti;
+    </script>
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f7;
+            margin: 0;
+            color: #1d1d1f;
+        }
+
+        .hero-section {
+            background-color: #fff;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            color: #6e6e73;
+            margin: 0 auto 20px;
+        }
+
+        .table-section {
+            background-color: #fff;
+            padding: 50px 0;
+        }
+
+        .modern-table-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .modern-table {
+            font-size: 0.75rem;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .modern-table th, .modern-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .modern-table thead {
+            background-color: #f8f9fa;
+        }
+
+        .modern-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #495057;
+            font-size: 0.85rem;
+        }
+
+        .modern-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: #f1f3f5;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.8em;
+            font-size: 0.9em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 50rem;
+            color: #fff;
+        }
+
+        .badge-category {
+            background-color: #4e73df;
+        }
+
+        .badge-status {
+            background-color: #1cc88a;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>Your ERP Product Trial Page</h1>
+        <p>🎉 We have successfully loaded your ERP data. Now experience the future of inventory and order management!</p>
+        <p style="font-size: 0.9em; color: #86868b;">Note: This is just a template. Please replace this with your ERP product trial page.</p>
+    </section>
+
+    <!-- Table Section -->
+    <section class="table-section">
+        <div class="container">
+            <!-- Inventory Items Table -->
+            <h2 class="text-center mb-4">Your Inventory Items</h2>
+            <div class="modern-table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>SKU</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Unit Price</th>
+                            <th>Quantity on Hand</th>
+                            <th>Reorder Point</th>
+                            <th>Supplier</th>
+                            <th>Last Restock Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1001</td>
+                            <td>SKU1234</td>
+                            <td>Ergonomic Mouse</td>
+                            <td><span class="badge badge-category">Computer Accessories</span></td>
+                            <td>$49.99</td>
+                            <td>117</td>
+                            <td>30</td>
+                            <td>TechGadgets Inc.</td>
+                            <td>8/15/24</td>
+                        </tr>
+                        <tr>
+                            <td>1002</td>
+                            <td>SKU5678</td>
+                            <td>Ultra-Slim Laptop</td>
+                            <td><span class="badge badge-category">Computers</span></td>
+                            <td>$1,299.99</td>
+                            <td>23</td>
+                            <td>10</td>
+                            <td>ElectroHub Ltd.</td>
+                            <td>9/1/24</td>
+                        </tr>
+                        <tr>
+                            <td>1003</td>
+                            <td>SKU2468</td>
+                            <td>Wireless Earbuds</td>
+                            <td><span class="badge badge-category">Audio Equipment</span></td>
+                            <td>$75.99</td>
+                            <td>194</td>
+                            <td>50</td>
+                            <td>SoundMasters Co.</td>
+                            <td>8/20/24</td>
+                        </tr>
+                        <tr>
+                            <td>1004</td>
+                            <td>SKU3692</td>
+                            <td>4K Monitor</td>
+                            <td><span class="badge badge-category">Computer Accessories</span></td>
+                            <td>$349.99</td>
+                            <td>37</td>
+                            <td>15</td>
+                            <td>VisualTech Systems</td>
+                            <td>9/5/24</td>
+                        </tr>
+                        <tr>
+                            <td>1005</td>
+                            <td>SKU1598</td>
+                            <td>Mechanical Keyboard</td>
+                            <td><span class="badge badge-category">Computer Accessories</span></td>
+                            <td>$129.99</td>
+                            <td>75</td>
+                            <td>20</td>
+                            <td>KeyMasters Inc.</td>
+                            <td>8/10/24</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sales Orders Table -->
+            <h2 class="text-center mb-4 mt-5">Your Sales Orders</h2>
+            <div class="modern-table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer Name</th>
+                            <th>Order Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Payment Method</th>
+                            <th>Items</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>23-45678</td>
+                            <td>John A. Smith</td>
+                            <td>2024-09-15</td>
+                            <td>$12,599.00</td>
+                            <td><span class="badge badge-status">Shipped</span></td>
+                            <td>VISA</td>
+                            <td>2x SKU1234, 1x SKU5678</td>
+                            <td>Handle with care</td>
+                        </tr>
+                        <tr>
+                            <td>23-45679</td>
+                            <td>Emma R. Johnson</td>
+                            <td>2024-09-16</td>
+                            <td>$7,599.00</td>
+                            <td><span class="badge badge-status">In Progress</span></td>
+                            <td>PayPal</td>
+                            <td>1x SKU2468</td>
+                            <td>Leave with neighbor if not home</td>
+                        </tr>
+                        <tr>
+                            <td>23-45680</td>
+                            <td>Michael T. Brown</td>
+                            <td>2024-09-17</td>
+                            <td>$29,997.00</td>
+                            <td><span class="badge badge-status">Pending</span></td>
+                            <td>ACH Transfer</td>
+                            <td>3x SKU3692</td>
+                            <td>Gift wrap please</td>
+                        </tr>
+                        <tr>
+                            <td>23-45681</td>
+                            <td>Sarah L. Davis</td>
+                            <td>2024-09-18</td>
+                            <td>$4,995.00</td>
+                            <td><span class="badge badge-status">Cancelled</span></td>
+                            <td>MasterCard</td>
+                            <td>5x SKU1598</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>23-45682</td>
+                            <td>David A. Wilson</td>
+                            <td>2024-09-19</td>
+                            <td>$19,998.00</td>
+                            <td><span class="badge badge-status">Completed</span></td>
+                            <td>AMEX</td>
+                            <td>1x SKU7531, 2x SKU9514</td>
+                            <td>Signature required</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2023 ERP Startup. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap JS (Optional) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+</html>
